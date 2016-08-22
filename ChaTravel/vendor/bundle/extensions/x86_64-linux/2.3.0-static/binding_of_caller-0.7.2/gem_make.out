@@ -1,0 +1,16 @@
+current directory: /home/vagrant/chatravel-server/ChaTravel/vendor/bundle/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+/home/vagrant/.rbenv/versions/2.3.0/bin/ruby -r ./siteconf20160822-29612-1g8k4ni.rb extconf.rb
+
+current directory: /home/vagrant/chatravel-server/ChaTravel/vendor/bundle/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+make "DESTDIR=" clean
+make: *** ターゲット `clean' を make するルールがありません.  中止.
+
+current directory: /home/vagrant/chatravel-server/ChaTravel/vendor/bundle/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+make "DESTDIR="
+echo "Nada."
+Nada.
+
+current directory: /home/vagrant/chatravel-server/ChaTravel/vendor/bundle/gems/binding_of_caller-0.7.2/ext/binding_of_caller
+make "DESTDIR=" install
+echo "Nada."
+Nada.
