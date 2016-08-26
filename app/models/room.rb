@@ -2,6 +2,7 @@ class Room < ApplicationRecord
   validates_uniqueness_of :url
   validates_presence_of :url
   after_initialize :set_url
+  validates :name, presence: true,length: { maximum: 50}
 
   def to_param
     url
@@ -14,8 +15,6 @@ class Room < ApplicationRecord
 
   def generate_url
     url = SecureRandom.urlsafe_base64(9)
-    print "URL is #{url}"
-    puts
     self.class.where(:url => url).blank? ? url : generate_url
   end
 
