@@ -3,6 +3,7 @@ class RoomChannel < ApplicationCable::Channel
   def subscribed
     @room = Room.find_by(url: params[:room])
     @room_name = "room_#{@room.url}"
+    stop_all_streams
     stream_from @room_name
   end
 
@@ -11,7 +12,8 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak (data)
-    ActionCable.server.broadcast(@room_name, message: data['message'])
+    #TODO user_idを入れる
+    Message.create!(message: data['message'], user_id: 1, room_id: @room.id)
   end
 
 end
