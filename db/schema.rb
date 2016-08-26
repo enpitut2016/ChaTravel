@@ -10,7 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160826052128) do
 
   create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -99,8 +98,4 @@ ActiveRecord::Schema.define(version: 20160826052128) do
   add_foreign_key "vote_results", "votes"
   add_foreign_key "vote_to_suggests", "suggests"
   add_foreign_key "vote_to_suggests", "votes"
-=======
-ActiveRecord::Schema.define(version: 0) do
-
->>>>>>> static_pages
 end
