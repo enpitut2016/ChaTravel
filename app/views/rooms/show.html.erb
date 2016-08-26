@@ -2,63 +2,86 @@
 
 <div class="container">
     <div class="row">
+            <div class="col-md-2">
 
-            <div class="row">
-                <div class="col-md-3">
+                <h1><%= link_to 'ChaTravel', rooms_path %></h1>
 
-                    <p id="notice"><%= notice %></p>
-                    <h1><%= link_to 'ChaTravel', rooms_path %></h1>
+                <p>
+                  <strong>RoomName:</strong>
+                  <%= @room.name %>
+                </p>
 
-                    <p>
-                      <strong>RoomName:</strong>
-                      <%= @room.name %>
-                    </p>
+                <p>メンバー</p>
+                <ul>
+                  <li>UserName1<!--<%= @user %> --></li>
+                　　<li>UserName2<!--<%= @user %> --></li>
+                </ul>
 
-                    <p>メンバー</p>
-                    <ul>
-                      <li>UserName1:<!--<%= @user %> --></li>
-                    　　<li>UserName2:<!--<%= @user %> --></li>
-                    </ul>
+                <p>決めたことリスト</p>
+                <!--動的に階層構造。だれかお願い！ -->
+                <ul>
+                  <li>食事:<!--<%= @voteresult %>  --></li>
+                  <li>宿泊先:<!--<%= @voteresult %>  --></li>
+                  <li>観光地:<!--<%= @voteresult %>  --></li>
+                </ul>
+            </div>
 
-                    <p>決めたことリスト</p>
-                    <!--動的に階層構造。だれかお願い！ -->
-                    <ul>
-                      <li>食事:<!--<%= @voteresult %>  --></li>
-                      <li>宿泊先:<!--<%= @voteresult %>  --></li>
-                      <li>観光地:<!--<%= @voteresult %>  --></li>
-                    </ul>
+            <div class="col-md-7">
+                <div name=chatarea>
+                  <ul style="list-style:none;">
+
+                    <li>
+                      <div class="col-md-2">
+                        <p>icon</p>
+                      </div>
+                      <div class="col-md-9">
+                        <p>UserName</p>
+                        <p>chat_message</p>
+                      </div>
+                      <div class="col-md-1">
+                      </div>
+                    </li>
+
+                    <li>
+                      <div class="col-md-1">
+                      </div>
+                      <div class="col-md-9">
+                        <p>UserName</p>
+                        <p>chat_message</p>
+                      </div>
+                      <div class="col-md-2">
+                        <p>icon</p>
+                      </div>
+                    </li>
+
+                  </ul>
                 </div>
 
-                <div class="col-md-6">
-
-                    <div name=message>
-                      <textarea name="message" rows="1" cols="50">てきすと</textarea>
-                      <input type="submit" value="投稿">
-                    </div>
-
+                <div name=message>
+                  <textarea name="message" rows="1" cols="50">てきすと</textarea>
+                  <input type="submit" value="投稿">
                 </div>
 
-                <div class="col-md-3">
-                    <h1>ダッシュボード</h1>
+            </div>
 
-                    <div>
-                      <input type="submit" value="+ 候補を登録する">
-                    </div>
+            <div class="col-md-3">
+                <h1>ダッシュボード</h1>
 
-                    <div name=suggest>
-                      <textarea name="suggest" rows="10" cols="45">おすすめ</textarea>
-                    </div>
-                    <div>
-                      <input type="submit" value="投票を開始する">
-                    </div>
-
-                    <%= link_to 'Edit', edit_room_path(@room) %> |
-
-
+                <div>
+                  <input type="submit" value="+ 候補を登録する">
                 </div>
+
+                <div name=suggest>
+                  <textarea name="suggest" rows="10" cols="45">おすすめ</textarea>
+                </div>
+                <div>
+                  <input type="submit" value="投票を開始する">
+                </div>
+
+                <%= link_to 'Edit', edit_room_path(@room) %>
+
             </div>
         </div>
-
     </div>
 </div>
 
