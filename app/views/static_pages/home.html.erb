@@ -1,32 +1,23 @@
-<p>STEP1:グループ名</p>
-<form action=root_path method="post">
-	<input type="text" name="group_name">
-	<input type="submit" value="送信">
-</form>
+<h1>ルーム作成</h1>
 
-
+<%= form_for(@room) do |f| %>
+  <div class="field">
+	<p>STEP1:グループ名</p>
+    <%= f.text_field :name %>
+  </div>
 <p>STEP2:話し合う内容</p>
-<p>
-<form action=root_path method="post">
-	<input type="radio" name="date" value="日程"> 日程
-	<input type="radio" name="tourism" value="観光スポット">観光スポット
-	<input type="radio" name="Accommodation" value="宿泊先">宿泊先
-	<input type="radio" name="meal" value="食事">食事
-	<input type="submit" value="送信">
-</form>
-</p>
+
 
 <p>STEP3:メモ</p>
-<form action=root_path method="post">
-	<input type="text" name="memo">
-	<input type="submit" value="送信">
-</form>
-
-
-<input type="submit" value="チャットルームを作る">
+  <div class="actions">
+    <%= f.submit("チャットルームを作成") %>
+  </div>
+<% end %>
 
 <p>チャットラベルを使う3つのメリット </p>
 <p>Botによる話し合いの進行</p>
 <p>計画作成を助けるお助けツール</p>
 <p>旅のしおりの作成</p>
+
+
 
