@@ -1,14 +1,58 @@
+
+<%= stylesheet_link_tag "rooms", :media => "all" %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-2">メンバー</div>
+                <div class="col-md-6">メンバ-</div>
+                <div class="col-md-4">メンバー</div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <strong>RoomName:</strong>
   <%= @room.name %>
 </p>
 
-<!--<p>-->
-  <!--<strong>Enable:</strong>-->
-  <!--<%= @room.enable %>-->
-<!--</p>-->
+<p>メンバー</p>
+<ul>
+  <li>UserName1:<!--<%= @user %> --></li>
+　　<li>UserName2:<!--<%= @user %> --></li>
+</ul>
+
+<p>決めたことリスト</p>
+<!--動的に階層構造。だれかお願い！ -->
+<ul>
+  <li>食事:<!--<%= @voteresult %>  --></li>
+  <li>宿泊先:<!--<%= @voteresult %>  --></li>
+  <li>観光地:<!--<%= @voteresult %>  --></li>
+</ul>
+
+
+<div name=message>
+  <textarea name="message" rows="1" cols="10">てきすと</textarea>
+  <input type="submit" value="投稿">
+</div>
+
+
+<div>
+  <input type="submit" value="+ 候補を登録する">
+</div>
+
+<div name=suggest>
+  <textarea name="suggest" rows="20" cols="20">おすすめ</textarea>
+</div>
+<div>
+  <input type="submit" value="投票を開始する">
+</div>
 
 <%= link_to 'Edit', edit_room_path(@room) %> |
-<%= link_to 'Back', rooms_path %>
+<%= link_to 'BacktoRootpage', rooms_path %>
+
