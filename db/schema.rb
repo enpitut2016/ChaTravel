@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160826050125) do
+ActiveRecord::Schema.define(version: 20160826051145) do
+
+  create_table "room_to_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "room_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_room_to_users_on_room_id", using: :btree
+    t.index ["user_id"], name: "index_room_to_users_on_user_id", using: :btree
+  end
 
   create_table "rooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -41,6 +50,15 @@ ActiveRecord::Schema.define(version: 20160826050125) do
     t.index ["name"], name: "index_users_on_name", unique: true, using: :btree
   end
 
+  create_table "votes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.text     "content",    limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_foreign_key "room_to_users", "rooms"
+  add_foreign_key "room_to_users", "users"
   add_foreign_key "suggests", "rooms"
   add_foreign_key "suggests", "users"
 end
