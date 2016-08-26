@@ -1,23 +1,31 @@
-<h1>ルーム作成</h1>
+<div class="container">
+	<h1>ルーム作成</h1>
 
-<%= form_for(@room) do |f| %>
-  <div class="field">
-	<p>STEP1:グループ名</p>
-    <%= f.text_field :name %>
-  </div>
-<p>STEP2:話し合う内容</p>
-
-
-<p>STEP3:メモ</p>
-  <div class="actions">
-    <%= f.submit("チャットルームを作成") %>
-  </div>
-<% end %>
-
-<p>チャットラベルを使う3つのメリット </p>
-<p>Botによる話し合いの進行</p>
-<p>計画作成を助けるお助けツール</p>
-<p>旅のしおりの作成</p>
-
-
+	<div class="row">
+		<%= form_for(@room) do |f| %>
+			<div class="col-sm-6 ">
+				<span>STEP1:グループ名</span>
+				<%= f.text_field :name %>
+			</div>
+			<div class="col-sm-6 ">
+				<span >STEP2:話し合う内容</span>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<span>STEP3:メモ</span>
+					<div class="actions">
+						<%= f.submit "チャットルームを作る", class: "btn btn-lg btn-warning"%>
+					</div>
+				<% end %>
+				<div class="row">
+				</div>
+				<span >チャットラベルを使う3つのメリット </span>
+				<div class="row">
+					<span class="col-sm-4">Botによる話し合いの進行</span>
+					<span class="col-sm-4">計画作成を助けるお助けツール</span>
+					<span class="col-sm-4">旅のしおりの作成</span>
+				</div>
+				</div>
+			</div>
+	</div>
 
