@@ -3,7 +3,7 @@ class RoomChannel < ApplicationCable::Channel
   def subscribed
     @room = Room.find_by(url: params[:room])
     @room_name = "room_#{@room.url}"
-    stream_from "room_#{@room.url}"
+    stream_from @room_name
   end
 
   def unsubscribed
