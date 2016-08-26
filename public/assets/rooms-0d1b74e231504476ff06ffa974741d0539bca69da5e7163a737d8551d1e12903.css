@@ -1,0 +1,9 @@
+/* line 4, C:/Users/owner/ChaTravel_RailsServer/chatravel-server/ChaTravel/app/assets/stylesheets/rooms.scss */
+body {
+  background-image: url(room.png);
+}
+
+/* line 8, C:/Users/owner/ChaTravel_RailsServer/chatravel-server/ChaTravel/app/assets/stylesheets/rooms.scss */
+p {
+  color: red;
+}
