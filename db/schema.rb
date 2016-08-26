@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160826051145) do
+ActiveRecord::Schema.define(version: 20160826051323) do
 
   create_table "room_to_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "room_id"
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(version: 20160826051145) do
     t.index ["name"], name: "index_users_on_name", unique: true, using: :btree
   end
 
+  create_table "vote_to_suggests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "vote_id"
+    t.integer  "suggest_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["suggest_id"], name: "index_vote_to_suggests_on_suggest_id", using: :btree
+    t.index ["vote_id"], name: "index_vote_to_suggests_on_vote_id", using: :btree
+  end
+
   create_table "votes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.text     "content",    limit: 65535
@@ -61,4 +70,6 @@ ActiveRecord::Schema.define(version: 20160826051145) do
   add_foreign_key "room_to_users", "users"
   add_foreign_key "suggests", "rooms"
   add_foreign_key "suggests", "users"
+  add_foreign_key "vote_to_suggests", "suggests"
+  add_foreign_key "vote_to_suggests", "votes"
 end
