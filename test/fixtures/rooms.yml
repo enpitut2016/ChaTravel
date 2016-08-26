@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: room_one
+  enable: true
+  url: iN5SkCx3bjZ4
+
+two:
+  name: room_two
+  enable: true
+  url: r-Hwaq2y5xdD
