@@ -4,6 +4,7 @@ class Room < ApplicationRecord
   after_initialize :set_url
   validates :name, presence: true,length: { maximum: 50}
 
+
   def to_param
     url
   end
