@@ -26,3 +26,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'bootstrap-sass', '3.3.7'
 gem 'resources_id_replace', '0.0.1'
 gem 'bcrypt', '~> 3.1', '>= 3.1.11'
+gem 'redis', '3.3.1'

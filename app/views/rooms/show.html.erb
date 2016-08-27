@@ -14,7 +14,7 @@
                 <p>メンバー</p>
                 <ul>
                   <li>UserName1<!--<%= @user %> --></li>
-                　　<li>UserName2<!--<%= @user %> --></li>
+                  <li>UserName2<!--<%= @user %> --></li>
                 </ul>
 
                 <p>決めたことリスト</p>
@@ -57,11 +57,10 @@
                   </ul>
                 </div>
 
-                <div name=message>
-                  <textarea name="message" rows="1" cols="50">てきすと</textarea>
-                  <input type="submit" value="投稿">
-                </div>
-
+              <div name=message>
+                <textarea id="comment" name="message" rows="1" cols="10">てきすと</textarea>
+                <input id="post" type="submit" value="投稿">
+              </div>
             </div>
 
             <div class="col-md-3">
@@ -84,13 +83,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
