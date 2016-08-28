@@ -3,12 +3,20 @@
   <head>
     <title>ChaTravel</title>
     <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag controller.controller_name if ChaTravel::Application.assets.find_asset("#{controller.controller_name}.js") %>
+    <%= javascript_include_tag "#{controller.controller_name}/#{action_name}"  if ChaTravel::Application.assets.find_asset("#{controller.controller_name}/#{action_name}.js")%>
   </head>
 
   <body>
+  	<% flash.each do |message_type, message| %>
+  		<div class="alert alert-<%= message_type %>"><%= message %></div>
+    <% end %>
     <%= yield %>
+
+    <%= debug(params) if Rails.env.development? %>
   </body>
 </html>

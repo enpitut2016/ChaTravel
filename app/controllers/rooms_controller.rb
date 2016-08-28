@@ -11,6 +11,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     @room = Room.find_by(url: params[:url])
+    @messages = Message.find_by(room: @room.id)
   end
 
   # GET /rooms/new
