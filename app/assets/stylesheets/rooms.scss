@@ -9,12 +9,52 @@ background-repeat:no-repeat;
 background-size:cover;
 }
 
-p {
-    color:brack;
+.menubar {
+  //position: fixed;
 }
 
-div.message {
-position: relative;
-top: 500px;
-left: 500px;
+.dashboard {
+  //position: fixed;
+}
+
+.chat {
+  //position: fixed;
+}
+//
+//div.message {
+//position: relative;
+//top: 500px;
+//left: 500px;
+//}
+
+#chat_area {
+
+}
+
+ul #message_list {
+  list-style: none;
+}
+
+#message_list {
+  //position: static;
+  height: 80%;
+  width: 100%;
+  overflow: scroll;
+}
+
+
+#message_textarea {
+  display: inline-flex;
+  width: 100%;
+  bottom: 0;
+  
+}
+
+#comment {
+  width: 100%;
+  resize: none;
+}
+
+#current_user {
+  display: none;
 }
