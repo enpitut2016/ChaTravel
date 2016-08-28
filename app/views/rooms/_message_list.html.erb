@@ -1,0 +1,26 @@
+<div id="message_list_wrapper">
+  <ul id="message_list">
+    <% message_list.each do |message| %>
+        <% message_user = message.user %>
+        <li class=<%= message_user.name %>>
+          <% if message_user.id == current_user.id %>
+              <div class="col-md-9">
+                <p>Name: <%= message_user.name %></p>
+                <p>Message: <%= message.message %></p>
+              </div>
+              <div class="col-md-3">
+                <p>icon</p>
+              </div>
+          <% else %>
+              <div class="col-md-3">
+                <p>icon</p>
+              </div>
+              <div class="col-md-9">
+                <p>Name: <%= message_user.name %></p>
+                <p>Message: <%= message.message %></p>
+              </div>
+          <% end %>
+        </li>
+    <% end %>
+  </ul>
+</div>
