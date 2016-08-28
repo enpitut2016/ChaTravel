@@ -1,20 +1,15 @@
 // Place all the styles related to the Rooms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-#container {
- position: fixed;
-}
 
 ul#message_list {
   list-style: none;
 }
 
 #message_list {
-  //position: static;
   height: 90vh;
   width: 100%;
   overflow-y: auto;
-  z-index: -1;
 }
 
 
