@@ -1,29 +1,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-footer {
-  margin-top: 45px;
-  padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #777;
-}
-footer a {
-  color: #555;
+
+
+// 画像をcenterに
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-footer a:hover {
-  color: #222;
-}
 
-footer small {
-  float: left;
-}
-
-footer ul {
-  float: right;
-  list-style: none;
-}
-
-footer ul li {
-  float: left;
-  margin-left: 15px;
-}
