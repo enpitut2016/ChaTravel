@@ -42,7 +42,7 @@ bower.json
 .byebug_history
 
 # Ignore .DS_Store
-.DS_store
+.DS_Store
 
 # Ignore RubyMine confing file
 .idea
