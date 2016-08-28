@@ -3,14 +3,14 @@
   <head>
 	  <title>ChaTravel</title>
 	  <%= csrf_meta_tags %>
-
-	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+		<%= action_cable_meta_tag %>
+	  <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 	  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-	  <div class="group">
-		 <p>チャットしてたらスグ決まる旅行相談用グループチャット</p>
-	  </div>
   </head>
   <body>
+	  <%= render 'layouts/header' %>
 	  <%= yield %>
+	  <%= render 'layouts/footer' %>
+      <p> aaaa</p>
   </body>
 </html>
