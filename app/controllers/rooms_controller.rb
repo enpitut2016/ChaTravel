@@ -32,7 +32,7 @@ class RoomsController < ApplicationController
 
     respond_to do |format|
       if @room.save
-        format.html { redirect_to controller: 'static_pages',action: 'room_page'}
+        format.html { redirect_to controller: 'static_pages',action: 'room_page', name:@room.name}
         format.json { render :show, status: :created, location: @room }
       else
         format.html { render :new }

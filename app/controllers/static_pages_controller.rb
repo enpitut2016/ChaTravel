@@ -7,7 +7,7 @@ class StaticPagesController < ApplicationController
   end
 
   def room_page
-	  @room = Room.last
+	  @room = Room.find_by(name:params[:name])
 	  @url  = @room.url
   end
 end
