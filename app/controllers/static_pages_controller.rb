@@ -5,6 +5,7 @@ class StaticPagesController < ApplicationController
 
   def help
   end
+
   def room_page
 	  @room = Room.last
 	  @url  = @room.url
