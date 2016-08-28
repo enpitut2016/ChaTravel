@@ -1,32 +1,33 @@
-
 <div class="container">
-	<h1>ルーム作成</h1>
+  <div class="row">
+    <%= form_for(@room) do |f| %>
+      <div class="col-sm-6 ">
+        <p>STEP1:グループ名</p>
+        <%= f.text_field :name %>
+        <p>メモ</p>
+      </div>
+      <div class="col-sm-6 ">
+        <p >STEP2:話し合う内容</p>
+        <p >日程</p>
+        <p >観光スポット</p>
+        <p >食事</p>
+      </div>
+      <div class ="center-block">
+        <div>
+          <%= f.submit "チャットルームを作る", class: "btn btn-lg btn-warning"%>
+        </div>
+      </div>
+    <% end %>
 
-	<div class="row">
-		<%= form_for(@room) do |f| %>
-			<div class="col-sm-6 ">
-				<span>STEP1:グループ名</span>
-				<%= f.text_field :name %>
-			</div>
-			<div class="col-sm-6 ">
-				<span >STEP2:話し合う内容</span>
-			</div>
-			<div class="row">
-				<div class="col-sm-12">
-					<span>STEP3:メモ</span>
-					<div class="actions">
-						<%= f.submit "チャットルームを作る", class: "btn btn-lg btn-warning"%>
-					</div>
-				<% end %>
-				<div class="row">
-				</div>
-				<span >チャットラベルを使う3つのメリット </span>
-				<div class="row">
-					<span class="col-sm-4">Botによる話し合いの進行</span>
-					<span class="col-sm-4">計画作成を助けるお助けツール</span>
-					<span class="col-sm-4">旅のしおりの作成</span>
-				</div>
-				</div>
-			</div>
-	</div>
+    <div class="row">
+    </div>
+    <span >チャットラベルを使う3つのメリット </span>
+    <div class="row">
+      <span class="col-sm-4">Botによる話し合いの進行</span>
+      <span class="col-sm-4">計画作成を助けるお助けツール</span>
+      <span class="col-sm-4">旅のしおりの作成</span>
+    </div>
+  </div>
+</div>
+</div>
 
