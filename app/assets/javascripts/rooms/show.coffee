@@ -7,4 +7,3 @@ $ ->
     comment = $("#comment")
     App.room.speak comment.val()
     comment.val('')
-  console.log('show coffee')
