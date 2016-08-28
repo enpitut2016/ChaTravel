@@ -1,20 +1,33 @@
 // Place all the styles related to the Rooms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-body {
-    //background-image: url(rooms_show.PNG);
-    background-position:center top;
-    background-repeat:no-repeat;
-    -moz-background-size:cover;
-    background-size:cover;
+#container {
+ position: fixed;
 }
 
-p {
-    color:brack;
+ul#message_list {
+  list-style: none;
 }
 
-div.message {
-    position: relative;
-    top: 500px;
-    left: 500px;
+#message_list {
+  //position: static;
+  height: 90vh;
+  width: 100%;
+  overflow-y: auto;
+  z-index: -1;
+}
+
+
+#message_textarea {
+  display: inline-flex;
+  width: 100%;
+}
+
+#comment {
+  width: 100%;
+  resize: none;
+}
+
+#current_user {
+  display: none;
 }

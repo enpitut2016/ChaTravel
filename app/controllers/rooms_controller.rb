@@ -11,7 +11,9 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     @room = Room.find_by(url: params[:url])
-    @messages = Message.find_by(room: @room.id)
+    @messages = Message.where(room: @room.id)
+    # TODO User情報をキャッシュとかから抜く
+    @user = User.find(1)
   end
 
   # GET /rooms/new
