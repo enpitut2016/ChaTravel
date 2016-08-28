@@ -1,4 +1,4 @@
-App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window.location.href.match(/rooms\/(.*$)/).pop() }, {
+App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window.location.href.match(/^http.*\/(.*?)$/).pop() }, {
   connected: function() {
     this.perform('subscribed')
   },
