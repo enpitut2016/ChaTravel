@@ -6,6 +6,8 @@
 		<%= action_cable_meta_tag %>
 	  <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 	  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag controller.controller_name if ChaTravel::Application.assets.find_asset("#{controller.controller_name}.js") %>
+    <%= javascript_include_tag "#{controller.controller_name}/#{action_name}"  if ChaTravel::Application.assets.find_asset("#{controller.controller_name}/#{action_name}.js")%>
   </head>
   <body>
 	  <%= render 'layouts/header' %>
