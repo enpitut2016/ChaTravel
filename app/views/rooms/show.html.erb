@@ -12,10 +12,15 @@
                 </p>
 
                 <p>メンバー</p>
-                <ul>
-                  <li>UserName1<!--<%= @user %> --></li>
-                  <li>UserName2<!--<%= @user %> --></li>
-                </ul>
+                <div id="user_list">
+                  <ul>
+                    <% @users.each do |u| %>
+                      <li><%= u.name %></li>
+                    <% end %>
+                  </ul>
+                </div>
+
+
 
                 <p>決めたことリスト</p>
                 <!--動的に階層構造。だれかお願い！ -->
@@ -57,10 +62,7 @@
                   <input type="submit" value="投票を開始する">
                 </div>
                 <%= link_to 'Edit', edit_room_path(@room) %>
-
-              </div>
-
+                </div>
             </div>
-        </div>
-    </div>
+      </div>
 </div>
