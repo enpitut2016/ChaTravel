@@ -15,6 +15,18 @@
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
+    
+  <% form_for(@user) do |user| %>
+  <div id="user_list">
+    <ul>
+      <% if @user.nil? %>
+        <li><%= @user %></li>
+      <% else %>
+        <li>error<li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 
   <!--<div class="field">-->
     <!--<%= f.label :enable %>-->
