@@ -18,4 +18,5 @@ Rails.application.routes.draw do
 	resources :users
 	get 'user/new'
 
+  post 'rooms/ajax_suggest_request'
 end

@@ -65,6 +65,16 @@ class RoomsController < ApplicationController
     end
   end
 
+
+  def ajax_suggest_request
+    p params
+    # @room ||= Room.find_by(url: params['room_url'])
+    # @user ||= User.find(params['user_id'].to_i)
+    # TODO DBに入れる
+    # Suggest.create!()
+    render json: params
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_room
