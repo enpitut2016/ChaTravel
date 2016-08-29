@@ -16,7 +16,7 @@ $ ->
     })
     .done((data, status) ->
       dom = "<div class='suggest_item'>" +
-      "<p class='suggest_title'>" + data['title'] + "</p>" +
+      "<h3 class='suggest_title'>" + data['title'] + "</h3>" +
       "<img class='suggest_image' src = " + data['image'] + " width='180' height='150'>" +
       "<p class='suggest_description'>" + data['description'] + "</p></div>"
       $('#suggest_list').append(dom))
