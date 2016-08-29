@@ -1,0 +1,2 @@
+class RoomToUsersController < ApplicationController
+end

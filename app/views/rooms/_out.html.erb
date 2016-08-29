@@ -1,0 +1,4 @@
+<%= form_for(current_user.room_to_users.find_by(room_id: @room.id),
+             html: { method: :delete }) do |f| %>
+  <%= f.submit "Out", class: "btn" %>
+<% end %>
