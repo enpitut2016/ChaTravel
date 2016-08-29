@@ -1,34 +1,37 @@
 // Place all the styles related to the Rooms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
-body {
+html, body {
+  height: 100vh;
   padding: 0;
-  //background-color: orange;
 }
 
-.container {
+.container-fluid {
 
   #menubar {
+    height: 100vh;
+    background-color: orange;
+    background-size: contain;
+    background-image: image-url("chatra_halfbraight.png");
 
-    .chatra {
-      width: 500px;
-      height: 500px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .chatra img {
-      position: absolute;
-      min-width: 50%;
-      min-height: 50%;
-      left: 30%;
-      top: 30%;
-      -webkit-transform: translate3d(-50%, -50%, 0);
-      -moz-transform: translate3d(-50%, -50%, 0);
-      -ms-transform: translate(-50%, -50%);
-      transform: translate3d(-50%, -50%, 0);
-    }
+    // .chatra {
+    //   width: 500px;
+    //   height: 500px;
+    //   overflow: hidden;
+    //   position: relative;
+    // }
+    //
+    // .chatra img {
+    //   position: absolute;
+    //   min-width: 50%;
+    //   min-height: 50%;
+    //   left: 30%;
+    //   top: 30%;
+    //   -webkit-transform: translate3d(-50%, -50%, 0);
+    //   -moz-transform: translate3d(-50%, -50%, 0);
+    //   -ms-transform: translate(-50%, -50%);
+    //   transform: translate3d(-50%, -50%, 0);
+    // }
 
     .menulist {
 
@@ -48,7 +51,7 @@ body {
 
 
       .chat_frame_right, .chat_frame_left {
-        width:300px;
+        width:70%;
       	background-color:white;
         border-style: solid;
         border-color: gray;
@@ -84,11 +87,11 @@ body {
       }
 
       .icon {
-        width:50px;
-        height:50px;
+        width:40px;
+        height:40px;
         border-style: solid;
         border-color: green;
-        margin: 20px 20px 20px 30px;
+        margin: 5% 10% 0% 5%;
       }
     }
 

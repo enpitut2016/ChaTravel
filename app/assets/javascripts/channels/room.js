@@ -19,6 +19,13 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       case 'start_vote':
         Chat.utils.received_start_vote(data['data']);
         break;
+    var message = "<div class='col-md-9 chat_frame_right'><p>Name: " + data.user.name + "</p><p>Message: " + data.message+ "</p></div>"
+    var icon = "<div class='col-md-3 icon'><p>icon</p> </div>"
+    var dom = ""
+    if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
+      dom =  message + icon
+    } else {
+      dom = icon + message
     }
 
   },
