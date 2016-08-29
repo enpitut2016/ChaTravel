@@ -62,8 +62,9 @@
         <div id="suggest_area">
           <%= render 'suggest_list', suggest_list: @suggests %>
         </div>
-        <div>
-          <input type="submit" value="投票を開始する">
+        <div id="vote_area">
+          <input id="start_vote" type="submit" value="投票を開始する">
+          <%= render 'vote_list', vote_list: @vote %>
         </div>
         <%= link_to 'Edit', edit_room_path(@room) %>
       </div>

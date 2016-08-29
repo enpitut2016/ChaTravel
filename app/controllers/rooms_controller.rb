@@ -75,8 +75,17 @@ class RoomsController < ApplicationController
     url = params['suggest_url']
     result =  scrape(url)
     # TODO DBに入れる
-    Suggest.create!({url: params['suggest_url'], title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id})
-    render json: result.merge({url: url,user_name: @user.name})
+    id = Suggest.create!({url: params['suggest_url'], title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id}).id
+    render json: result.merge({suggest_id: id, url: url, user_name: @user.name})
+  end
+
+  def ajax_vote_request
+    suggest_ids = params['suggest_list'].split(',').map(&:to_i)
+    @suggests = Suggest.where('id IN (?)', suggest_ids)
+    vote = Vote.create!(name: params['name'], content: params['content'])
+    @suggests.each do |suggest|
+      VoteToSuggest.create!(vote_id: vote.id, suggest_id: suggest.id)
+    end
   end
 
   private

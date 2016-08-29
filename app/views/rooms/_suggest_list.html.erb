@@ -6,6 +6,7 @@
             <h3 class="suggest_title"><%= suggest.title %></h3>
             <%= image_tag suggest.image, class: 'suggest_image', size: '180x150' %>
             <p class="suggest_description"><%= suggest.description %></p>
+            <div class="suggest_id" data-suggest_id="<%= suggest.id %>"></div>
           </div>
         </li>
     <% end %>
