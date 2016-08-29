@@ -33,7 +33,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   },
   
   start_vote: function(data) {
-    this.perform('start_vote', { suggest_list: data['suggest_list']});
+    this.perform('start_vote', { data: data});
   }
   
 });
@@ -62,7 +62,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       $('#suggest_list').append(dom)
     },
     received_start_vote: function(data) {
-      
+      console.log(data)
     }
   };
 })();

@@ -3,8 +3,12 @@
 
   <div class="row">
     <div class="col-md-2" id="menubar">
+
       <div class="menulist">
-        <h1><%= link_to 'ChaTravel', rooms_path %></h1>
+
+        <div class="logo">
+          <%= link_to image_tag('small_logo.png'), root_path %>
+        </div>
 
         <p>
           <strong>RoomName:</strong>
@@ -30,10 +34,12 @@
           <li>観光地:<!--<%= @voteresult %>  --></li>
         </ul>
       </div>
+
+      <!--あとで再背面に配置-->
       <div class="chatra">
-        <!--<img src="../assets/images/chatra_halfbraight.png" class="chatra">-->
         <%= image_tag 'chatra_halfbraight.png' %>
       </div>
+
     </div>
 
 
@@ -64,9 +70,9 @@
         </div>
         <div id="vote_area">
           <input id="start_vote" type="submit" value="投票を開始する">
-          <%= render 'vote_list', vote_list: @vote %>
+          <!--<%= render 'vote_list', suggest_list: @suggests %>-->
         </div>
-        <%= link_to 'Edit', edit_room_path(@room) %>
+        
       </div>
     </div>
 

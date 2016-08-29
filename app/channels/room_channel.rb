@@ -30,9 +30,17 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def start_vote(data)
-    ActionCable.server.broadcast(@room_name, {type: 'start_vote', data:data})
+    data = data['data']
+    suggest_ids = data['suggest_list']
+    @suggests = Suggest.where('id IN (?)', suggest_ids)
+    vote = Vote.create!(name: data['name'],content: data['content'])
+    titles = []
+    @suggests.each do |suggest|
+      titles.push suggest.title
+      VoteToSuggest.create!(vote_id: vote.id, suggest_id: suggest.id)
+    end
+    ActionCable.server.broadcast(@room_name, {type: 'start_vote', data: { vote:{name: data['name'], content: data['content']}, suggest: { titles: titles }}})
   end
-
 
 
 end
