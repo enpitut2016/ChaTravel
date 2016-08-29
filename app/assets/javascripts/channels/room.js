@@ -62,7 +62,15 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       $('#suggest_list').append(dom)
     },
     received_start_vote: function(data) {
+      suggest = data['suggest'];
+      var doms = "<ul id='vote_list'>";
+      $.each(suggest['titles'], function(idx, val) {
+        doms += "<li><div>"+ val +" </div></li>";
+      });
+      doms += "</ul>"
+      $('#vote_area').append(doms);
       console.log(data)
+
     }
   };
 })();
