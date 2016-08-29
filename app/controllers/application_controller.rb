@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
 
-  def scrape(uri)
+  def self.scrape(uri)
     html = open(uri).read.encode('UTF-8')
     doc = Nokogiri::HTML(html, uri)
     title =  doc.css('//meta[property="og:site_name"]/@content').empty? ? doc.title.to_s : doc.css('//meta[property="og:site_name"]/@content').to_s

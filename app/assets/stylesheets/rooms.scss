@@ -110,9 +110,18 @@ body {
   }
 
   .dashboard {
+    
+    #suggest_textarea {
+      display: inline-flex;
+      width:100%;
+      margin-top: 10px;
+    }
 
+    #suggest_name {
+      width: 80%;
+    }
     #suggest_area {
-      height: 70vh;
+      height: 60vh;
       width: 100%;
       overflow-y: auto;
       overflow-x: hidden;
@@ -135,6 +144,13 @@ body {
       margin: 0 auto;
     }
 
+    .suggest_id {
+      display: none;
+    }
+
+    #start_vote {
+      margin: 5px;
+    }
   }
 
 }
