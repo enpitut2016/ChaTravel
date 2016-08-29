@@ -4,64 +4,137 @@
 
 body {
   padding: 0;
-}
-ul#message_list {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
+  //background-color: orange;
 }
 
-#message_list {
-  height: 90vh;
-  width: 100%;
-  overflow-y: auto;
-}
+.container {
+
+  #menubar {
+
+    .chatra {
+      width: 500px;
+      height: 500px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .chatra img {
+      position: absolute;
+      min-width: 50%;
+      min-height: 50%;
+      left: 30%;
+      top: 30%;
+      -webkit-transform: translate3d(-50%, -50%, 0);
+      -moz-transform: translate3d(-50%, -50%, 0);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate3d(-50%, -50%, 0);
+    }
+
+    .menulist {
+
+    }
+  }
+
+  .chat {
+
+    ul#message_list {
+      list-style: none;
+    }
+
+    #message_list {
+      height: 90vh;
+      width: 100%;
+      overflow-y: auto;
 
 
-#message_textarea {
-  display: inline-flex;
-  width: 100%;
-}
+      .chat_frame_right, .chat_frame_left {
+        width:400px;
+      	background-color:white;
+        border-style: solid;
+        border-color: gray;
+      	border-radius:6px;
+      	position:relative;
+        padding:5px;
+      	color:brack;
+        margin: 5px;
+      }
 
-#post_comment {
-  width: 100%;
-  resize: none;
-}
+      .chat_frame_right:after {
+        border:10px solid transparent;
+      	border-left-color:gray;
+      	border-right-width:0;
+      	width:0;
+      	right:-10px;
+      	content:"";
+      	display:block;
+      	top:20px;
+      	position:absolute;
+      }
 
-#current_user {
-  display: none;
-}
+      .chat_frame_left:after {
+        border:10px solid transparent;
+      	border-left-color:gray;
+      	border-right-width:0;
+      	width:0;
+      	left:-10px;
+      	content:"";
+      	display:block;
+      	top:20px;
+      	position:absolute;
+      }
 
-#suggest_area {
-  height: 70vh;
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+      .icon {
+        width:50px;
+        height:50px;
+        border-style: solid;
+        border-color: green;
+        margin: 20px 20px 20px 30px;
+      }
+    }
 
-#suggest_list {
-  list-style: none;
-  padding: 0;
-}
-#suggest_textarea {
-  margin-top: 10px;
-  display: inline-flex;
-  width:100%
-}
 
-#suggest_name {
-  width: 100%;
-  resize: none;
-}
+    #message_textarea {
+      display: inline-flex;
+      width: 100%;
+    }
 
-.suggest_item {
-  margin-top: 10px;
-  padding: 3px;
-  border-style: solid;
-  border-width: 0.5px;
-}
+    #post_comment {
+      width: 100%;
+      resize: none;
+    }
 
-.suggest_image {
-  display: block;
-  margin: 0 auto;
+    #current_user {
+      display: none;
+    }
+
+  }
+
+  .dashboard {
+
+    #suggest_area {
+      height: 70vh;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    #suggest_list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .suggest_item {
+      margin-top: 10px;
+      padding: 3px;
+      border-style: solid;
+      border-width: 0.5px;
+    }
+
+    .suggest_image {
+      display: block;
+      margin: 0 auto;
+    }
+
+  }
+
 }
