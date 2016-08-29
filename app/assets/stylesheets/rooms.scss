@@ -1,37 +1,36 @@
 // Place all the styles related to the Rooms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
-body {
+html, body {
+  height: 100vh;
   padding: 0;
-  //background-color: orange;
 }
 
-.container {
+.container-fluid {
 
   #menubar {
-
-    .chatra {
-      width: 500px;
-      height: 500px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .chatra img {
-      position: absolute;
-      min-width: 50%;
-      min-height: 50%;
-      left: 30%;
-      top: 30%;
-      -webkit-transform: translate3d(-50%, -50%, 0);
-      -moz-transform: translate3d(-50%, -50%, 0);
-      -ms-transform: translate(-50%, -50%);
-      transform: translate3d(-50%, -50%, 0);
-    }
+    height: 100vh;
+    background-color: orange;
+    background-size: contain;
+    background-position: 50% 90%;
+    background-image: image-url("chatra_halfbraight.png");
+    background-repeat: no-repeat;
 
     .menulist {
+      p, ul {
+        color: white;
+      }
 
+      .logo img{
+        max-width: 180px;
+        height: auto;
+        padding: 10px;
+      }
+
+      .roomname {
+        padding: 5%;
+        text-align: center;
+      }
     }
   }
 
@@ -48,15 +47,19 @@ body {
 
 
       .chat_frame_right, .chat_frame_left {
-        width:300px;
+        width:80%;
       	background-color:white;
         border-style: solid;
         border-color: gray;
-      	border-radius:6px;
+      	border-radius:20px;
       	position:relative;
-        padding:5px;
+        padding: 0px 15px 0px 15px;
       	color:brack;
-        margin: 5px;
+        margin: 5px 0px 5px 0px;
+
+        p {
+          margin-bottom: 5px;
+        }
       }
 
       .chat_frame_right:after {
@@ -84,23 +87,33 @@ body {
       }
 
       .icon {
-        width:50px;
-        height:50px;
+        max-width: 10%;
+        height:auto;
         border-style: solid;
         border-color: green;
-        margin: 20px 20px 20px 30px;
+        margin: 4% 0% 5% 5%;
       }
     }
-
 
     #message_textarea {
       display: inline-flex;
       width: 100%;
-    }
 
-    #post_comment {
-      width: 100%;
-      resize: none;
+      #post_comment {
+        width: 100%;
+        height: 50px;
+        resize: none;
+        padding: 10px 10px 20px 10px;
+        border-style: solid;
+        border-color: brack;
+      	border-radius:10px;
+        border-width: 3px;
+      }
+
+      #post {
+
+      }
+
     }
 
     #current_user {
