@@ -4,6 +4,6 @@
 
 $ ->
   $("#post").on 'click', ->
-    comment = $("#comment")
+    comment = $("#post_comment")
     App.room.speak comment.val()
     comment.val('')
