@@ -49,13 +49,16 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   Chat = {};
   Chat.utils = {
     received_chat: function(data) {
-      var message = "<div class='col-md-9'><p>Name: " + data.user.name + "</p><p>Message: " + data.message+ "</p></div>"
-      var icon = "<div class='col-md-3'><p>icon</p> </div>"
-      var dom = ""
+      var message = "<div class='comment col-md-9 chat_frame_right'>" +
+          "<p>" + data.user.name + "</p>" +
+          "<p>" + data.message + "</p>" +
+        "</div>";
+      var icon = "<div class='col-md-3 icon'><p>icon</p></div>";
+      var dom = "";
       if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
-        dom =  message + icon
+        dom = "<li class=" + data.user.name + ">" + message + icon + "</li>";
       } else {
-        dom = icon + message
+        dom = "<li class=" + data.user.name + ">" + icon + message + "</li>";
       }
       $('#message_list').append(dom)
     },
