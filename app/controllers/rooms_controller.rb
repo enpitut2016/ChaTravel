@@ -15,6 +15,7 @@ class RoomsController < ApplicationController
     # TODO User情報をキャッシュとかから抜く
     @user = User.find(1)
     @users = User.all
+    @suggests = Suggest.where(room: @room.id)
   end
 
   # GET /rooms/new
@@ -64,6 +65,18 @@ class RoomsController < ApplicationController
       format.html { redirect_to rooms_url, notice: 'Room was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+
+  def ajax_suggest_request
+    p params
+    @room = Room.find_by(url: params['room_url'])
+    @user = User.find(params['user_id'].to_i)
+    url = params['suggest_url']
+    result =  scrape(url)
+    # TODO DBに入れる
+    Suggest.create!({url: params['suggest_url'], title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id})
+    render json: result.merge({url: url,user_name: @user.name})
   end
 
   private

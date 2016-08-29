@@ -1,0 +1,13 @@
+<div id="suggest_list_wrapper">
+  <ul id="suggest_list">
+    <% suggest_list.each do |suggest| %>
+        <li>
+          <div class="suggest_item">
+            <p class="suggest_title"><%= suggest.title %></p>
+            <%= image_tag suggest.image, class: 'suggest_image', size: '180x150' %>
+            <p class="suggest_description"><%= suggest.description %></p>
+          </div>
+        </li>
+    <% end %>
+  </ul>
+</div>
