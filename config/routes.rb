@@ -20,6 +20,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :rooms do
+    member do
+      get :users
+    end
+  end
+
   resources :room_to_users,       only: [:create, :destroy]
 
 end

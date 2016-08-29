@@ -18,7 +18,7 @@
         <p>メンバー</p>
         <div id="user_list">
           <ul>
-            <% @users.each do |u| %>
+            <% @room.users.each do |u| %>
                 <li><%= u.name %></li>
             <% end %>
           </ul>
