@@ -4,7 +4,7 @@
         <% message_user = message.user %>
         <li class=<%= message_user.name %>>
           <% if message_user.id == current_user.id %>
-              <div class="col-md-9">
+              <div class="comment col-md-9 chat_frame_right">
                 <p>Name: <%= message_user.name %></p>
                 <p>Message: <%= message.message %></p>
               </div>
@@ -15,7 +15,7 @@
               <div class="col-md-3">
                 <p>icon</p>
               </div>
-              <div class="col-md-9">
+              <div class="col-md-9 chat_frame_left">
                 <p>Name: <%= message_user.name %></p>
                 <p>Message: <%= message.message %></p>
               </div>
