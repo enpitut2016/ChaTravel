@@ -68,11 +68,13 @@ class RoomsController < ApplicationController
 
   def ajax_suggest_request
     p params
-    # @room ||= Room.find_by(url: params['room_url'])
-    # @user ||= User.find(params['user_id'].to_i)
+    @room = Room.find_by(url: params['room_url'])
+    @user = User.find(params['user_id'].to_i)
+    url = params['suggest_url']
+    result =  scrape(url)
     # TODO DBに入れる
-    # Suggest.create!()
-    render json: params
+    Suggest.create!({url: params['suggest_url'], ttitle: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id})
+    render json: result.merge({url: url,user_name: @user.name})
   end
 
   private

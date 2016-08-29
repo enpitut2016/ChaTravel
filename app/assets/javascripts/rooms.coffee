@@ -10,12 +10,11 @@ $ ->
       data: {
         user_id: $('#current_user').data('current_user_id'),
         room_url: window.location.href.match(/^http.*\/(.*?)$/).pop(),
-        suggest_item: $('#suggest_name').val()
+        suggest_url: $('#suggest_name').val()
 
       },
+      timeout: 100000
     })
-    .done((data, status)->
-      alert(data['suggest_item']))
-
+    .done((data, status) -> console.log(data))
 #    TODO errorハンドリング retryとか?
     .fail(() -> alert('error'))
