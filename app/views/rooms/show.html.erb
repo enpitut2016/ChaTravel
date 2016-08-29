@@ -37,7 +37,7 @@
                 <%= render 'message_list', message_list: @messages, current_user: @user %>
                 <div id="chat_area">
                   <div id="message_textarea">
-                    <textarea id="comment"  name="comment" rows="1" cols="10">てきすと</textarea>
+                    <textarea id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
                     <input id="post" type="submit" value="投稿">
                   </div>
                   <div id="current_user"  data-current_user_id="<%= @user.id %>"></div>
