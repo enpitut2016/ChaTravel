@@ -47,7 +47,6 @@
 
             <div class="col-md-3">
               <div class="dashboard">
-                <h1>ダッシュボード</h1>
                 <div>
                   <!--<%= form_tag({controller: :rooms, action: :ajax_suggest_request}, remote: true) do %>-->
                   <!--<%= hidden_field_tag :ajax_suggest_request, 'ajax_suggest_request' %>-->
@@ -59,8 +58,8 @@
                     <input type="submit" id="suggest_submit" value="オススメする">
                   </div>
                 </div>
-                <div class=suggest>
-                  <textarea name="suggest" rows="10" cols="45">おすすめ</textarea>
+                <div id="suggest_area">
+                  <%= render 'suggest_list', suggest_list: @suggests %>
                 </div>
                 <div>
                   <input type="submit" value="投票を開始する">

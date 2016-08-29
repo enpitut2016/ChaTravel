@@ -11,10 +11,14 @@ $ ->
         user_id: $('#current_user').data('current_user_id'),
         room_url: window.location.href.match(/^http.*\/(.*?)$/).pop(),
         suggest_url: $('#suggest_name').val()
-
       },
       timeout: 100000
     })
-    .done((data, status) -> console.log(data))
+    .done((data, status) ->
+      dom = "<div class='suggest_item'>" +
+      "<p class='suggest_title'>" + data['title'] + "</p>" +
+      "<img class='suggest_image' src = " + data['image'] + " width='180' height='150'>" +
+      "<p class='suggest_description'>" + data['description'] + "</p></div>"
+      $('#suggest_list').append(dom))
 #    TODO errorハンドリング retryとか?
     .fail(() -> alert('error'))

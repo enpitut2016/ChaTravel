@@ -15,6 +15,7 @@ class RoomsController < ApplicationController
     # TODO User情報をキャッシュとかから抜く
     @user = User.find(1)
     @users = User.all
+    @suggests = Suggest.where(room: @room.id)
   end
 
   # GET /rooms/new
@@ -74,7 +75,7 @@ class RoomsController < ApplicationController
     url = params['suggest_url']
     result =  scrape(url)
     # TODO DBに入れる
-    Suggest.create!({url: params['suggest_url'], ttitle: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id})
+    Suggest.create!({url: params['suggest_url'], title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id})
     render json: result.merge({url: url,user_name: @user.name})
   end
 
