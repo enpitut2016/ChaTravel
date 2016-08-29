@@ -5,7 +5,7 @@
     <div class="col-md-2" id="menubar">
 
       <div class="menulist">
-        <h1><%= link_to 'ChaTravel', rooms_path %></h1>
+        <h1><%= link_to 'ChaTravel', root_path %></h1>
 
         <p>
           <strong>RoomName:</strong>
@@ -40,7 +40,7 @@
     </div>
 
 
-    <div class="col-md-7">
+    <div class="col-md-5">
       <div class="chat">
         <%= render 'message_list', message_list: @messages, current_user: @user %>
         <div id="chat_area">
@@ -53,17 +53,13 @@
       </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-5">
       <div class="dashboard">
         <div>
-          <!--<%= form_tag({controller: :rooms, action: :ajax_suggest_request}, remote: true) do %>-->
-              <!--<%= hidden_field_tag :ajax_suggest_request, 'ajax_suggest_request' %>-->
-              <!--<%= submit_tag('オススメする') %>-->
-              <!--<% end %>-->
-          <!--<input type="submit" value="+ 候補を登録する">-->
-          <div>
-            <textarea name="suggest_name" id="suggest_name" cols="30" rows="1"></textarea>
-            <input type="submit" id="suggest_submit" value="オススメする">
+          <div id="suggest_textarea">
+            <input type="text" size="100" id="suggest_name" placeholder="URL">
+            <!--<textarea name="suggest_name" id="suggest_name" cols="100" rows="1" wrap="hard"></textarea>-->
+            <input type="submit" id="suggest_submit" value="をオススメする">
           </div>
         </div>
         <div id="suggest_area">
