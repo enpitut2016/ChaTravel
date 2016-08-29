@@ -1,4 +1,5 @@
 class RoomsController < ApplicationController
+  before_action :logged_in_user
   before_action :set_room, only: [:show, :edit, :update, :destroy]
 
   # GET /rooms
@@ -80,6 +81,14 @@ class RoomsController < ApplicationController
   end
 
   private
+    #ログイン済みかどうか確認
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_room
       # @room = Room.find(params[:id])
