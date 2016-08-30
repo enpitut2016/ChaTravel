@@ -48,5 +48,6 @@ class RoomChannel < ApplicationCable::Channel
     suggest_id = data['suggest_id']
     @user = User.find(data['user_id'])
     VoteResult.create!(vote_id: data['vote_id'], suggest_id: suggest_id, user_id: @user.id)
+    ActionCable.server.broadcast(@room_name, {type: 'vote', data: { suggest_id: suggest_id}})
   end
 end
