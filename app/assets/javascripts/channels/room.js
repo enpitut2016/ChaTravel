@@ -68,7 +68,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         "<h5 class='suggest_title_wrapper panel-title'>" +
         "<a data-toggle='collapse' data-parent='#accordion' href='#suggest_" + data.suggest_id + "' class='suggest_collapse'> " +
         "<p class='suggest_title' >" + data.title + "</p>" +
-        "<span class='badge' id='badge_suggest_"+ data.suggest_id +"'>0</span>" +
+        "<span class='badge vote_badge' id='badge_suggest_"+ data.suggest_id +"'>0</span>" +
         "</a>" +
         "</h5>" +
         "</div>" +
