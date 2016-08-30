@@ -3,6 +3,7 @@
     <% message_list.each do |message| %>
         <% message_user = message.user %>
         <li class=<%= message_user.name %>>
+          <div class="row">
           <% if message_user.id == current_user.id %>
               <div class="comment col-md-9 chat_frame_right">
                 <p><%= message_user.name %></p>
@@ -20,6 +21,7 @@
                 <p><%= message.message %></p>
               </div>
           <% end %>
+          </div>
         </li>
     <% end %>
   </ul>

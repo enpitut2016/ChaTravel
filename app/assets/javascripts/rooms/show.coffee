@@ -14,7 +14,6 @@ $ ->
 
 $ ->
   $('#suggest_submit').on 'click', ->
-
     App.room.suggest ({
         user_id: Chat.utils.user_id(),
         room_url: Chat.utils.room_url(),
@@ -28,21 +27,14 @@ $ ->
       room_url: Chat.utils.room_url,
       suggest_list: create_suggest()
     })
-    $(this).css({display: 'none'});
-    $('#finish_vote').css({display: 'block'});
-    $('#suggest_name').prop('disabled', true);
-    $('#suggest_submit').prop('disabled', true);
+
 
 $ ->
   $('#finish_vote').on 'click', ->
     App.room.finish_vote ({
       vote_result: create_vote_result()
     })
-    $(this).css({display: 'none'});
-    $('#start_vote').css({display: 'block'});
-    $('#suggest_name').prop('disabled', false);
-    $('#suggest_submit').prop('disabled', false);
-
+  
 
 create_suggest = () ->
   array = []

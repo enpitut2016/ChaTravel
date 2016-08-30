@@ -56,20 +56,21 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       var message =
           "<p>" + data.user.name + "</p>" +
           "<p>" + data.message + "</p>";
-      var icon = data.user.icon;
+      var icon = "<img alt='"+ data.user.name + "' class='gravatar' src="+ data.user.icon + ">";
+
       var dom = "";
 
       if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
-        dom = "<li class=" + data.user.name + ">"
+        dom = "<li class=" + data.user.name + "><div class='row'>"
         + "<div class='comment col-md-9 chat_frame_right'>" + message + "</div>"
-        + "<div class='col-md-3 icon_right'>" + icon + "</div></li>";
+        + "<div class='col-md-3 icon_right'>" + icon + "</div></div></li>";
       } else {
-        dom = "<li class=" + data.user.name + ">"
+        dom = "<li class=" + data.user.name + "><div class='row'>"
         + "<div class='col-md-3 icon_left'>" + icon + "</div>"
-        + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></li>";
+        + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></div></li>";
       }
       $('#message_list').append(dom)
-
+      $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
     },
 
     received_suggest: function(data) {
@@ -99,6 +100,10 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     received_start_vote: function(data) {
       $('.vote_badge').css({display: 'inline'});
       $('#vote_id').data('vote_id', data.vote.id);
+      $('#finish_vote').css({display: 'block'});
+      $('#start_vote').css({display: 'none'});
+      $('#suggest_name').prop('disabled', true);
+      $('#suggest_submit').prop('disabled', true);
       $.each(data.suggest.ids, function (idx, val) {
         $('#badge_suggest_' + val).on('click', function(e) {
           e.stopPropagation();
@@ -122,10 +127,12 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     // //  TODO 左側に追加，右側の削除
       $('.vote_badge').css({display: 'none'});
       $('.suggest_list').empty();
+      $('#finish_vote').css({display: 'none'});
+      $('#start_vote').css({display: 'block'});
+      $('#suggest_name').prop('disabled', false);
+      $('#suggest_submit').prop('disabled', false);
       var dom = "<li><a href='"+ data.decided.url +"'>"+ data.decided.title +"</a></li>"
       $('#decided_list').append(dom);
-    //   title = $("#badge_suggest_"+ data.decided).prev('.suggest_title').text();
-      console.log(data);
     }
   };
 
