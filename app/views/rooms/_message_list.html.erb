@@ -13,7 +13,7 @@
               </div>
           <% else %>
               <div class="col-md-3 icon_left">
-                <%= gravatar_for current_user%>
+                <%= gravatar_for message_user %>
               </div>
               <div class="col-md-9 chat_frame_left">
                 <p><%= message_user.name %></p>

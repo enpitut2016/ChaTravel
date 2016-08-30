@@ -107,6 +107,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
             user_id: Chat.utils.user_id(),
             vote_id: $('#vote_id').data('vote_id'),
             suggest_id: val });
+          return false;
         });
       });
     },
