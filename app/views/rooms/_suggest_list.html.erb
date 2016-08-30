@@ -1,17 +1,3 @@
-<!--<div id="suggest_list_wrapper">-->
-  <!--<ul id="suggest_list" class="media-list">-->
-    <!--<% suggest_list.each do |suggest| %>-->
-        <!--<li class="media">-->
-          <!--<a href="#" class="media-left"><%= image_tag suggest.image, class: 'suggest_image', size: '180x150' %></a>-->
-          <!--<div class="suggest_item media-body">-->
-            <!--<h4 class="suggest_title media-headding"><%= suggest.title %></h4>-->
-            <!--<p class="suggest_description"><%= suggest.description %></p>-->
-            <!--<div class="suggest_id" data-suggest_id="<%= suggest.id %>"></div>-->
-          <!--</div>-->
-        <!--</li>-->
-    <!--<% end %>-->
-  <!--</ul>-->
-<!--</div>-->
 <div id="suggest_list_wrapper">
   <div id="accordion" class="panel-group suggest_list">
     <% suggest_list.each do |suggest| %>
@@ -39,6 +25,6 @@
       <div class="suggest_id" data-suggest_id="<%= suggest.id %>"></div>
     </div>
     <% end %>
-    <div id="vote_id" data-vote_id=""></div>
   </div>
 </div>
+<div id="vote_id" data-vote_id=""></div>
