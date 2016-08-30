@@ -15,7 +15,7 @@ class RoomsController < ApplicationController
     @room = Room.find_by(url: params[:url])
     @messages = Message.where(room: @room.id)
     # TODO User情報をキャッシュとかから抜く
-    @user = User.find(1)
+    @user = current_user
     @users = User.all
     @suggests = Suggest.where(room: @room.id).where(enable: true)
     d = Decided.where(room: @room.id)
