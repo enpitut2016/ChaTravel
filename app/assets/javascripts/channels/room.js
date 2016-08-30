@@ -38,19 +38,19 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     console.log(data);
     this.perform('suggest', { data: data });
   },
-  
+
   start_vote: function(data) {
     this.perform('start_vote', { data: data});
   }
-  
+
 });
 
 (function() {
   Chat = {};
   Chat.utils = {
     received_chat: function(data) {
-      var message = "<div class='col-md-9'><p>Name: " + data.user.name + "</p><p>Message: " + data.message+ "</p></div>"
-      var icon = "<div class='col-md-3'><p>icon</p> </div>"
+      var message = "<div class='col-md-9 chat_frame_right'><p>" + data.user.name + "</p><p>" + data.message+ "</p></div>"
+      var icon = "<div class='col-md-3 icon'><p>icon</p> </div>"
       var dom = ""
       if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
         dom =  message + icon
@@ -59,7 +59,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       }
       $('#message_list').append(dom)
     },
-    
+
     received_suggest: function(data) {
       var dom = "<li><div class='suggest_item'>" +
         "<h3 class='suggest_title'>" + data['title'] + "</h3>" +

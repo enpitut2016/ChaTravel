@@ -54,4 +54,5 @@ Rails.application.configure do
 
   config.action_cable.allowed_request_origins = %w( http://192.168.33.12:3000 )
   config.action_cable.allowed_request_origins += %w( http://localhost:3000 )
+
 end
