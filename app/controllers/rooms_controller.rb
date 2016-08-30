@@ -39,7 +39,8 @@ class RoomsController < ApplicationController
         format.html { redirect_to controller: 'static_pages',action: 'room_page', name:@room.name}
         format.json { render :show, status: :created, location: @room }
       else
-        format.html { render :new }
+        # format.html { render :new }
+        format.html { redirect_to controller:'static_pages', action: 'home'}
         format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end
