@@ -26,11 +26,10 @@
 
 
         <p>決めたことリスト</p>
-        <!--動的に階層構造。だれかお願い！ -->
-        <ul>
-          <li>食事:<!--<%= @voteresult %>  --></li>
-          <li>宿泊先:<!--<%= @voteresult %>  --></li>
-          <li>観光地:<!--<%= @voteresult %>  --></li>
+        <ul id="decided_list">
+          <% @decided.each do |d| %>
+            <li><%= d %></li>
+          <% end %>
         </ul>
       </div>
     </div>
@@ -62,8 +61,8 @@
           <%= render 'suggest_list', suggest_list: @suggests %>
         </div>
         <div id="vote_area">
-          <input id="start_vote" type="submit" value="投票を開始する">
-          <!--<%= render 'vote_list', suggest_list: @suggests %>-->
+          <input id="start_vote"  type="submit" value="多数決をはじめる">
+          <input id="finish_vote" type="submit" value="多数決をおわる　">
         </div>
 
       </div>

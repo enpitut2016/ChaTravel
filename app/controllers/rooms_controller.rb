@@ -18,6 +18,7 @@ class RoomsController < ApplicationController
     @user = User.find(1)
     @users = User.all
     @suggests = Suggest.where(room: @room.id)
+    @decided
   end
 
   # GET /rooms/new
