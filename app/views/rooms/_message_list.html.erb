@@ -9,12 +9,12 @@
                 <p><%= message.message %></p>
               </div>
               <div class="col-md-3 icon_right">
-                <%= gravatar_for @user%>
+                <%= gravatar_for current_user%>
               </div>
           <% else %>
               <div class="col-md-3 icon_left">
                 <p>icon</p>
-                <%= gravatar_for @user%>
+                <%= gravatar_for current_user%>
               </div>
               <div class="col-md-9 chat_frame_left">
                 <p><%= message_user.name %></p>

@@ -14,9 +14,6 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find_by(url: params[:url])
     @messages = Message.where(room: @room.id)
-    # TODO User情報をキャッシュとかから抜く
-    @user = User.find(1)
-    @users = User.all
     @suggests = Suggest.where(room: @room.id)
   end
 
@@ -39,7 +36,8 @@ class RoomsController < ApplicationController
         format.html { redirect_to controller: 'static_pages',action: 'room_page', name:@room.name}
         format.json { render :show, status: :created, location: @room }
       else
-        format.html { render :new }
+        # format.html { render :new }
+        format.html { redirect_to controller:'static_pages', action: 'home'}
         format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end

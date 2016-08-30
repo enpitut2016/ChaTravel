@@ -1,4 +1,4 @@
 <p>チャットルームを作成しました</p>
 <p>チャットルームへのリンク</p>
-<p> <%="http:///210.129.54.193/#{@url}"%></p>
-<%= link_to "チャットルームへ行く", +@url%>
+<p> <%= "http://#{request.host}:#{request.port.to_s}/#{@url}" %></p>
+<%= link_to "チャットルームへ行く", "http://#{request.host}:#{request.port.to_s}/#{@url}"%>
