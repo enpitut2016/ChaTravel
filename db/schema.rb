@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160829023533) do
+ActiveRecord::Schema.define(version: 20160829095712) do
 
   create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "message",    limit: 65535
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160829023533) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["room_id", "user_id"], name: "index_room_to_users_on_room_id_and_user_id", unique: true, using: :btree
     t.index ["room_id"], name: "index_room_to_users_on_room_id", using: :btree
     t.index ["user_id"], name: "index_room_to_users_on_user_id", using: :btree
   end
@@ -91,8 +92,6 @@ ActiveRecord::Schema.define(version: 20160829023533) do
 
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
-  add_foreign_key "room_to_users", "rooms"
-  add_foreign_key "room_to_users", "users"
   add_foreign_key "suggests", "rooms"
   add_foreign_key "suggests", "users"
   add_foreign_key "vote_results", "suggests"
