@@ -51,4 +51,3 @@ production:
   <<: *default
   database: ChaTravel_production
   username: ChaTravel
-  password: <%= ENV['CHATRAVEL_DATABASE_PASSWORD'] %>

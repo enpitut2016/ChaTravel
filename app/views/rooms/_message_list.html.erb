@@ -8,12 +8,11 @@
                 <p><%= message_user.name %></p>
                 <p><%= message.message %></p>
               </div>
-              <div class="col-md-3 icon">
-                <p>icon</p>
+              <div class="col-md-3 icon_right">
                 <%= gravatar_for @user%>
               </div>
           <% else %>
-              <div class="col-md-3 icon">
+              <div class="col-md-3 icon_left">
                 <p>icon</p>
                 <%= gravatar_for @user%>
               </div>
