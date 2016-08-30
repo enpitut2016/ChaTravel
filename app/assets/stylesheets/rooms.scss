@@ -134,13 +134,13 @@ html, body {
       width: 80%;
     }
     #suggest_area {
-      height: 60vh;
+      height: 85vh;
       width: 100%;
       overflow-y: auto;
       overflow-x: hidden;
     }
 
-    #suggest_list {
+    .suggest_list {
       list-style: none;
       padding: 0;
     }
@@ -152,12 +152,33 @@ html, body {
       border-width: 0.5px;
     }
 
-    .suggest_image {
-      display: block;
-      margin: 0 auto;
+    .panel-heading {
+      padding: 5px;
+    }
+    .badge {
+      padding: 10px;
+    }
+    .suggest_collapse {
+      display: flex;
+    }
+    .suggest_title {
+      margin: 0;
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .suggest_id {
+      display: none;
+    }
+
+    .vote_badge {
+      display: none;
+    }
+
+    #vote_id {
       display: none;
     }
 
