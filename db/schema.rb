@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160829095712) do
+ActiveRecord::Schema.define(version: 20160830093511) do
+
+  create_table "decideds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "room_id"
+    t.integer  "suggest_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_decideds_on_room_id", using: :btree
+    t.index ["suggest_id"], name: "index_decideds_on_suggest_id", using: :btree
+  end
 
   create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "message",    limit: 65535
@@ -19,6 +28,7 @@ ActiveRecord::Schema.define(version: 20160829095712) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.index ["room_id"], name: "index_messages_on_room_id", using: :btree
+    t.index ["user_id", "room_id", "created_at"], name: "index_messages_on_user_id_and_room_id_and_created_at", using: :btree
     t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
@@ -60,6 +70,7 @@ ActiveRecord::Schema.define(version: 20160829095712) do
     t.string   "password_digest", null: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "remember_digest"
     t.index ["name"], name: "index_users_on_name", unique: true, using: :btree
   end
 
@@ -90,6 +101,8 @@ ActiveRecord::Schema.define(version: 20160829095712) do
     t.datetime "updated_at",               null: false
   end
 
+  add_foreign_key "decideds", "rooms"
+  add_foreign_key "decideds", "suggests"
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
   add_foreign_key "suggests", "rooms"
