@@ -22,6 +22,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       case 'vote':
         Chat.received_func.received_vote(data['data']);
         break;
+      case 'finish_vote':
+        Chat.received_func.received_finish_vote(data['data']);
+        break;
     }
   },
 
@@ -39,8 +42,11 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
   vote: function(data) {
     this.perform('vote', { data: data });
-  }
+  },
 
+  finish_vote: function(data) {
+    this.perform('finish_vote', { data: data });
+  }
 });
 
 (function() {
@@ -81,7 +87,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         "<div id='media'>" +
         "<a href='#' class='media-left'>" +
          "<img src='"+ data.image +"' class='suggest_image' width='180' height='150'>" +
-        "</a> " +
+        "</a>" +
         "<p class='suggest_description media-body'>" +
           data.description + "</p></div></div></div>" +
         "<div class='suggest_id' data-suggest_id='" + data.suggest_id + "'></div>" +
@@ -92,24 +98,33 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
     received_start_vote: function(data) {
       $('.vote_badge').css({display: 'inline'});
-      console.log(data.vote.id)
       $('#vote_id').data('vote_id', data.vote.id);
       $.each(data.suggest.ids, function (idx, val) {
         $('#badge_suggest_' + val).on('click', function(e) {
           e.stopPropagation();
-          v = parseInt($(this).text());
-          $(this).text(v + 1);
-          // TODO 一回押したら無効化
+          // TODO 一回押したら無効化 とりあえずサーバー側で実装してある.
           App.room.vote({
             user_id: Chat.utils.user_id(),
             vote_id: $('#vote_id').data('vote_id'),
             suggest_id: val });
-        })
+        });
       });
     },
 
     received_vote: function(data) {
+      //表示を一つ増やす
+      var badge = $('#badge_suggest_' + data.suggest_id);
+      badge.text(parseInt(badge.text()) + 1);
+    },
 
+    received_finish_vote: function(data) {
+    // //  TODO 左側に追加，右側の削除
+      $('.vote_badge').css({display: 'none'});
+      $('.suggest_list').empty();
+      var dom = "<li><a href='"+ data.decided.url +"'>"+ data.decided.title +"</a></li>"
+      $('#decided_list').append(dom);
+    //   title = $("#badge_suggest_"+ data.decided).prev('.suggest_title').text();
+      console.log(data);
     }
   };
 
