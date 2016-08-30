@@ -10,12 +10,12 @@
               </div>
               <div class="col-md-3 icon">
                 <p>icon</p>
-                <!--<%= image_tag(message_user.icon)%>-->
+                <%= gravatar_for @user%>
               </div>
           <% else %>
               <div class="col-md-3 icon">
                 <p>icon</p>
-                <!--<%= image_tag(message_user.icon)%>-->
+                <%= gravatar_for @user%>
               </div>
               <div class="col-md-9 chat_frame_left">
                 <p><%= message_user.name %></p>

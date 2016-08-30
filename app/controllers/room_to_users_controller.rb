@@ -4,7 +4,7 @@ class RoomToUsersController < ApplicationController
   def create
   	room = Room.find(params[:room_id])
     current_user.enter(room)
-    redirect_to rooms_path
+    redirect_to room
   end
 
   def destroy
