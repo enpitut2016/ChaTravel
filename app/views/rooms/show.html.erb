@@ -27,8 +27,8 @@
 
         <p>決めたことリスト</p>
         <ul id="decided_list">
-          <% @decided.each do |d| %>
-            <li><%= d %></li>
+          <% @decideds.each do |d| %>
+            <li><%= link_to d.title, d.url %></li>
           <% end %>
         </ul>
       </div>

@@ -117,8 +117,12 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     },
 
     received_finish_vote: function(data) {
-    //  TODO 左側に追加，右側の削除
-      title = $("#badge_suggest_"+ data.decided_id).prev('.suggest_title').text();
+    // //  TODO 左側に追加，右側の削除
+      $('.vote_badge').css({display: 'none'});
+      $('.suggest_list').empty();
+      var dom = "<li><a href='"+ data.decided.url +"'>"+ data.decided.title +"</a></li>"
+      $('#decided_list').append(dom);
+    //   title = $("#badge_suggest_"+ data.decided).prev('.suggest_title').text();
       console.log(data);
     }
   };

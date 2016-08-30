@@ -59,6 +59,10 @@ class RoomChannel < ApplicationCable::Channel
     end.to_h
     decided_id = result.max{|a,b| a[1] <=> b[1]}.first.to_i
     # TODO dbにいれる
-    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', decided_id: decided_id})
+    d = @suggests.find(decided_id)
+    @suggests.update_all(enable: false)
+    decided = { id: d.id, title: d.title, url:d.url }
+    Decided.create!(room_id: @room.id, suggest_id: decided_id)
+    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {decided: decided}})
   end
 end

@@ -17,8 +17,9 @@ class RoomsController < ApplicationController
     # TODO User情報をキャッシュとかから抜く
     @user = User.find(1)
     @users = User.all
-    @suggests = Suggest.where(room: @room.id)
-    @decided
+    @suggests = Suggest.where(room: @room.id).where(enable: true)
+    d = Decided.where(room: @room.id)
+    @decideds = Suggest.where('id IN (?)', d.map{|i| i.id})
   end
 
   # GET /rooms/new
