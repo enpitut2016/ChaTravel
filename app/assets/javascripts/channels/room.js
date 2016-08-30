@@ -83,7 +83,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         "</a> " +
         "<p class='suggest_description media-body'>" +
           data.description + "</p></div></div></div>" +
-        "<div class='suggest_id' data-suggest->"+ data.suggest_id +"</div>" +
+        "<div class='suggest_id' data-suggest_id='" + data.suggest_id + "'></div>" +
         "</div>";
 
       $('.suggest_list').append(dom);
