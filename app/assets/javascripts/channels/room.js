@@ -32,7 +32,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   suggest: function(data) {
     this.perform('suggest', { data: data });
   },
-  
+
   start_vote: function(data) {
     this.perform('start_vote', { data: data });
   },
@@ -40,28 +40,31 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   vote: function(data) {
     this.perform('vote', { data: data });
   }
-  
+
 });
 
 (function() {
   Chat = {};
   Chat.received_func = {
     received_chat: function(data) {
-      var message = "<div class='comment col-md-9 chat_frame_right'>" +
+      var message =
           "<p>" + data.user.name + "</p>" +
-          "<p>" + data.message + "</p>" +
-        "</div>";
-      var icon = "<div class='col-md-3 icon'><p>icon</p></div>";
+          "<p>" + data.message + "</p>";
       var dom = "";
+
       if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
-        dom = "<li class=" + data.user.name + ">" + message + icon + "</li>";
+        dom = "<li class=" + data.user.name + ">"
+        + "<div class='comment col-md-9 chat_frame_right'>" + message + "</div>"
+        + "<div class='col-md-3 icon_right'></div></li>";
       } else {
-        dom = "<li class=" + data.user.name + ">" + icon + message + "</li>";
+        dom = "<li class=" + data.user.name + ">"
+        + "<div class='col-md-3 icon_left'></div>"
+        + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></li>";
       }
       $('#message_list').append(dom)
 
     },
-    
+
     received_suggest: function(data) {
       var dom = "<div class='panel panel-default'>" +
         "<div class='panel-heading'>" +
@@ -118,4 +121,3 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     }
   }
 })();
-
