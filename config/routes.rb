@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'static_pages#home'
-  get 'users/new'
 
   get 'signup'  => 'users#new'
 	get 'static_pages/help'
@@ -15,7 +14,18 @@ Rails.application.routes.draw do
 	get :replace_id_with  => 'rooms'
 	get ':url', to:'rooms#show'
 
-	resources :users
-	get 'user/new'
+	resources :users do
+    member do
+      get :rooms
+    end
+  end
+
+  resources :rooms do
+    member do
+      get :users
+    end
+  end
+
+  resources :room_to_users,       only: [:create, :destroy]
 
 end
