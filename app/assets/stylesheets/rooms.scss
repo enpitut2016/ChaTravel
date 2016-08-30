@@ -30,6 +30,7 @@ html, body {
       .roomname {
         padding: 5%;
         text-align: center;
+        word-wrap: break-word;
       }
     }
   }
@@ -46,7 +47,7 @@ html, body {
       overflow-y: auto;
 
 
-      .chat_frame_right, .chat_frame_left {
+      .chat_frame_right, .chat_frame_left{
         width:80%;
       	background-color:white;
         border-style: solid;
@@ -76,8 +77,8 @@ html, body {
 
       .chat_frame_left:after {
         border:10px solid transparent;
-      	border-left-color:gray;
-      	border-right-width:0;
+      	border-right-color:gray;
+      	border-left-width:0;
       	width:0;
       	left:-10px;
       	content:"";

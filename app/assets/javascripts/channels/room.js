@@ -50,15 +50,20 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       var message =
           "<p>" + data.user.name + "</p>" +
           "<p>" + data.message + "</p>";
+      var icon = data.user.icon;
       var dom = "";
 
       if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
+        // dom = "<li class=" + data.user.name + ">"
+        // + "<div class='comment col-md-9 chat_frame_right'>" + message + "</div>"
+        // + "<div class='col-md-3 icon_right'>" + icon + "</div></li>";
         dom = "<li class=" + data.user.name + ">"
-        + "<div class='comment col-md-9 chat_frame_right'>" + message + "</div>"
-        + "<div class='col-md-3 icon_right'></div></li>";
+        + "<div class='col-md-3 icon_left'>" + icon + "</div>"
+        + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></li>";
+
       } else {
         dom = "<li class=" + data.user.name + ">"
-        + "<div class='col-md-3 icon_left'></div>"
+        + "<div class='col-md-3 icon_left'>" + icon + "</div>"
         + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></li>";
       }
       $('#message_list').append(dom)
