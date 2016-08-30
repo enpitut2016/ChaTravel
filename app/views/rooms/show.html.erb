@@ -38,13 +38,13 @@
 
     <div class="col-md-5">
       <div class="chat">
-        <%= render 'message_list', message_list: @messages, current_user: @user %>
+        <%= render 'message_list', message_list: @messages, current_user: current_user %>
         <div id="chat_area">
           <div id="message_textarea">
             <textarea id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
             <input id="post" type="submit" value="投稿">
           </div>
-          <div id="current_user"  data-current_user_id="<%= @user.id %>"></div>
+          <div id="current_user"  data-current_user_id="<%= current_user.id %>"></div>
         </div>
       </div>
     </div>
