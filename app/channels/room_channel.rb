@@ -33,20 +33,36 @@ class RoomChannel < ApplicationCable::Channel
     data = data['data']
     suggest_ids = data['suggest_list']
     @suggests = Suggest.where('id IN (?)', suggest_ids)
-    vote = Vote.create!(name: data['name'], content: data['content'])
+    @vote = Vote.create!(name: data['name'], content: data['content'])
     ids = []
-    p @suggests
     @suggests.each do |suggest|
       ids.push suggest.id
-      VoteToSuggest.create!(vote_id: vote.id, suggest_id: suggest.id)
     end
-    ActionCable.server.broadcast(@room_name, {type: 'start_vote', data: { vote:{id: vote.id, name: data['name'], content: data['content']}, suggest: { ids: ids }}})
+    ActionCable.server.broadcast(@room_name, {type: 'start_vote', data: { vote:{id: @vote.id, name: data['name'], content: data['content']}, suggest: { ids: ids }}})
   end
 
   def vote(data)
     data = data['data']
     suggest_id = data['suggest_id']
     @user = User.find(data['user_id'])
-    VoteResult.create!(vote_id: data['vote_id'], suggest_id: suggest_id, user_id: @user.id)
+    vote_result = VoteResult.find_by(vote_id: data['vote_id'], user_id: @user.id)
+    if vote_result.nil?
+      VoteResult.create!(vote_id: data['vote_id'], suggest_id: suggest_id, user_id: @user.id)
+      ActionCable.server.broadcast(@room_name, {type: 'vote', data: { suggest_id: suggest_id}})
+    end
+  end
+
+  def finish_vote(data)
+    data = data['data']
+    result = data['vote_result'].map do |k , v|
+      [k, v.to_i]
+    end.to_h
+    decided_id = result.max{|a,b| a[1] <=> b[1]}.first.to_i
+    # TODO dbにいれる
+    d = @suggests.find(decided_id)
+    @suggests.update_all(enable: false)
+    decided = { id: d.id, title: d.title, url:d.url }
+    Decided.create!(room_id: @room.id, suggest_id: decided_id)
+    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {decided: decided}})
   end
 end
