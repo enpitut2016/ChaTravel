@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
+<%= render 'layouts/header' %>
 
-<h1>Rooms</h1>
+<h1>Your Rooms</h1>
 
 <table>
   <thead>
@@ -18,8 +19,8 @@
         <td><%= room.name %></td>
         <td><%= room.enable %></td>
         <td><%= link_to 'Show', @room %></td>
-        <td><%= link_to 'Edit', edit_room_path(@room) %></td>
-        <td><%= link_to 'Destroy', @room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <!--<td><%= link_to 'Edit', edit_room_path(@room) %></td>
+        <td><%= link_to 'Destroy', @room, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
         <td><%= render 'inout_form' if logged_in? %></td>
       </tr>
     <% end %>
