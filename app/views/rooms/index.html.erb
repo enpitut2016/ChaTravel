@@ -3,11 +3,10 @@
 
 <h1>Your Rooms</h1>
 
-<table>
+<table >
   <thead>
     <tr>
       <th>Name</th>
-      <th>Enable</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,9 +15,8 @@
     <% @rooms.each do |room| %>
     <% @room = room %>
       <tr>
-        <td><%= room.name %></td>
-        <td><%= room.enable %></td>
-        <td><%= link_to 'Show', @room %></td>
+        <td><h2><%= room.name %></h2></td>
+        <td><%= link_to '部屋に入る', @room, class: "btn btn-warning"%></td>
         <!--<td><%= link_to 'Edit', edit_room_path(@room) %></td>
         <td><%= link_to 'Destroy', @room, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
         <td><%= render 'inout_form' if logged_in? %></td>
