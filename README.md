@@ -7,8 +7,18 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
-
+# Ruby version
+```
+ruby 2.3.0p0 
+```
+#Rails version
+```
+Rails 5.0.0.1
+```
+#MySql version
+```
+mysql  Ver 14.14 Distrib 5.6.31, for debian-linux-gnu (x86_64) using  EditLine wrapper
+```
 * System dependencies
 
 * Configuration
