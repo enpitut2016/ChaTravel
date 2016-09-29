@@ -13,7 +13,8 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     @room = Room.find_by(url: params[:url])
-    @messages = Message.where(room: @room.id)
+    @messages = Message.where(room: @room.id).includes(:user)
+    # @messages = Message.where(room: @room.id)
     # TODO User情報をキャッシュとかから抜く
     @suggests = Suggest.where(room: @room.id).where(enable: true)
     d = Decided.where(room: @room.id)

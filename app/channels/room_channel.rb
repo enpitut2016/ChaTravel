@@ -15,8 +15,12 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak (data)
-    #TODO user_idを入れる
     Message.create!(message: data['message'], user_id: current_user.id, room_id: @room.id)
+  end
+
+  def request_recommend(data)
+    # リコメンドを検索したりする
+    Message.create!(message: data['data'], user_id: 1, room_id: @room.id)
   end
 
   def suggest (data)
