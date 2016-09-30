@@ -1,13 +1,20 @@
-<header class="navbar  navbar-inverse">
+<header class="navbar navbar-default">
+  <div class="top_white"></div>
+
   <div class="container">
-    <%= link_to image_tag('small_logo.png'), root_path %>
+    <%= link_to image_tag('logo_white.png', :size => "323x150", :class => "logo_image"), root_path %>
+
     <nav>
-      <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home", root_path %></li>
+      <ul class="nav navbar-nav navbar-right lead" id="header_nav">
+        <li>
+          <%= link_to " Home", root_path ,:class => "glyphicon glyphicon-home"%>
+        </li>
         <% if logged_in? %>
-          <li><%= link_to "Rooms", rooms_path %></li>
+          <li>
+            <%= link_to " Rooms", rooms_path ,:class => "glyphicon glyphicon-comment"%>
+          </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle glyphicon glyphicon-cog" data-toggle="dropdown">
               Account <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
@@ -20,9 +27,11 @@
             </ul>
           </li>
         <% else %>
-          <li><%= link_to "Log in", login_path %></li>
+          <li><%= link_to " Login", login_path, :class => "glyphicon glyphicon-log-in" %></li>
         <% end %>
       </ul>
     </nav>
+
   </div>
+
 </header>
