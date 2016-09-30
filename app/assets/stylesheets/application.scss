@@ -44,7 +44,7 @@ textarea {
 }
 
 li + li {
-border-left:1px solid #fff;
+  border-left:1px solid #fff;
 }
 
 /* typography */
@@ -156,8 +156,22 @@ input {
   color: #fff;
 }
 
+.new_room_setting{
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.merrit{
+  height: 200px;
+}
+
+
 /*id*/
 #header_nav{
+  margin-top: 40px;
+}
+
+#new_room_botton{
   margin-top: 40px;
 }
 

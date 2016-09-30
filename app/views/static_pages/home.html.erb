@@ -1,34 +1,36 @@
 <div class="container">
-  <div class="row">
+  <div class="row new_room_setting">
     <%= form_for(@room) do |f| %>
-      <div class="col-sm-6 ">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-5 ">
         <p>STEP1:グループ名</p>
         <%= f.text_field :name %>
         <p>メモ</p>
         <textarea name="memo" cols=40 rows=4></textarea>
       </div>
-      <div class="col-sm-6 ">
+      <div class="col-sm-3 ">
         <p >STEP2:話し合う内容</p>
         <p >日程</p>
         <p >観光スポット</p>
         <p >食事</p>
       </div>
-      <div class ="center-block">
+      <div class="col-sm-2"></div>
+
+      <div class ="col-sm-12" id="new_room_botton">
         <div>
-          <%= f.submit "チャットルームを作る", class: "btn btn-lg btn-warning"%>
+          <%= f.submit "チャットルームを作る", class: "btn btn-lg btn-warning center-block"%>
         </div>
       </div>
     <% end %>
 
-    <div class="row">
-    </div>
-    <span >チャットラベルを使う3つのメリット </span>
-    <div class="row">
-      <span class="col-sm-4">Botによる話し合いの進行</span>
-      <span class="col-sm-4">計画作成を助けるお助けツール</span>
-      <span class="col-sm-4">旅のしおりの作成</span>
-    </div>
   </div>
-</div>
+  
+  <span >チャットラベルを使う3つのメリット </span>
+  <div class="row">
+    <span class="col-sm-4 merrit lead">Botによる話し合いの進行</span>
+    <span class="col-sm-4 merrit lead">計画作成を助けるお助けツール</span>
+    <span class="col-sm-4 merrit lead">旅のしおりの作成</span>
+  </div>
+  
 </div>
 
