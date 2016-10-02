@@ -5,10 +5,13 @@
 $ ->
   $("#post").on 'click', ->
     comment = $("#post_comment")
-    if (comment.val().trim() == '')
+    text = comment.val().trim()
+    if (text == '')
       alert '文字を入力してください'
       return
-    App.room.speak comment.val()
+    App.room.speak text
+    if (text.substring(0, 5) == '@bot ')
+      App.room.request_recommend text.substring(4)
     comment.val('')
 
 
