@@ -1,8 +1,12 @@
 class Room < ApplicationRecord
+  has_many :room_to_users, class_name:  "RoomToUser",
+                                  dependent:   :destroy
+  has_many :users, through: :room_to_users 
   validates_uniqueness_of :url
   validates_presence_of :url
   after_initialize :set_url
   validates :name, presence: true,length: { maximum: 50}
+
 
   def to_param
     url

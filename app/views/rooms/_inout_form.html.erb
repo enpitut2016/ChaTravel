@@ -1,0 +1,7 @@
+<div id="inout_form">
+	<% if current_user.entering?(@room) %>
+		<%= render 'out' %>
+	<% else %>
+		<%= render 'enter' %>
+	<% end %>
+</div>

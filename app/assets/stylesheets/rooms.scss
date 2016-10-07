@@ -1,3 +1,230 @@
 // Place all the styles related to the Rooms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+html, body {
+  height: 100vh;
+  padding: 0;
+}
+
+.container-fluid {
+
+  #menubar {
+    height: 100vh;
+    background-color: orange;
+    background-size: contain;
+    background-position: 50% 90%;
+    background-image: image-url("chatra_halfbraight.png");
+    background-repeat: no-repeat;
+
+    .menulist {
+      p, ul {
+        color: white;
+      }
+
+      .logo img{
+        max-width: 180px;
+        height: auto;
+        padding: 10px;
+      }
+
+      .roomname {
+        padding: 5%;
+        text-align: center;
+        word-wrap: break-word;
+      }
+    }
+  }
+
+  .chat {
+
+    ul#message_list {
+      list-style: none;
+    }
+
+    #message_list {
+      height: 90vh;
+      width: 100%;
+      overflow-y: auto;
+      padding-left: 15px;
+      padding-right: 15px;
+
+      .chat_frame_right, .chat_frame_left{
+        //width:80%;
+      	background-color: white;
+        border-style: solid;
+        border-color: gray;
+      	border-radius: 20px;
+      	//position:relative;
+        //padding: 0px 15px 0px 15px;
+      	//color:brack;
+        margin: 5px 0 5px 0;
+
+        p {
+          margin-bottom: 5px;
+        }
+      }
+
+      .chat_frame_right:after {
+        border:10px solid transparent;
+      	border-left-color:gray;
+      	border-right-width:0;
+      	width:0;
+      	right:-10px;
+      	content:"";
+      	display:block;
+      	top:20px;
+      	position:absolute;
+      }
+
+      .chat_frame_left:after {
+        border:10px solid transparent;
+      	border-right-color:gray;
+      	border-left-width:0;
+      	width:0;
+      	left:-10px;
+      	content:"";
+      	display:block;
+      	top:20px;
+      	position:absolute;
+      }
+
+      .icon_right {
+        max-width: 80px;
+        max-height: 80px;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+        margin: 0px 10px 10px 10px;
+        border-radius: 20px;
+        padding: 0 !important;
+      }
+
+      .icon_left {
+        max-width: 80px;
+        max-height: 80px;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+        margin: 0px 10px 10px 10px;
+        border-radius: 20px;
+        padding: 0 !important;
+      }
+
+      .icon img {
+        //min-width: 100%;
+        //min-height: 100%;
+        //height: auto;
+        //width: auto;
+        //left: 50%;
+        //top: 50%;
+      }
+
+    }
+
+    #message_textarea {
+      display: inline-flex;
+      width: 100%;
+
+      #post_comment {
+        width: 100%;
+        height: 30px;
+        resize: none;
+        //padding: 10px 10px 20px 10px;
+        //border-style: solid;
+        //border-color: black;
+      	border-radius:10px;
+        //border-width: 3px;
+      }
+
+      #post {
+        border-radius: 10px;
+      }
+
+    }
+
+    #current_user {
+      display: none;
+    }
+
+  }
+
+  .dashboard {
+
+    #suggest_textarea {
+      display: inline-flex;
+      width:100%;
+      margin-top: 10px;
+    }
+
+    #suggest_name {
+      width: 80%;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+    #suggest_submit {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    #suggest_area {
+      height: 85vh;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .suggest_list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .suggest_item {
+      margin-top: 10px;
+      padding: 3px;
+      border-style: solid;
+      border-width: 0.5px;
+    }
+
+    .panel-heading {
+      padding: 5px;
+    }
+    .badge {
+      padding: 10px;
+    }
+    .suggest_collapse {
+      display: flex;
+    }
+    .suggest_title {
+      margin: 0;
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .suggest_id {
+      display: none;
+    }
+
+    .vote_badge {
+      display: none;
+    }
+
+    #vote_id {
+      display: none;
+    }
+
+    #start_vote {
+      margin: 5px;
+      border-radius: 10px;
+    }
+
+    #finish_vote {
+      margin: 5px;
+      display: none;
+    }
+  }
+
+}

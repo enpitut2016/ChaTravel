@@ -1,14 +1,71 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @room.name %>
-</p>
+<div class="container-fluid">
 
-<!--<p>-->
-  <!--<strong>Enable:</strong>-->
-  <!--<%= @room.enable %>-->
-<!--</p>-->
+  <div class="row">
+    <div class="col-md-2" id="menubar">
 
-<%= link_to 'Edit', edit_room_path(@room) %> |
-<%= link_to 'Back', rooms_path %>
+      <div class="menulist">
+
+        <div class="logo">
+          <%= link_to image_tag('logo.png'), root_path %>
+        </div>
+
+        <p class="roomname">
+          「<%= @room.name %>」
+        </p>
+
+        <p>メンバー</p>
+        <div id="user_list">
+          <ul>
+            <% @room.users.each do |u| %>
+                <li><%= u.name %></li>
+            <% end %>
+          </ul>
+        </div>
+
+
+
+        <p>決めたことリスト</p>
+        <ul id="decided_list">
+          <% @decideds.each do |d| %>
+            <li><%= link_to d.title, d.url %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="col-md-5">
+      <div class="chat">
+        <%= render 'message_list', message_list: @messages, current_user: current_user %>
+        <div id="chat_area">
+          <div id="message_textarea">
+            <textarea id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
+            <input id="post" type="submit" value="投稿">
+          </div>
+          <div id="current_user"  data-current_user_id="<%= current_user.id %>"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="dashboard">
+        <div>
+          <div id="suggest_textarea">
+            <input type="text" size="100" id="suggest_name" placeholder="URL">
+            <input type="submit" id="suggest_submit" value="をオススメする">
+          </div>
+        </div>
+        <div id="suggest_area">
+          <%= render 'suggest_list', suggest_list: @suggests %>
+        </div>
+        <div id="vote_area">
+          <input id="start_vote"  type="submit" value="多数決をはじめる">
+          <input id="finish_vote" type="submit" value="多数決をおわる　">
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
