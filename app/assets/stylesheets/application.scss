@@ -43,9 +43,7 @@ textarea {
   color: #fff;
 }
 
-li + li {
-  border-left:1px solid #fff;
-}
+
 
 /* typography */
 
@@ -79,6 +77,10 @@ p {
 
 header{
   
+}
+
+header li + li{
+  border-left:1px solid #fff;
 }
 
 
