@@ -2,6 +2,22 @@
 #= require_self
 #= require ../cable
 
+
+#タブに関する記述
+$ ->
+  $(".tab_content li").css("display","none");
+  $('.tab_content li').eq(0).css('display','block');
+
+
+$ ->
+  $(".tab li").on 'click', ->
+    index = $(".tab li").index(this);
+    $(".tab_content li").css("display","none");
+    $('.tab_content li').eq(index).css('display','block');
+    $('.tab li').removeClass('select');
+    $(this).addClass('select')
+
+
 $ ->
   $("#post").on 'click', ->
     comment = $("#post_comment")
