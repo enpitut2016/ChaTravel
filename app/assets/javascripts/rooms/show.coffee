@@ -18,7 +18,7 @@ $ ->
     $(this).addClass('select')
     loadMap()
     
-#おすすめ表示について                
+#botのレコメンドについて   
 
 $ ->
   $("#post").on 'click', ->
@@ -28,10 +28,14 @@ $ ->
       alert '文字を入力してください'
       return
     App.room.speak text
-    if (text.substring(0, 5) == '@bot ')
+    if (text.substring(0, 13) == '@bot -kankou ')
+      execKankouSearch(text.substring(12))
+    else if (text.substring(0, 5) == '@bot ')
       App.room.request_recommend text.substring(4)
+    
     comment.val('')
 
+#おすすめ表示について
 
 $ ->
   $('#suggest_submit').on 'click', ->
@@ -234,14 +238,16 @@ markerDelete = ->
   msg.close() # 吹き出しを閉じる
   return
 
-$ ->
-  $('#zoom').on 'click', ->
-    map.setZoom Number(document.getElementById('zoom').value)
-    return
 
 
-
-
+### ぼっとおすすめ用 ###
+execKankouSearch = (word) ->
+  ZDC.Search.getPoiByWord { word: word, limit : "0,1", genrecode : "0012000150" }, (status, res) ->
+    if status.code == '000'
+      App.room.request_recommend_kankou res.item[0].text
+    else
+      alert status.text
+      return
 
 
 

@@ -36,6 +36,11 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     this.perform('request_recommend', { data: data });
   },
 
+  request_recommend_kankou: function(data) {
+    console.log(data);
+    this.perform('request_recommend_kankou', { text: data });
+  },
+
   suggest: function(data) {
     this.perform('suggest', { data: data });
   },

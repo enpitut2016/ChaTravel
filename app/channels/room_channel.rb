@@ -23,6 +23,11 @@ class RoomChannel < ApplicationCable::Channel
     Message.create!(message: data['data'], user_id: 1, room_id: @room.id)
   end
 
+  def request_recommend_kankou(data)
+    # 検索した観光スポットを表示する
+    Message.create!(message: data['text'], user_id: 1, room_id: @room.id)
+  end
+
   def suggest (data)
     data = data['data']
     @room = Room.find_by(url: data['room_url'])
