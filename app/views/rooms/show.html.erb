@@ -51,7 +51,7 @@
 
         <ul class="tab">
           <li class="select">オススメ</li>
-          <li>なにか</li>
+          <li>地図</li>
           <li>なんか</li>
         </ul>
         <ul class="tab_content">
@@ -71,11 +71,26 @@
             </div>
             </li>
 
-          <li>テスト1</li>
-
+          <li>
+            <div id="ZMap" ></div>
+            <div id="search-area" style="width:600px; height:175px;">
+              <input type="text" id="word" value="東京">
+              <input type="button" id="eki-search-btn" value='駅検索'>
+              <input type="button" id="poi-search-btn"  value='施設検索'>
+              <div id="search-result" style="overflow: scroll; height: 150px"></div>
+              
+          </div>
+          </li>
           <li>テスト２</li>
         </ul>
 
       </div>
     </div>
 </div>
+
+
+
+
+
+<script src="http://api.its-mo.com/cgi/loader.cgi?key=JSZ4b70355b96af&ver=2.0&api=zdcmap.js,search.js,shape.js,usercontrol.js,control.js&enc=EUC&alert=1&force=1" type="text/javascript"></script>
+
