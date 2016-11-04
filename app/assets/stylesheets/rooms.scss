@@ -6,9 +6,14 @@ html, body {
   padding: 0;
 }
 
+
+
 .container-fluid {
 
   #menubar {
+    /*max-width: 250px;*/
+
+    overflow: scroll;   /* スクロール表示 */ 
     height: 100vh;
     background-color: orange;
     background-size: contain;
@@ -17,14 +22,24 @@ html, body {
     background-repeat: no-repeat;
 
     .menulist {
-      p, ul {
+      p{
         color: white;
+      }
+
+      ul{
+        color: white;
+        padding-left: 20px;
       }
 
       .logo img{
         max-width: 180px;
+        width: 100%;
         height: auto;
         padding: 10px;
+      }
+      .logo{
+        text-align: center;
+        margin: 0 auto;
       }
 
       .roomname {
@@ -37,6 +52,8 @@ html, body {
 
   .chat {
 
+    padding-top: 20px;
+
     ul#message_list {
       list-style: none;
     }
@@ -45,23 +62,25 @@ html, body {
       height: 90vh;
       width: 100%;
       overflow-y: auto;
-      padding-left: 15px;
-      padding-right: 15px;
+      overflow-x: hidden;
+      padding-left: 50px;
+      padding-right: 0px;
 
       .chat_frame_right, .chat_frame_left{
-        //width:80%;
+        /*width:80%;*/
       	background-color: white;
         border-style: solid;
         border-color: gray;
       	border-radius: 20px;
-      	//position:relative;
-        //padding: 0px 15px 0px 15px;
-      	//color:brack;
+      	/*position:relative;*/
+        /*padding: 0px 15px 0px 15px;*/
+      	/*color:brack;*/
         margin: 5px 0 5px 0;
 
         p {
           margin-bottom: 5px;
         }
+
       }
 
       .chat_frame_right:after {
@@ -111,12 +130,14 @@ html, body {
       }
 
       .icon img {
-        //min-width: 100%;
-        //min-height: 100%;
-        //height: auto;
-        //width: auto;
-        //left: 50%;
-        //top: 50%;
+        /*
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
+        left: 50%;
+        top: 50%;
+        */
       }
 
     }
@@ -129,11 +150,11 @@ html, body {
         width: 100%;
         height: 30px;
         resize: none;
-        //padding: 10px 10px 20px 10px;
-        //border-style: solid;
-        //border-color: black;
+        /*padding: 10px 10px 20px 10px;
+        border-style: solid;
+        border-color: black;*/
       	border-radius:10px;
-        //border-width: 3px;
+        /*border-width: 3px;*/
       }
 
       #post {
@@ -148,27 +169,64 @@ html, body {
 
   }
 
+  
   .dashboard {
 
-    #suggest_textarea {
-      display: inline-flex;
+    border-color: #ddd;
+    border-left-style: groove;
+    padding: 0px;
+    height: 100vh;
+
+    .tab {
+      overflow:hidden;
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px
+    }
+    .tab li{
+      background:#ccc; 
+      padding:5px 25px;
+      margin: 0px; 
+      float:left; 
+      margin-right:1px;
+    }
+    .tab li.select{
+      background:#eee;
+    }
+    .tab_content{
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px
+    }
+    .tab_content li{
+      background:#eee; 
+      padding:20px;
+      height: 95vh;
+    }
+    .hide {
+      display:none;
+    }
+
+
+    #suggest_textare {
       width:100%;
       margin-top: 10px;
     }
 
     #suggest_name {
-      width: 80%;
       border-top-left-radius: 10px;
       border-bottom-left-radius: 10px;
+      line-height: 1.7;
+
     }
 
     #suggest_submit {
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
+
     }
 
     #suggest_area {
-      height: 85vh;
       width: 100%;
       overflow-y: auto;
       overflow-x: hidden;
