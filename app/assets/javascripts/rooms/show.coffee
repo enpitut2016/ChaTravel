@@ -2,6 +2,9 @@
 #= require_self
 #= require ../cable
 
+$(window).load ->
+  $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
+
 
 #タブに関する記述
 $ ->
