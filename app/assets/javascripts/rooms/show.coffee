@@ -253,4 +253,14 @@ execKankouSearch = (word) ->
       return
 
 
+### トピック決め ###
+$ ->
+  $('#topic_submit').on 'click', ->
+    topic_word =$("#topic_name").val()
+    if (topic_word == '')
+      alert 'トピックを入力してください'
+      return
+    sentence = "トピックが決まりました。それでは" + topic_word + "について話し合いましょう！"
+    App.room.speak sentence
+    $("#topic_name").val('')
 
