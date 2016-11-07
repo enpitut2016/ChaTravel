@@ -1,14 +1,16 @@
 <div class="container">
+  <% if logged_in? %>
   <div class="row new_room_setting">
     <%= form_for(@room) do |f| %>
       <div class="col-sm-2"></div>
-      <div class="col-sm-5 ">
+      <div class="col-sm-2">
         <p>STEP1:グループ名</p>
         <%= f.text_field :name %>
         <!--<p>メモ</p>
         <textarea name="memo" cols=40 rows=4></textarea>
         -->
       </div>
+      <!--
       <div class="col-sm-3 ">
         <p >STEP2:話し合う内容</p>
         <p >日程</p>
@@ -16,8 +18,9 @@
         <p >食事</p>
       </div>
       <div class="col-sm-2"></div>
+      -->
 
-      <div class ="col-sm-12" id="new_room_botton">
+      <div class ="col-sm-5" id="new_room_botton">
         <div>
           <%= f.submit "チャットルームを作る", class: "btn btn-lg btn-warning center-block"%>
         </div>
@@ -25,6 +28,15 @@
     <% end %>
 
   </div>
+
+  <% else %>
+    <div class="row new_room_setting">
+      <div class ="col-sm-12" id="login_botton">   
+        <%= link_to "まずは無料登録！", login_path, class: "btn btn-lg btn-warning center-block" %>
+      </div>
+  </div>
+
+  <% end %>
   
   <span >チャットラベルを使う3つのメリット </span>
   <div class="row">
