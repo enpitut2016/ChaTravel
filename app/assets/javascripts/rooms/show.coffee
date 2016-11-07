@@ -28,12 +28,12 @@ $ ->
       alert '文字を入力してください'
       return
     App.room.speak text
+    comment.val('')
     if (text.substring(0, 13) == '@bot -kankou ')
       execKankouSearch(text.substring(12))
     else if (text.substring(0, 5) == '@bot ')
       App.room.request_recommend text.substring(4)
     
-    comment.val('')
 
 #おすすめ表示について
 
