@@ -18,9 +18,42 @@ class RoomChannel < ApplicationCable::Channel
     Message.create!(message: data['message'], user_id: current_user.id, room_id: @room.id)
   end
 
-  def request_recommend(data)
-    # リコメンドを検索したりする
-    Message.create!(message: data['data'], user_id: 1, room_id: @room.id)
+  #botAPIを使った返答
+  def request_bot_response(data)
+
+    params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
+    uri = URI.parse("https://chatbot-api.userlocal.jp/api/chat?#{params}")
+
+    Rails.logger.debug("message=#{uri}")
+    begin
+
+      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|        
+        http.open_timeout = 5 # Net::HTTP.open_timeout=で接続時に待つ最大秒数の設定をする。タイムアウト時はTimeoutError例外が発生
+        http.read_timeout = 10 # Net::HTTP.read_timeout=で読み込み1回でブロックして良い最大秒数の設定をする
+        http.get(uri.request_uri) # 返り値はNet::HTTPResponseのインスタンス
+      end
+
+      # [レスポンス処理]
+      case response
+      when Net::HTTPSuccess   #うまくいっていたらbotが発言
+        p = JSON.parse(response.body)
+        Message.create!(message: p['result'], user_id: 1, room_id: @room.id)
+      when Net::HTTPRedirection
+        Rails.logger.debug("Redirection: code=#{response.code} message=#{response.message}")
+      else
+        Rails.logger.debug("HTTP ERROR: code=#{response.code} message=#{response.message}")
+      end
+
+    rescue IOError => e
+      Rails.logger.debug(e.message);
+    rescue TimeoutError => e
+      Rails.logger.debug(e.message);
+    rescue JSON::ParserError => e
+      Rails.logger.debug(e.message);
+    rescue => e
+      Rails.logger.debug(e.message);
+    end
+
   end
 
   def request_recommend_kankou(data)

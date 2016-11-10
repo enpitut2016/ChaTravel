@@ -35,7 +35,7 @@ $ ->
     if (text.substring(0, 13) == '@bot -kankou ')
       execKankouSearch(text.substring(12))
     else if (text.substring(0, 5) == '@bot ')
-      App.room.request_recommend text.substring(4)
+      App.room.request_bot_response text.substring(4)
     
 
 #おすすめ表示について
