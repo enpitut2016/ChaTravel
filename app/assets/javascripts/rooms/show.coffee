@@ -36,7 +36,23 @@ $ ->
       execKankouSearch(text.substring(12))
     else if (text.substring(0, 5) == '@bot ')
       App.room.request_bot_response text.substring(4)
-    
+
+# エンターキーを押してコメント送信
+
+keypressing = false
+$ ->
+  $('#post_comment').on 'keypress', (e) ->
+    if(e.keyCode == 13)
+      keypressing = true
+      $('#post').trigger('click')
+      
+# エンターキー上げたときに全部消す
+
+$ ->
+  $('#post_comment').on 'keyup', (e) ->
+    if(e.keyCode == 13 && keypressing)
+      $("#post_comment").val('')
+      keypressing = false
 
 #おすすめ表示について
 
@@ -62,7 +78,6 @@ $ ->
     App.room.finish_vote ({
       vote_result: create_vote_result()
     })
-  
 
 create_suggest = () ->
   array = []
