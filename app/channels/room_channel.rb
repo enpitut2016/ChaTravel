@@ -18,13 +18,51 @@ class RoomChannel < ApplicationCable::Channel
     Message.create!(message: data['message'], user_id: current_user.id, room_id: @room.id)
   end
 
-  #botAPIを使った返答
+  #botの返答
   def request_bot_response(data)
 
-    params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
-    uri = URI.parse("https://chatbot-api.userlocal.jp/api/chat?#{params}")
+    #形態素解析を行い、もしメッセージを表示するイベントが行われていたらreturn
+    isMes = decomposeSentences(data);
+    if isMes == true then
+      return;
+    end 
 
-    Rails.logger.debug("message=#{uri}")
+
+    #雑談APIを使い、適当な返答をする。もし、エラーがあれば"zzz"と返す
+    chatRes = use_api(data,'chat');
+    if chatRes == nil then
+      Message.create!(message: "zzz", user_id: 1, room_id: @room.id)
+      return
+    end
+    Message.create!(message: chatRes['result'], user_id: 1, room_id: @room.id)
+    
+
+  end
+
+  #botAPIの処理
+  def use_api(data,type)
+    
+    case type
+    when 'chat'
+      params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
+      uri = URI.parse("https://chatbot-api.userlocal.jp/api/chat?#{params}")
+    when 'dec'
+      params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
+      uri = URI.parse("https://chatbot-api.userlocal.jp/api/decompose?#{params}")
+    when 'geo'
+      params = URI.encode_www_form({ method: 'suggest', matching: 'like', keyword: data})
+      uri = URI.parse("http://geoapi.heartrails.com/api/json?#{params}")
+    when 'gnavi'
+      params = URI.encode_www_form({ keyid: '39da3c7e2563a8d9f4ba015c4e173268', format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
+      uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
+    else
+      Rails.logger.debug("API Type Error")
+      return
+    end
+
+    Rails.logger.debug("いええええええええええええええい #{data['address']}");
+
+
     begin
 
       response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|        
@@ -37,7 +75,7 @@ class RoomChannel < ApplicationCable::Channel
       case response
       when Net::HTTPSuccess   #うまくいっていたらbotが発言
         p = JSON.parse(response.body)
-        Message.create!(message: p['result'], user_id: 1, room_id: @room.id)
+        return p;
       when Net::HTTPRedirection
         Rails.logger.debug("Redirection: code=#{response.code} message=#{response.message}")
       else
@@ -55,6 +93,50 @@ class RoomChannel < ApplicationCable::Channel
     end
 
   end
+
+  #形態素解析の処理
+  def decomposeSentences(data)
+    decRes = use_api(data,'dec');
+    result = decRes['result'];
+    Rails.logger.debug("#{result}(#{result[0]})");
+    nouns = [];
+    yomis = [];
+    for i in result do
+      surface = i['surface'];
+      pos = i['pos'];
+      yomi = i['yomi']
+      if yomi == '*' then
+        yomi = surface.tr('ぁ-ん','ァ-ン'); #読みがアスタリスクだったら、surfaceをカタカナに変換して代入 
+      end  
+      Rails.logger.debug("#{surface}(#{pos})"); #結果を表示
+
+      if pos == "名詞" then
+        nouns.push(surface);
+        yomis.push(yomi);
+      end
+    end
+
+    for i in yomis do
+      if i == 'オススメ' then #チャット内容に読みが「オススメ」の文字を含んでいて
+
+        for j in nouns do
+          res = use_api(j,'geo');
+          if res['response'].key?('error') == false then #実在する地名の文字も含んでいたら
+
+            gnavi = use_api({"address" => j, "freeword" => 'カレー'},'gnavi');
+            
+
+            Message.create!(message: j+'のオススメのカレー屋さんを教えるニャ　「'+gnavi['rest']['name']+'」', user_id: 1, room_id: @room.id) 
+            return true;
+          end
+        end  
+
+      end
+    end
+
+  end
+
+  
 
   def request_recommend_kankou(data)
     # 検索した観光スポットを表示する
