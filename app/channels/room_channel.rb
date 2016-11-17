@@ -50,8 +50,10 @@ class RoomChannel < ApplicationCable::Channel
       params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
       uri = URI.parse("https://chatbot-api.userlocal.jp/api/decompose?#{params}")
     when 'geo'
-      params = URI.encode_www_form({ method: 'suggest', matching: 'like', keyword: data})
+      params = URI.encode_www_form({ method: 'suggest', matching: 'prefix', keyword: data})
       uri = URI.parse("http://geoapi.heartrails.com/api/json?#{params}")
+    when 'eki'
+      #http://express.heartrails.com/api/json?method=getStations&name=%22%E6%96%B0%E5%B7%9D%22
     when 'gnavi'
       params = URI.encode_www_form({ keyid: '39da3c7e2563a8d9f4ba015c4e173268', format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
@@ -59,9 +61,6 @@ class RoomChannel < ApplicationCable::Channel
       Rails.logger.debug("API Type Error")
       return
     end
-
-    Rails.logger.debug("いええええええええええええええい #{data['address']}");
-
 
     begin
 
@@ -122,15 +121,12 @@ class RoomChannel < ApplicationCable::Channel
         for j in nouns do
           res = use_api(j,'geo');
           if res['response'].key?('error') == false then #実在する地名の文字も含んでいたら
-
             gnavi = use_api({"address" => j, "freeword" => 'カレー'},'gnavi');
-            
-
-            Message.create!(message: j+'のオススメのカレー屋さんを教えるニャ　「'+gnavi['rest']['name']+'」', user_id: 1, room_id: @room.id) 
+            Message.create!(message: j+'のオススメのカレー屋さんを教えるニャ　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) 
             return true;
           end
         end  
-
+        Message.create!(message: 'わからないにゃ...', user_id: 1, room_id: @room.id) 
       end
     end
 
