@@ -2,8 +2,10 @@
 #= require_self
 #= require ../cable
 
+#ページが読み込まれたとき最新の投稿に移動する
 $(window).load ->
   $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
+  getEndTime();
 
 
 #タブに関する記述
@@ -291,6 +293,31 @@ $ ->
       alert 'トピックを入力してください'
       return
     sentence = "トピックが決まりました。それでは" + topic_word + "について話し合いましょう！"
-    App.room.speak sentence
+    App.request_bot_response sentence
     $("#topic_name").val('')
 
+
+getEndTime = ->
+  target =  new Date("2016-11-18 13:00:00.000")
+  now = new Date
+  diff = target.getTime() - now.getTime()
+
+  # ミリ秒を日、時、分に分解する
+  # 経過日数
+  days = parseInt(diff/(24*60*60*1000), 10)
+  diff -= days * 24 * 60 * 60 * 1000
+  # 経過時間
+  hours = parseInt(diff/(60*60*1000), 10)
+  diff -= hours * 60 * 60 * 1000
+  # 経過分
+  minutes = parseInt(diff/(60*1000), 10)
+  diff -= minutes * 60 * 1000
+  # 経過秒
+  seconds = parseInt(diff/1000, 10) 
+
+  $('#endTimer').text(hours+'時間'+minutes+'分'+seconds+'秒')
+  setTimeout ->
+    getEndTime()
+  , 1000
+
+  return
