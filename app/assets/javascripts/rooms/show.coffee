@@ -102,7 +102,9 @@ arrmrk = []
 loadMap = () ->
   lat = 35.6778614
   lon = 139.7703167
+  $('#ZMap').empty();
   map = new ZDC.Map(document.getElementById('ZMap'),{ latlon: new ZDC.LatLon(lat, lon), zoom: 6});   
+  
 
   ### 通常のコントロールを作成 ###
   widget_normal = new (ZDC.Control)(
@@ -112,6 +114,19 @@ loadMap = () ->
     type: ZDC.CTRL_TYPE_NORMAL) 
   
   map.addWidget widget_normal #コントロールを表示  
+
+#リサイズされるたびに地図を再描画する（連続して呼ばれないようにタイマーを用いて、リサイズ1.5秒後に描画）
+timer = false
+$(window).resize ->
+  if timer != false
+    clearTimeout timer
+  timer = setTimeout((->
+    console.log 'resized'
+    loadMap()
+    return
+  ), 1000)
+  return
+
 
 $ ->
   $('#eki-search-btn').on 'click', ->
