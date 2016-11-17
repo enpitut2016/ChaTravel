@@ -25,6 +25,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       case 'finish_vote':
         Chat.received_func.received_finish_vote(data['data']);
         break;
+      case 'define_timer':
+        Chat.received_func.received_define_timer(data['data']);
+        break;
     }
   },
 
@@ -55,6 +58,10 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
   finish_vote: function(data) {
     this.perform('finish_vote', { data: data });
+  },
+
+  define_timer: function(data){
+    this.perform('define_timer', {data: data});
   }
 });
 
@@ -142,6 +149,10 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       $('#suggest_submit').prop('disabled', false);
       var dom = "<li><a href='"+ data.decided.url +"'>"+ data.decided.title +"</a></li>"
       $('#decided_list').append(dom);
+    },
+
+    received_define_timer: function(data){
+      $('#targetDate').text(data['target']);
     }
   };
 

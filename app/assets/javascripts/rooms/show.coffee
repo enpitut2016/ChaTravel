@@ -36,6 +36,8 @@ $ ->
     comment.val('')
     if (text.substring(0, 13) == '@bot -kankou ')
       execKankouSearch(text.substring(12))
+    else if (text.substring(0, 12) == '@bot -timer ')
+      App.room.define_timer text.substring(11)
     else if (text.substring(0, 5) == '@bot ')
       App.room.request_bot_response text.substring(4)
 
@@ -298,24 +300,30 @@ $ ->
 
 
 getEndTime = ->
-  target =  new Date("2016-11-18 13:00:00.000")
+  targetDate = $('#targetDate').text()
+  target = new Date(targetDate)
+  console.log(target)
   now = new Date
   diff = target.getTime() - now.getTime()
 
-  # ミリ秒を日、時、分に分解する
-  # 経過日数
-  days = parseInt(diff/(24*60*60*1000), 10)
-  diff -= days * 24 * 60 * 60 * 1000
-  # 経過時間
-  hours = parseInt(diff/(60*60*1000), 10)
-  diff -= hours * 60 * 60 * 1000
-  # 経過分
-  minutes = parseInt(diff/(60*1000), 10)
-  diff -= minutes * 60 * 1000
-  # 経過秒
-  seconds = parseInt(diff/1000, 10) 
+  if (diff < 0)
+    $('#endTimer').text("タイマー未設定")
+  else
 
-  $('#endTimer').text(hours+'時間'+minutes+'分'+seconds+'秒')
+    # ミリ秒を日、時、分に分解する
+    # 経過日数
+    days = parseInt(diff/(24*60*60*1000), 10)
+    diff -= days * 24 * 60 * 60 * 1000
+    # 経過時間
+    hours = parseInt(diff/(60*60*1000), 10)
+    diff -= hours * 60 * 60 * 1000
+    # 経過分
+    minutes = parseInt(diff/(60*1000), 10)
+    diff -= minutes * 60 * 1000
+    # 経過秒
+    seconds = parseInt(diff/1000, 10) 
+
+    $('#endTimer').text(hours+'時間'+minutes+'分'+seconds+'秒')
   setTimeout ->
     getEndTime()
   , 1000

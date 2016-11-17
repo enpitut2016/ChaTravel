@@ -185,4 +185,14 @@ class RoomChannel < ApplicationCable::Channel
     Decided.create!(room_id: @room.id, suggest_id: decided_id)
     ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {decided: decided}})
   end
+
+  def define_timer(data)
+    target = data['data']
+    if target.match(/\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}.\d{3}/) != nil
+      ActionCable.server.broadcast(@room_name, {type: 'define_timer', data: {target: target}})
+      Message.create!(message: "タイマーをセットします", user_id: 1, room_id: @room.id)
+    else
+      Message.create!(message: "タイマーセットに失敗しました。形式が間違っています", user_id: 1, room_id: @room.id)
+    end
+  end
 end
