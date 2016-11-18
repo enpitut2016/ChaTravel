@@ -3,24 +3,29 @@
 
 ## 概要
 
-## 公開しているサイト
-*LP http://chattravel.kickoffpages.com/
 
-*demo page http://210.129.50.13:3000/
+## 使い方
+
+
+## 公開しているサイト
+LP http://chattravel.kickoffpages.com/
+
+demo page http://210.129.50.13:3000/
+
+## 使っているAPI
+
 
 ## 使っている技術
-*Ruby version
+Ruby
 ```
 ruby 2.3.0
 ```
-*Rails version
+Ruby on Rails
 ```
 Rails 5.0.0.1
 ```
-*MySql version
+MySql
 ```
 mysql  Ver 14.14 Distrib 5.6.31, for debian-linux-gnu (x86_64) using  EditLine wrapper
 ```
-## 使っているAPI
 
-#
