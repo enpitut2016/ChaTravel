@@ -7,14 +7,14 @@
 
 
 ## 公開しているサイト
-LP http://chattravel.kickoffpages.com/
 
 demo page http://210.129.50.13:3000/
 
 ## 使っているAPI
 
 
-## 使っているプログラミング技術
+## ソフトウェアのバージョン
+
 * Ruby
 ```
 ruby 2.3.0
