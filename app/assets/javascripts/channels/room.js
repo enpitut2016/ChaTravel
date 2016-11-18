@@ -28,6 +28,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       case 'define_timer':
         Chat.received_func.received_define_timer(data['data']);
         break;
+      case 'gmap_command':
+        Chat.received_func.received_gmap_command(data['data']);
+        break;
     }
   },
 
@@ -153,7 +156,25 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
     received_define_timer: function(data){
       $('#targetDate').text(data['target']);
+    },
+
+
+    received_gmap_command: function(data){
+      console.log(data);
+      if (parseInt(data.user_id) == $('#current_user').data('current_user_id')) { //コマンドの受け取りが投稿者自身であったら
+        ZDC.Search.getPoiByWord({word: data.word, limit: "0,1", genrecode: "0012000150" }, function(status, res) {
+          if (status.code === '000') {
+            App.room.request_recommend_kankou(res.item[0].text);
+          } else {
+            alert(status.text);
+          }
+        });
+
+      }else{
+        console.log("other");
+      }
     }
+
   };
 
   Chat.utils = {
