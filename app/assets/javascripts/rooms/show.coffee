@@ -302,7 +302,6 @@ $ ->
 getEndTime = ->
   targetDate = $('#targetDate').text()
   target = new Date(targetDate)
-  console.log(target)
   now = new Date
   diff = target.getTime() - now.getTime()
 

@@ -54,6 +54,9 @@ class RoomChannel < ApplicationCable::Channel
       uri = URI.parse("http://geoapi.heartrails.com/api/json?#{params}")
     when 'eki'
       #http://express.heartrails.com/api/json?method=getStations&name=%22%E6%96%B0%E5%B7%9D%22
+    when 'gMap'
+      ActionCable.server.broadcast(@room_name, {type: 'gmap_command', data: { user_id: current_user.id, word: j } }) #クライアント側にデータを送信
+      return
     when 'gnavi'
       params = URI.encode_www_form({ keyid: '39da3c7e2563a8d9f4ba015c4e173268', format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
@@ -115,19 +118,20 @@ class RoomChannel < ApplicationCable::Channel
       end
     end
 
-    for i in yomis do
-      if i == 'オススメ' then #チャット内容に読みが「オススメ」の文字を含んでいて
+
+    if yomis.include?("オススメ") then #チャット内容に読みが「オススメ」の文字を含んでいて
 
         for j in nouns do
           res = use_api(j,'geo');
           if res['response'].key?('error') == false then #実在する地名の文字も含んでいたら
             gnavi = use_api({"address" => j, "freeword" => 'カレー'},'gnavi');
-            Message.create!(message: j+'のオススメのカレー屋さんを教えるニャ　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) 
+            Message.create!(message: j+'のオススメのカレー屋さんを教えるニャ　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id)
+
             return true;
           end
         end  
         Message.create!(message: 'わからないにゃ...', user_id: 1, room_id: @room.id) 
-      end
+      
     end
 
   end
@@ -183,7 +187,7 @@ class RoomChannel < ApplicationCable::Channel
     @suggests.update_all(enable: false)
     decided = { id: d.id, title: d.title, url:d.url }
     Decided.create!(room_id: @room.id, suggest_id: decided_id)
-    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {decided: decided}})
+    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {user: {user_id: @user.id} }})
   end
 
   def define_timer(data)
