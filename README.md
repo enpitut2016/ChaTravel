@@ -1,14 +1,12 @@
 # ChaTravel
+====
 
+## 公開しているサイト
 LP http://chattravel.kickoffpages.com/
 demo page http://210.129.50.13:3000/
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-# Ruby version
+## 使っている技術
+#Ruby version
 ```
 ruby 2.3.0
 ```
@@ -20,18 +18,3 @@ Rails 5.0.0.1
 ```
 mysql  Ver 14.14 Distrib 5.6.31, for debian-linux-gnu (x86_64) using  EditLine wrapper
 ```
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
