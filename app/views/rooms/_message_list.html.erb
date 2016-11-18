@@ -7,7 +7,9 @@
             <% if message_user.id == current_user.id %>
                 <div class="comment col-md-9 chat_frame_right">
                   <p><%= message_user.name %></p>
-                  <p><%= message.message %></p>
+                  <p>
+                  <%= text_url_to_link(h(message.message)).html_safe %>　<!-- text_url_to_link()はrooms_helper.rbに記述  -->
+                  </p>
                 </div>
                 <div class="col-md-3 icon_right">
                   <%= gravatar_for current_user%>
@@ -18,7 +20,7 @@
                 </div>
                 <div class="col-md-9 chat_frame_left">
                   <p><%= message_user.name %></p>
-                  <p><%= message.message %></p>
+                  <p><%= text_url_to_link(h(message.message)).html_safe %></p>
                 </div>
             <% end %>
           </div>
