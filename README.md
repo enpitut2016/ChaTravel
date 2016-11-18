@@ -3,7 +3,6 @@
 
 ## 概要
 
-
 ## 使い方
 
 
@@ -15,16 +14,16 @@ demo page http://210.129.50.13:3000/
 ## 使っているAPI
 
 
-## 使っている技術
-Ruby
+## 使っているプログラミング技術
+* Ruby
 ```
 ruby 2.3.0
 ```
-Ruby on Rails
+* Ruby on Rails
 ```
 Rails 5.0.0.1
 ```
-MySql
+* MySql
 ```
 mysql  Ver 14.14 Distrib 5.6.31, for debian-linux-gnu (x86_64) using  EditLine wrapper
 ```
