@@ -48,8 +48,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   },
 
   request_recommend_yado: function(data) {
-    console.log("yado: " + data);
-    this.perform('request_recommend_yado', { text: data });
+    this.perform('request_recommend_yado', { keyword: data });
   },
 
   suggest: function(data) {
