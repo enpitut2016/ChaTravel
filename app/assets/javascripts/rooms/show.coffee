@@ -33,7 +33,11 @@ $ ->
     App.room.speak text
     comment.val('')
     if (text.substring(0, 13) == '@bot -kankou ')
+      console.log('kankou_recommend:' + text.substring(12)) 
       execKankouSearch(text.substring(12))
+    else if (text.substring(0,11) == '@bot -yado ')
+      App.room.request_recommend_yado text.substring(10)
+      console.log('yado: ' + text.substring(10))
     else if (text.substring(0, 5) == '@bot ')
       App.room.request_bot_response text.substring(4)
     
@@ -251,7 +255,6 @@ execKankouSearch = (word) ->
     else
       alert status.text
       return
-
 
 ### トピック決め ###
 $ ->
