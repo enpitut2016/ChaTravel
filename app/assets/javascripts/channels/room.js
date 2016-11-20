@@ -74,7 +74,8 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     received_chat: function(data) {
       var message =
           "<p>" + data.user.name + "</p>" +
-          "<p>" + data.message + "</p>";
+          "<p>" + data.message.replace(/(http:\/\/[\x21-\x7e]+)/gi, "<a href='$1' target='_blank'>$1</a>") + "</p>"; //urlなら<a>タグ挿入
+
       var icon = "<img alt='"+ data.user.name + "' class='gravatar' src="+ data.user.icon + ">";
 
       var dom = "";
