@@ -1,4 +1,6 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
+#require "open-uri"
+
 class RoomChannel < ApplicationCable::Channel
   def subscribed
     p @room
@@ -187,7 +189,57 @@ class RoomChannel < ApplicationCable::Channel
 
   def request_recommend_kankou(data)
     # 検索した観光スポットを表示する
+    Rails.logger.debug("メッセージ: #{data['text']}")
     Message.create!(message: data['text'], user_id: 1, room_id: @room.id)
+  end
+
+  def rakutenAPI (data)  
+    params = URI.encode_www_form({ keyword: data['text'], applicationId: '1010975386512440574'})
+       uri = URI.parse("https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024?format=json&responseType=small&hits=1&page=1&elements=hotelName&#{params}")
+       Rails.logger.debug("検索URL：#{uri}") 
+     begin
+ 
+       response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|        
+         http.open_timeout = 5 # Net::HTTP.open_timeout=で接続時に待つ最大秒数の設定をする。タイムアウト時はTimeoutError例外が発生
+         http.read_timeout = 10 # Net::HTTP.read_timeout=で読み込み1回でブロックして良い最大秒数の設定をする
+         http.get(uri.request_uri) # 返り値はNet::HTTPResponseのインスタンス
+       end
+ 
+       # [レスポンス処理]
+       case response
+       when Net::HTTPSuccess   #うまくいっていたらbotが発言
+         p = JSON.parse(response.body)
+         return p;
+       when Net::HTTPRedirection
+         Rails.logger.debug("Redirection: code=#{response.code} message=#{response.message}")
+       else
+         Rails.logger.debug("HTTP ERROR: code=#{response.code} message=#{response.message}")
+       end
+ 
+     rescue IOError => e
+       Rails.logger.debug(e.message);
+     rescue TimeoutError => e
+       Rails.logger.debug(e.message);
+     rescue JSON::ParserError => e
+       Rails.logger.debug(e.message);
+     rescue => e
+       Rails.logger.debug(e.message);
+     end
+
+  end
+
+  def request_recommend_yado(data)
+    yado_name = rakutenAPI(data);
+    #Message.create!(message: data['text'], user_id: 1, room_id: @room.id)
+    Rails.logger.debug("検索キーワード: #{data['text']}")
+    Rails.logger.debug("検索結果: #{yado_name}")
+    yado = yado_name["hotels"]
+    yado1 = yado[0]
+    yado2 = yado1["hotel"]
+    yado3 = yado2[0]
+    yado4 = yado3["hotelBasicInfo"]
+    yado5 = yado4["hotelName"]
+    Message.create!(message: yado5, user_id: 1, room_id: @room.id)
   end
 
   def suggest (data)
