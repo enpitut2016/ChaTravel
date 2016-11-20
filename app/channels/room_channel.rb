@@ -21,23 +21,70 @@ class RoomChannel < ApplicationCable::Channel
   #botの返答
   def request_bot_response(data)
 
+    #repl-AIからの雑談対応 
+    request_repl(data)
+
     #形態素解析を行い、もしメッセージを表示するイベントが行われていたらreturn
     isMes = decomposeSentences(data);
     if isMes == true then
       return;
     end 
 
-
-    #雑談APIを使い、適当な返答をする。もし、エラーがあれば"zzz"と返す
+    #ユーザローカル雑談APIを使い、適当な返答をする。もし、エラーがあれば"zzz"と返す
     chatRes = use_api(data,'chat');
     if chatRes == nil then
       Message.create!(message: "zzz", user_id: 1, room_id: @room.id)
       return
     end
-    Message.create!(message: chatRes['result'], user_id: 1, room_id: @room.id)
-    
-
+    Message.create!(message: "[ユーザローカル] #{chatRes['result']}", user_id: 1, room_id: @room.id)
   end
+
+  def request_repl(data)
+
+    #まずエンドユーザID取得
+
+    uri = URI.parse("https://api.repl-ai.jp/v1/registration")
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true #httpsに
+    req = Net::HTTP::Post.new(uri.request_uri)
+     
+    req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+    req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
+    payload = { "botId" => "chatraBot" }.to_json
+    req.body = payload # リクエストボデーにJSONをセット
+    res = https.request(req)
+     
+    resMes = JSON.parse(res.body)
+    appUserId = resMes["appUserId"] #ユーザID取得
+    Rails.logger.debug("ユーザID #{resMes["appUserId"]}")
+
+
+    #ここから会話
+
+    uri = URI.parse("https://api.repl-ai.jp/v1/dialogue")
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true #httpsに
+    req = Net::HTTP::Post.new(uri.request_uri)
+     
+    req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+    req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
+    payload = { 
+      "appUserId" => appUserId, 
+      "botId" => "chatraBot",
+      "voiceText" => data['data'],
+      "initTalkingFlag" => true,
+      "initTopicId" => "zatsudan"
+    }.to_json
+    req.body = payload # リクエストボデーにJSONをセット
+    res = https.request(req)
+     
+    resMes = JSON.parse(res.body)
+    Rails.logger.debug("会話 #{resMes}")
+
+    Message.create!(message: "[repl-AI] #{ resMes["systemText"]["expression"] }", user_id: 1, room_id: @room.id) 
+
+  
+  end  
 
   #botAPIの処理
   def use_api(data,type)
