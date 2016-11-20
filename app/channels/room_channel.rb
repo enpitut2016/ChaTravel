@@ -41,24 +41,24 @@ class RoomChannel < ApplicationCable::Channel
 
   #botAPIの処理
   def use_api(data,type)
-    
+
     case type
     when 'chat'
-      params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
+      params = URI.encode_www_form({ message: data['data'], key: Rails.application.secrets.USERLOCAL_KEY})
       uri = URI.parse("https://chatbot-api.userlocal.jp/api/chat?#{params}")
     when 'dec'
-      params = URI.encode_www_form({ message: data['data'], key: 'd18e1f9b28ac66406002'})
+      params = URI.encode_www_form({ message: data['data'], key: Rails.application.secrets.USERLOCAL_KEY})
       uri = URI.parse("https://chatbot-api.userlocal.jp/api/decompose?#{params}")
     when 'geo'
       params = URI.encode_www_form({ method: 'suggest', matching: 'prefix', keyword: data})
       uri = URI.parse("http://geoapi.heartrails.com/api/json?#{params}")
     when 'eki'
       #http://express.heartrails.com/api/json?method=getStations&name=%22%E6%96%B0%E5%B7%9D%22
-    when 'gMap'
-      ActionCable.server.broadcast(@room_name, {type: 'gmap_command', data: { user_id: current_user.id, word: j } }) #クライアント側にデータを送信
+    when 'itsmo'
+      ActionCable.server.broadcast(@room_name, {type: 'itsmo_command', data: { user_id: current_user.id, word: j } }) #クライアント側にデータを送信
       return
     when 'gnavi'
-      params = URI.encode_www_form({ keyid: '39da3c7e2563a8d9f4ba015c4e173268', format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
+      params = URI.encode_www_form({ keyid: Rails.application.secrets.GNAVI_KEY, format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
     else
       Rails.logger.debug("API Type Error")

@@ -47,4 +47,5 @@ bower.json
 # Ignore RubyMine confing file
 .idea
 
-
+# Ignore rbenv-vars
+.rbenv-vars
