@@ -49,7 +49,7 @@ class RoomChannel < ApplicationCable::Channel
     req = Net::HTTP::Post.new(uri.request_uri)
      
     req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
-    req["x-api-key"] = "V0OEFDXKYXzZn33cSkAa5E9hQUGxXrg6lRevCXLg" # httpリクエストヘッダの追加
+    req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
     payload = { "botId" => "chatraBot" }.to_json
     req.body = payload # リクエストボデーにJSONをセット
     res = https.request(req)
@@ -67,7 +67,7 @@ class RoomChannel < ApplicationCable::Channel
     req = Net::HTTP::Post.new(uri.request_uri)
      
     req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
-    req["x-api-key"] = "V0OEFDXKYXzZn33cSkAa5E9hQUGxXrg6lRevCXLg" # httpリクエストヘッダの追加
+    req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
     payload = { 
       "appUserId" => appUserId, 
       "botId" => "chatraBot",
