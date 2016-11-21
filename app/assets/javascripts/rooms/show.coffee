@@ -1,3 +1,5 @@
+#= require action_cable
+#= require_self
 #= require ../cable
 
 #ページが読み込まれたとき最新の投稿に移動する

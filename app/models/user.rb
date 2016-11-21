@@ -1,11 +1,13 @@
 class User < ApplicationRecord
   has_many :room_to_users, class_name:  "RoomToUser",
                                   dependent:   :destroy
-  has_many :rooms, through: :room_to_users                                
+  has_many :rooms, through: :room_to_users
+  has_many :messages, dependent: :destroy
+
   validates :name,  presence: true, length: {maximum: 50}, uniqueness: true
   validates :icon, presence: true
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, on: :create
 
 
   # グループに参加する
