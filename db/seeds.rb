@@ -14,6 +14,7 @@ User.new(name: 'kmkt',     icon: '5', password: 'kmktkmkt'  ).save!
 User.new(name: 'kubo',     icon: '6', password: 'kubokubo'  ).save!
 User.new(name: 'takayama', icon: '7', password: 'takayama'  ).save!
 User.new(name: 'satop',    icon: '8', password: 'satopsatop').save!
+User.new(name: 'guest',    icon: 'chatravel.guest@gmail.com', password: 'mashup').save!
 
 Room.new(name: 'monochrome', enable: true, url: 'xxxxxxxxxxxx').save!
 
