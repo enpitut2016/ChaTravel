@@ -18,6 +18,11 @@ class RoomChannel < ApplicationCable::Channel
     Message.create!(message: data['message'], user_id: current_user.id, room_id: @room.id)
   end
 
+  #botに何か言わせたいとき
+  def speak_bot(data)
+    Message.create!(message: data['message'], user_id: 1, room_id: @room.id)
+  end
+
   #botの返答
   def request_bot_response(data)
 

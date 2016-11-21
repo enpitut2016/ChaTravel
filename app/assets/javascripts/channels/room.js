@@ -35,6 +35,10 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     this.perform('speak', { message: data });
   },
 
+  speak_bot: function(data){
+    this.perform('speak_bot', {message:data});
+  },
+
   request_bot_response: function(data) {
     this.perform('request_bot_response', { data: data });
   },
