@@ -209,7 +209,7 @@ class RoomChannel < ApplicationCable::Channel
         if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
           yado = use_api({"keyword" => loc}, 'yado');
           if true then #検索してみつからなかったときのなにかしらのエラー処理
-            Message.create!(message: loc+'のホテルを検索しました'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"], user_id: 1, room_id: @room.id)
+            Message.create!(message: '-rakuten-'+loc+'のホテルを検索しました'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"], user_id: 1, room_id: @room.id)
           else
             Message.create!(message: loc+'のホテルは見つかりませんでした。', user_id: 1, room_id: @room.id)
           end

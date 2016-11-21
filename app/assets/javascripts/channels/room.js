@@ -82,12 +82,15 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
           "<p>" + data.user.name + "</p>" +
           "<p>" + data.message.replace(/(http:\/\/[\x21-\x7e]+)/gi, "<a href='$1' target='_blank'>$1</a>") + "</p>"; //urlなら<a>タグ挿入
       
-      var gnavi = false
+      var gnavi = false;
+      var rakuten = false;
       if (message.match(/-gnavi-/) && parseInt(data.user.id)==1) {
         message = message.replace(/-gnavi-/,"");
         gnavi = true;
-        console.log("gnavi要素");
-      }    
+      } else if (message.match(/-rakuten-/) && parseInt(data.user.id)==1) {
+        message = message.replace(/-rakuten-/,"");
+        rakuten = true;
+      }
 
       var icon = "<img alt='"+ data.user.name + "' class='gravatar' src="+ data.user.icon + ">";
 
@@ -106,7 +109,15 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
           + "<a href='http://www.gnavi.co.jp/'>"
           + "<img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'>";
           + "</a></div></div></li>";
-        } else {
+        } else if(rakuten) { //楽天用の表示
+          dom = "<li class=" + data.user.name + "><div class='row'>"
+          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9 chat_frame_left'>" + message 
+          +"<!-- Rakuten Web Services Attribution Snippet FROM HERE -->"
+          +'<a href="http://webservice.rakuten.co.jp/" target="_blank"><img src="https://webservice.rakuten.co.jp/img/credit/200709/credit_22121.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="221" height="21"/></a>'
+          +"<!-- Rakuten Web Services Attribution Snippet TO HERE -->"
+          + "</div></div></li>";
+        } else {  
           dom = "<li class=" + data.user.name + "><div class='row'>"
           + "<div class='col-md-3 icon_left'>" + icon + "</div>"
           + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></div></li>";
