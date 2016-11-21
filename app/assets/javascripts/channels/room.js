@@ -28,6 +28,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       case 'define_timer':
         Chat.received_func.received_define_timer(data['data']);
         break;
+      case 'itsmo_command':
+        Chat.received_func.received_itsmo_command(data['data']);
+        break;
     }
   },
 
@@ -46,6 +49,10 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   request_recommend_kankou: function(data) {
     console.log(data);
     this.perform('request_recommend_kankou', { text: data });
+  },
+
+  request_recommend_yado: function(data) {
+    this.perform('request_recommend_yado', { keyword: data });
   },
 
   suggest: function(data) {
@@ -73,9 +80,22 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
   Chat = {};
   Chat.received_func = {
     received_chat: function(data) {
+
+
       var message =
           "<p>" + data.user.name + "</p>" +
-          "<p>" + data.message + "</p>";
+          "<p>" + data.message.replace(/(http:\/\/[\x21-\x7e]+)/gi, "<a href='$1' target='_blank'>$1</a>") + "</p>"; //urlなら<a>タグ挿入
+      
+      var gnavi = false;
+      var rakuten = false;
+      if (message.match(/-gnavi-/) && parseInt(data.user.id)==1) {
+        message = message.replace(/-gnavi-/,"");
+        gnavi = true;
+      } else if (message.match(/-rakuten-/) && parseInt(data.user.id)==1) {
+        message = message.replace(/-rakuten-/,"");
+        rakuten = true;
+      }
+
       var icon = "<img alt='"+ data.user.name + "' class='gravatar' src="+ data.user.icon + ">";
 
       var dom = "";
@@ -85,10 +105,29 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         + "<div class='comment col-md-9 chat_frame_right'>" + message + "</div>"
         + "<div class='col-md-3 icon_right'>" + icon + "</div></div></li>";
       } else {
-        dom = "<li class=" + data.user.name + "><div class='row'>"
-        + "<div class='col-md-3 icon_left'>" + icon + "</div>"
-        + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></div></li>";
-      }
+
+        if(gnavi){ //ぐるなび用の表示
+          dom = "<li class=" + data.user.name + "><div class='row'>"
+          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9 chat_frame_left'>" + message 
+          + "<a href='http://www.gnavi.co.jp/'>"
+          + "<img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'>";
+          + "</a></div></div></li>";
+        } else if(rakuten) { //楽天用の表示
+          dom = "<li class=" + data.user.name + "><div class='row'>"
+          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9 chat_frame_left'>" + message 
+          +"<!-- Rakuten Web Services Attribution Snippet FROM HERE -->"
+          +'<a href="http://webservice.rakuten.co.jp/" target="_blank"><img src="https://webservice.rakuten.co.jp/img/credit/200709/credit_22121.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="221" height="21"/></a>'
+          +"<!-- Rakuten Web Services Attribution Snippet TO HERE -->"
+          + "</div></div></li>";
+        } else {  
+          dom = "<li class=" + data.user.name + "><div class='row'>"
+          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></div></li>";
+        }
+      }        
+
       $('#message_list').append(dom)
       $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
     },
@@ -157,7 +196,25 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
     received_define_timer: function(data){
       $('#targetDate').text(data['target']);
+    },
+
+
+    received_itsmo_command: function(data){
+      console.log(data);
+      if (parseInt(data.user_id) == $('#current_user').data('current_user_id')) { //コマンドの受け取りが投稿者自身であったら
+        ZDC.Search.getPoiByWord({word: data.word, limit: "0,1", genrecode: "0012000150" }, function(status, res) {
+          if (status.code === '000') {
+            App.room.request_recommend_kankou(res.item[0].text);
+          } else {
+            alert(status.text);
+          }
+        });
+
+      }else{
+        console.log("other");
+      }
     }
+
   };
 
   Chat.utils = {

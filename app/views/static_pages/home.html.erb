@@ -31,19 +31,141 @@
 
   <% else %>
     <div class="row new_room_setting">
-      <div class ="col-sm-12" id="login_botton">   
-        <%= link_to "まずは無料登録！", signup_path, class: "btn btn-lg btn-warning center-block" %>
+
+      <div class="col-sm-12">
+        <div class="col-sm-1"></div>
+        <%= image_tag('top_page.png', :class => "col-sm-10 top_image") %>
+        <div class="col-sm-1"></div>
+      </div>
+      <div class ="col-sm-12" id="login_botton"> 
+        <div class="col-sm-1"></div>  
+        <%= link_to "まずは無料登録！", signup_path, class: "btn btn-lg btn-warning center-block col-sm-10" %>
+        <div class="col-sm-1"></div>
       </div>
   </div>
 
   <% end %>
+
+  <form class="col-sm-12">
+    <div class="col-sm-2"></div>
+    <textarea class="update_textarea col-sm-8" rows=5>
+    - 更新履歴 -
+
+    2016/11/21 - サービス公開（開発中）
+    </textarea>
+    <div class="col-sm-2"></div>
+  </form>
   
   <span >チャットラベルを使う3つのメリット </span>
   <div class="row">
-    <span class="col-sm-4 merrit lead">Botによる話し合いの進行</span>
-    <span class="col-sm-4 merrit lead">計画作成を助けるお助けツール</span>
-    <span class="col-sm-4 merrit lead">旅のしおりの作成</span>
+    <span class="col-sm-4 merrit lead">
+      <p>Botが話し合いをサポート<p>
+      <p class="small">旅行相談の際に面倒な宿の検索や、意見の取りまとめをBotがサポート。時間管理もしてくれます。</p>
+    </span>
+    <span class="col-sm-4 merrit lead">
+      <p>計画作成を助けるお助けツール<p>
+      <p class="small">旅行計画を助ける便利なツールも搭載。チャットを見ながら地図を確認したり、施設を検索したりできます。</p>
+    </span>
+    <span class="col-sm-4 merrit lead">
+      <p>スマホを使って旅先で予定を確認<p>
+      <p class="small">旅先からチャットルームをひらけば、みんなで決めた旅行計画をいつでも確認できます。</p>
+    </span>
   </div>
+
+  <h1>ChaTravelの使い方 </h1>
+  <ol>
+    <li>ユーザ登録</li>
+    <div class="row">
+      <%= image_tag('useage1.png', :class => "col-sm-4 top_image") %>
+      <div class="col-sm-8">
+        <p>
+        トップページの「まずは無料登録!」ボタンをクリックしてください
+        Sign upページに飛びますので、ユーザ名・メールアドレス・パスワード（6文字以上）を入力してください。
+        なお、登録されたメールアドレスはGravatar（<a href="https://ja.gravatar.com/">https://ja.gravatar.com/</a>）を用いてアイコン画像とユーザを紐づけるために使用します。
+        （アイコンを使用されない場合でも入力が求められますが、その場合は適当な文字を入力してください。）
+        </p>
+      </div>
+    </div>
+    <li>チャットルームの作成</li>
+    <div class="row">
+      <%= image_tag('useage2.png', :class => "col-sm-4 top_image") %>
+      <div class="col-sm-8">
+        <p>
+        アカウントを作成したら、画面上部のメニューよりホームに戻ってください。
+        Homeページにはグループ名入力のフォームがありますので、これを入力してください（チャットルームの名前になります）。
+        グループ名を入力したら、「チャットルームを作る」ボタンを押してください.
+        </p>
+      </div>
+    </div>
+    <li>チャットルームに入室</li>
+    <div class="row">
+      <%= image_tag('useage3.png', :class => "col-sm-4 top_image") %>
+      <div class="col-sm-8">
+        <p>
+        チャットルームが作成されると左図のような画面に遷移します。
+        表示されたリンクを他のメンバーに共有し、チャットルームに入室してください。
+        リンクを共有されたメンバーはアカウントにログインした状態でリンク先に行くことにより、チャットルームに入ることができます。
+        なお、一度入室したチャットルームは画面上部のRoomsから確認できます。
+        </p>
+      </div>
+    </div>
+    <li>チャットルームの構成</li>
+    <div class="row">
+      <%= image_tag('useage5.png', :class => "col-sm-4 top_image") %>
+      <div class="col-sm-8">
+        <p>
+        チャットルームの構成を説明します。
+        まず、画面左側には部屋の情報が記載されています。
+        ここには、部屋の名前・メンバー・議題・タイマーの情報などが表示されます。
+        画面中央にはチャットメッセージが表示されます。
+        チャットにメッセージを投稿する際は株のテキストエリアに文字を入力後、「投稿」ボタン（またはエンターキー）を押すことにてメッセージを投稿します。
+        画面右側に多数の便利ツールが置かれており、タブを切り替えてそれぞれのツールを使用します（便利ツールは今後追加していく予定）。
+        </p>
+      </div>
+    </div>  
+    <li>Botとの会話</li>
+    <div class="row">
+      <%= image_tag('useage4.png', :class => "col-sm-4 top_image") %>
+      <div class="col-sm-8">
+        <p>
+        Botに話しかけるには「@bot 〜」とチャットメッセージを入力します（@botのあとは半角スペース）。
+        Botは話しかけられると、適当な話題をみつけてメッセージを返してくれます。
+        また「@bot （地名）のホテルを教えて」などと入力すると、その土地にあるおすすめのホテルを教えてくれます。
+        さらに「@bot （地名）の（キーワード、お寿司屋さんなど）を教えて」などと入力すると、その土地おすすめのお店を教えてくれます。
+        </p>
+      </div>
+    </div>
+    <li>多数決（開発中）</li>
+      <p>
+        便利ツールの「オススメ」タブをから使用する。フォームにURLを貼り付けて「をオススメする」ボタンを押すと、そのURL先が一覧として表示される。
+        その後、多数決ボタンを押すことで多数決投票が始まる。
+        この状態で各候補をクリックすることにて投票が行える。
+        そして、「多数決を終わる」ボタンが押された段階で最も票が集まったものを「決めたことリスト」として登録する。
+        今後、Botから推薦されたURLもこの候補としれ入れることができるようにする予定である。
+      </p>
+    <li>議題の設定（開発中）</li>
+      <p>
+        便利ツールの「トピック」タブを開くことにより使用する。今後、ここに議題を入力することにより議題の設定を行えるようにする予定である。
+      </p>
+    <li>タイマーの設定（開発中）</li>
+      <p>
+        現在は「@bot -timer 2016-11-18 13:00:00.000」のようにBotに話しかけることによりタイマーの終了時間を指定できる。
+      </p>
+    <li>地図（開発中）</li>
+      <p>
+        便利ツールの「地図」タブを開くことにより使用する。現在は地図の閲覧のほか、駅・施設のキーワード検索が行える。
+      </p>
+  </ol>
+
+  <h1>使用API </h1>
+  <div>
+
+
+  </div>  
+
+
   
 </div>
+
+
 

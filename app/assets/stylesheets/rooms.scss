@@ -296,10 +296,24 @@ html, body {
     }
 
     #search_area{
-      width: 100px; 
+      width: 100px;
       height: 30%;
     }
 
+    #decided_list li {
+      background: initial;
+      padding: initial;
+      height: initial;
+    }
+
+    .decided_title {
+      margin: 0;
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
 }
