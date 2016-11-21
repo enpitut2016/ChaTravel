@@ -296,9 +296,10 @@ $ ->
       alert 'トピックを入力してください'
       return
     sentence = "トピックが決まりました。それでは" + topic_word + "について話し合いましょう！"
-    App.request_bot_response sentence
+    App.room.speak_bot sentence
     $("#topic_name").val('')
 
+timerCheck = false
 
 getEndTime = ->
   targetDate = $('#targetDate').text()
@@ -306,10 +307,14 @@ getEndTime = ->
   now = new Date
   diff = target.getTime() - now.getTime()
 
-  if (diff < 0)
-    $('#endTimer').text("タイマー未設定")
+  if (diff <= 0)
+    if (timerCheck == false)
+      $('#endTimer').text("タイマー未設定")
+    else
+      App.room.speak_bot "時間になりました。議論を終えてください"
+      timerCheck = false
   else
-
+    timerCheck = true
     # ミリ秒を日、時、分に分解する
     # 経過日数
     days = parseInt(diff/(24*60*60*1000), 10)
@@ -326,6 +331,6 @@ getEndTime = ->
     $('#endTimer').text(hours+'時間'+minutes+'分'+seconds+'秒')
   setTimeout ->
     getEndTime()
-  , 1000
+  , 500
 
   return
