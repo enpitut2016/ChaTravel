@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.new(name: 'BOT',      icon: '1', password: 'botbot'    ).save!
+User.new(name: 'BOT',      icon: 'monochro.infinity@gmail.com', password: 'botbot'    ).save!
 User.new(name: 'tkg',      icon: '2', password: 'tkgtkg'    ).save!
 User.new(name: 'AO',       icon: '3', password: 'aoaoao'    ).save!
 User.new(name: 'bun',      icon: '4', password: 'bunbun'    ).save!
