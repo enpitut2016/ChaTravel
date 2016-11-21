@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-md-9 chat_frame_left">
                   <p><%= message_user.name %></p>
-                  <p><%= text_url_to_link(h(message.message)).html_safe %></p>
+                  <p><%= meesage_format(h(message.message),message_user.id).html_safe %></p>
                 </div>
             <% end %>
           </div>

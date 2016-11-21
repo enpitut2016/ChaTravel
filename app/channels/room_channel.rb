@@ -218,7 +218,7 @@ class RoomChannel < ApplicationCable::Channel
 
         gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');
         if !gnavi.include?('error') then
-          Message.create!(message: loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
+          Message.create!(message: '-gnavi-'+loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
           return true;
         else   
           Message.create!(message: loc+'のレストラン（キーワード；'+keywords+'）は見つかりませんでした。', user_id: 1, room_id: @room.id) 
