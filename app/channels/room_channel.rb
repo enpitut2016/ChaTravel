@@ -23,8 +23,7 @@ class RoomChannel < ApplicationCable::Channel
   #botの返答
   def request_bot_response(data)
 
-    #repl-AIからの雑談対応 
-    request_repl(data)
+    
 
     #形態素解析を行い、もしメッセージを表示するイベントが行われていたらreturn
     isMes = decomposeSentences(data);
@@ -32,59 +31,26 @@ class RoomChannel < ApplicationCable::Channel
       return;
     end 
 
+    #repl-AIからの雑談対応 
+    request_repl(data)
+
     #ユーザローカル雑談APIを使い、適当な返答をする。もし、エラーがあれば"zzz"と返す
-    chatRes = use_api(data,'chat');
-    if chatRes == nil then
-      Message.create!(message: "zzz", user_id: 1, room_id: @room.id)
-      return
-    end
-    Message.create!(message: "[ユーザローカル] #{chatRes['result']}", user_id: 1, room_id: @room.id)
+    # chatRes = use_api(data,'chat');
+    # if chatRes == nil then
+    #   Message.create!(message: "zzz", user_id: 1, room_id: @room.id)
+    #   return
+    # end
+    # Message.create!(message: "[ユーザローカル] #{chatRes['result']}", user_id: 1, room_id: @room.id)
   end
 
   def request_repl(data)
 
     #まずエンドユーザID取得
-
-    uri = URI.parse("https://api.repl-ai.jp/v1/registration")
-    https = Net::HTTP.new(uri.host, uri.port)
-    https.use_ssl = true #httpsに
-    req = Net::HTTP::Post.new(uri.request_uri)
-     
-    req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
-    req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
-    payload = { "botId" => "chatraBot" }.to_json
-    req.body = payload # リクエストボデーにJSONをセット
-    res = https.request(req)
-     
-    resMes = JSON.parse(res.body)
-    appUserId = resMes["appUserId"] #ユーザID取得
-    Rails.logger.debug("ユーザID #{resMes["appUserId"]}")
-
-
-    #ここから会話
-
-    uri = URI.parse("https://api.repl-ai.jp/v1/dialogue")
-    https = Net::HTTP.new(uri.host, uri.port)
-    https.use_ssl = true #httpsに
-    req = Net::HTTP::Post.new(uri.request_uri)
-     
-    req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
-    req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
-    payload = { 
-      "appUserId" => appUserId, 
-      "botId" => "chatraBot",
-      "voiceText" => data['data'],
-      "initTalkingFlag" => true,
-      "initTopicId" => "zatsudan"
-    }.to_json
-    req.body = payload # リクエストボデーにJSONをセット
-    res = https.request(req)
-     
-    resMes = JSON.parse(res.body)
-    Rails.logger.debug("会話 #{resMes}")
-
+    resMes = use_api({},'repl-registration')
+    appUserId = resMes['appUserId']
+    resMes = use_api({"data" => data['data'], "appUserId" => appUserId},'repl-dialogue')
+    
     Message.create!(message: "[repl-AI] #{ resMes["systemText"]["expression"] }", user_id: 1, room_id: @room.id) 
-
   
   end  
 
@@ -92,37 +58,94 @@ class RoomChannel < ApplicationCable::Channel
   def use_api(data,type)
 
     case type
+    #---------ここからGETをつかうAPI-------------
     when 'chat'
       params = URI.encode_www_form({ message: data['data'], key: Rails.application.secrets.USERLOCAL_KEY})
       uri = URI.parse("https://chatbot-api.userlocal.jp/api/chat?#{params}")
+      method = 'GET'
     when 'dec'
       params = URI.encode_www_form({ message: data['data'], key: Rails.application.secrets.USERLOCAL_KEY})
       uri = URI.parse("https://chatbot-api.userlocal.jp/api/decompose?#{params}")
+      method = 'GET'
     when 'geo'
       params = URI.encode_www_form({ method: 'suggest', matching: 'prefix', keyword: data})
       uri = URI.parse("http://geoapi.heartrails.com/api/json?#{params}")
-    when 'eki'
-      #http://express.heartrails.com/api/json?method=getStations&name=%22%E6%96%B0%E5%B7%9D%22
+      method = 'GET'
     when 'itsmo'
       ActionCable.server.broadcast(@room_name, {type: 'itsmo_command', data: { user_id: current_user.id, word: j } }) #クライアント側にデータを送信
       return
     when 'gnavi'
       params = URI.encode_www_form({ keyid: Rails.application.secrets.GNAVI_KEY, format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
+      method = 'GET'
     when 'yado'
        params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '1', page: '1', elements: 'hotelName' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
        uri = URI.parse("https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024?#{params}") 
+       method = 'GET'
+    #---------ここからPOSTをつかうAPI-------------
+    when 'repl-registration'
+      uri = URI.parse("https://api.repl-ai.jp/v1/registration")
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true #httpsに
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+      req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
+      payload = { "botId" => "chatraBot" }.to_json
+      method = 'POST'
+    when 'repl-dialogue'
+      uri = URI.parse("https://api.repl-ai.jp/v1/dialogue")
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true #httpsに
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+      req["x-api-key"] = Rails.application.secrets.REPL_KEY # httpリクエストヘッダの追加
+      payload = { 
+        "appUserId" => data['appUserId'], 
+        "botId" => "chatraBot",
+        "voiceText" => data['data'],
+        "initTalkingFlag" => true,
+        "initTopicId" => "zatsudan"
+      }.to_json
+      method = 'POST'
+    when 'langAnaEnt'
+      params = URI.encode_www_form({ APIKEY: Rails.application.secrets.DOCOMO_KEY })
+      uri = URI.parse("https://api.apigw.smt.docomo.ne.jp/gooLanguageAnalysis/v1/entity?#{params}")
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true #httpsに
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+      payload = {
+        "sentence" => data['data']
+      }.to_json
+      method = 'POST'
+    when 'langAnaMor'
+      params = URI.encode_www_form({ APIKEY: Rails.application.secrets.DOCOMO_KEY })
+      uri = URI.parse("https://api.apigw.smt.docomo.ne.jp/gooLanguageAnalysis/v1/morph?#{params}")
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true #httpsに
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+      payload = {
+        "sentence" => data['data']
+      }.to_json
+      method = 'POST'
     else
       Rails.logger.debug("API Type Error")
       return
     end
 
+
     begin
 
-      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|        
-        http.open_timeout = 5 # Net::HTTP.open_timeout=で接続時に待つ最大秒数の設定をする。タイムアウト時はTimeoutError例外が発生
-        http.read_timeout = 10 # Net::HTTP.read_timeout=で読み込み1回でブロックして良い最大秒数の設定をする
-        http.get(uri.request_uri) # 返り値はNet::HTTPResponseのインスタンス
+      if method == 'GET' then
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|        
+          http.open_timeout = 5 # Net::HTTP.open_timeout=で接続時に待つ最大秒数の設定をする。タイムアウト時はTimeoutError例外が発生
+          http.read_timeout = 10 # Net::HTTP.read_timeout=で読み込み1回でブロックして良い最大秒数の設定をする 
+          http.get(uri.request_uri) # 返り値はNet::HTTPResponseのインスタンス
+        end
+      elsif method == 'POST' then
+        req.body = payload # リクエストボデーにJSONをセット
+        response = https.request(req);
       end
 
       # [レスポンス処理]
@@ -150,54 +173,65 @@ class RoomChannel < ApplicationCable::Channel
 
   #形態素解析の処理
   def decomposeSentences(data)
-    decRes = use_api(data,'dec');
-    result = decRes['result'];
-    Rails.logger.debug("#{result}(#{result[0]})");
-    nouns = [];
-    yomis = [];
-    for i in result do
-      surface = i['surface'];
-      pos = i['pos'];
-      yomi = i['yomi']
-      if yomi == '*' then
-        yomi = surface.tr('ぁ-ん','ァ-ン'); #読みがアスタリスクだったら、surfaceをカタカナに変換して代入 
-      end  
-      Rails.logger.debug("#{surface}(#{pos})"); #結果を表示
 
-      if pos == "名詞" then
-        nouns.push(surface);
-        yomis.push(yomi);
-      end
-    end
+    resEnt = use_api(data,'langAnaEnt');
+    location = [];
+    resEnt["ne_list"].each{|i| 
+      if i[1]=="LOC" then location << i[0] end #地名を抽出
+    }
+
+    resMor = use_api(data,'langAnaMor');
+    keyword = [];
+    resMor["word_list"].each{|i| 
+      i.each{|j|
+        if j[1]=="名詞" && !location.include?(j[0]) then keyword << j[0] end #キーワードを抽出
+        Rails.logger.debug("形態素 = #{j}");
+      }
+    }
+
+    Rails.logger.debug("地名 = #{location}");
+    Rails.logger.debug("キーワード = #{keyword}");
 
 
-    if yomis.include?("オススメ") then #チャット内容に読みが「オススメ」の文字を含んでいて
+    if !location.empty? && !keyword.empty? then #キーワードと地名を含んでいたら
 
-      if yomis.include?("ヤド") || yomis.include?("ホテル") then #チャット内容に読みが「オススメ」の文字を含んでいて
-        for j in nouns do
-          res = use_api(j,'geo');
-          if res['response'].key?('error') == false then #実在する地名の文字も含んでいたら
-          
-            yado = use_api({"keyword" => j}, 'yado');
-            Message.create!(message: yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"], user_id: 1, room_id: @room.id)
-  
-            return true;
-          end  
-        end
-      end  
+      keywords = "";
+      keyword.each{|i| keywords << "#{i}," } #カンマ形式に整える
+      keywords.slice!(keywords.length-1, 1);#最後のカンマを削除
+      
 
-      for j in nouns do
-        res = use_api(j,'geo');
-        if res['response'].key?('error') == false then #実在する地名の文字も含んでいたら
-          gnavi = use_api({"address" => j, "freeword" => 'カレー'},'gnavi');
-          Message.create!(message: j+'のオススメのカレー屋さんを教えるニャ　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id)
+      location.each{|loc|
 
+        if keyword.include?("ニュース") then #ニュースというキーワードがあったら雑談に移行する
+          return false;
+        end 
+
+        if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
+          yado = use_api({"keyword" => loc}, 'yado');
+          if true then #検索してみつからなかったときのなにかしらのエラー処理
+            Message.create!(message: loc+'のホテルを検索しました'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"], user_id: 1, room_id: @room.id)
+          else
+            Message.create!(message: loc+'のホテルは見つかりませんでした。', user_id: 1, room_id: @room.id)
+          end
           return true;
         end
-      end  
-      Message.create!(message: 'わからないにゃ...', user_id: 1, room_id: @room.id) 
-      
+
+        gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');
+        Rails.logger.debug("地名 = #{gnavi['error']['code']}");
+        if gnavi['error']['code'] != '600' then
+          Message.create!(message: loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
+          return true;
+        else   
+          Message.create!(message: loc+'のレストラン（キーワード；'+keywords+'）は見つかりませんでした。', user_id: 1, room_id: @room.id) 
+          return true;
+        end  
+
+      }      
+
+      Message.create!(message: 'すみません、わかりませんでした', user_id: 1, room_id: @room.id) 
     end
+
+
 
   end
 
