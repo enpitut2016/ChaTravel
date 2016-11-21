@@ -23,12 +23,9 @@
           </ul>
         </div>
 
-        <p>現在のトピック</p>
-        <ul>
-          <li>sample</li>
-        </ul>
-
-        <p>現在トピックの残り時間</p>
+        <p class="timerP">タイマー</p>
+        <p class="timerP"><span id="endTimer"></span></p>
+        <div id="targetDate" style="display: none;">2016-11-17 13:00:00.000</div>
 
       </div>
     </div>
@@ -82,7 +79,7 @@
 
           <li>
             <div id="ZMap"></div>
-            <div id="search-area" style="width:600px; height:175px;">
+            <div id="search-area">
               <input type="text" id="word" value="東京">
               <input type="button" id="eki-search-btn" value='駅検索'>
               <input type="button" id="poi-search-btn"  value='施設検索'>
@@ -100,8 +97,7 @@
 </div>
 
 
+<!-- いつもナビapiのスクリプト呼び出し-->
+<%= javascript_include_tag "http://api.its-mo.com/cgi/loader.cgi?ver=2.0&api=zdcmap.js,search.js,shape.js,usercontrol.js,control.js&enc=EUC&alert=1&force=1&key=#{Rails.application.secrets.ITSMO_KEY}"  %>
 
-
-
-<script src="http://api.its-mo.com/cgi/loader.cgi?key=JSZ4b70355b96af&ver=2.0&api=zdcmap.js,search.js,shape.js,usercontrol.js,control.js&enc=EUC&alert=1&force=1" type="text/javascript"></script>
 

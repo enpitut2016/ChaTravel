@@ -1,7 +1,9 @@
 #= require ../cable
 
+#ページが読み込まれたとき最新の投稿に移動する
 $(window).load ->
   $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
+  getEndTime();
 
 
 #タブに関する記述
@@ -31,7 +33,13 @@ $ ->
     App.room.speak text
     comment.val('')
     if (text.substring(0, 13) == '@bot -kankou ')
+      console.log('kankou_recommend:' + text.substring(12)) 
       execKankouSearch(text.substring(12))
+    else if (text.substring(0, 12) == '@bot -timer ')
+      App.room.define_timer text.substring(11)
+    else if (text.substring(0,11) == '@bot -yado ')
+      App.room.request_recommend_yado text.substring(10)
+      console.log('yado: ' + text.substring(10))
     else if (text.substring(0, 5) == '@bot ')
       App.room.request_bot_response text.substring(4)
 
@@ -100,7 +108,9 @@ arrmrk = []
 loadMap = () ->
   lat = 35.6778614
   lon = 139.7703167
+  $('#ZMap').empty();
   map = new ZDC.Map(document.getElementById('ZMap'),{ latlon: new ZDC.LatLon(lat, lon), zoom: 6});   
+  
 
   ### 通常のコントロールを作成 ###
   widget_normal = new (ZDC.Control)(
@@ -110,6 +120,19 @@ loadMap = () ->
     type: ZDC.CTRL_TYPE_NORMAL) 
   
   map.addWidget widget_normal #コントロールを表示  
+
+#リサイズされるたびに地図を再描画する（連続して呼ばれないようにタイマーを用いて、リサイズ1.5秒後に描画）
+timer = false
+$(window).resize ->
+  if timer != false
+    clearTimeout timer
+  timer = setTimeout((->
+    console.log 'resized'
+    loadMap()
+    return
+  ), 1000)
+  return
+
 
 $ ->
   $('#eki-search-btn').on 'click', ->
@@ -265,7 +288,6 @@ execKankouSearch = (word) ->
       alert status.text
       return
 
-
 ### トピック決め ###
 $ ->
   $('#topic_submit').on 'click', ->
@@ -274,6 +296,36 @@ $ ->
       alert 'トピックを入力してください'
       return
     sentence = "トピックが決まりました。それでは" + topic_word + "について話し合いましょう！"
-    App.room.speak sentence
+    App.request_bot_response sentence
     $("#topic_name").val('')
 
+
+getEndTime = ->
+  targetDate = $('#targetDate').text()
+  target = new Date(targetDate)
+  now = new Date
+  diff = target.getTime() - now.getTime()
+
+  if (diff < 0)
+    $('#endTimer').text("タイマー未設定")
+  else
+
+    # ミリ秒を日、時、分に分解する
+    # 経過日数
+    days = parseInt(diff/(24*60*60*1000), 10)
+    diff -= days * 24 * 60 * 60 * 1000
+    # 経過時間
+    hours = parseInt(diff/(60*60*1000), 10)
+    diff -= hours * 60 * 60 * 1000
+    # 経過分
+    minutes = parseInt(diff/(60*1000), 10)
+    diff -= minutes * 60 * 1000
+    # 経過秒
+    seconds = parseInt(diff/1000, 10) 
+
+    $('#endTimer').text(hours+'時間'+minutes+'分'+seconds+'秒')
+  setTimeout ->
+    getEndTime()
+  , 1000
+
+  return
