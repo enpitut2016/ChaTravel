@@ -290,6 +290,20 @@ html, body {
       height: 50%;
     }
 
+    #decided_list li {
+      background: initial;
+      padding: initial;
+      height: initial;
+    }
+
+    .decided_title {
+      margin: 0;
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
 }

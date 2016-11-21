@@ -1,7 +1,6 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
 class RoomChannel < ApplicationCable::Channel
   def subscribed
-    p @room
     @room = Room.find_by(url: params[:room])
     @room_name = "room_#{@room.url}"
     # @vote_name = "vote_#{@room.url}"

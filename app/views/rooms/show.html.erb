@@ -23,15 +23,6 @@
           </ul>
         </div>
 
-
-
-        <p>決めたことリスト</p>
-        <ul id="decided_list">
-          <% @decideds.each do |d| %>
-            <li><%= link_to d.title, d.url %></li>
-          <% end %>
-        </ul>
-
         <p>現在のトピック</p>
         <ul>
           <li>sample</li>
@@ -60,9 +51,11 @@
           <li class="select">オススメ</li>
           <li>トピック</li>
           <li>地図</li>
+          <li>決めたこと</li>
+
         </ul>
         <ul class="tab_content">
-          <li> 
+          <li>
             <div>
               <div id="suggest_textarea">
                 <input type="text" class="col-md-8" id="suggest_name" placeholder="URL">
@@ -97,6 +90,9 @@
             </div>
           </li>
 
+          <li>
+            <%= render 'deceded_list', decided_list: @decided %>
+          </li>
         </ul>
 
       </div>

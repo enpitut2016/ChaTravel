@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160830104012) do
+ActiveRecord::Schema.define(version: 20161116171231) do
 
   create_table "decideds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "room_id"
     t.integer  "suggest_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "order"
     t.index ["room_id"], name: "index_decideds_on_room_id", using: :btree
     t.index ["suggest_id"], name: "index_decideds_on_suggest_id", using: :btree
   end
