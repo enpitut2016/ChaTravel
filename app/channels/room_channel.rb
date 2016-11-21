@@ -50,7 +50,7 @@ class RoomChannel < ApplicationCable::Channel
     appUserId = resMes['appUserId']
     resMes = use_api({"data" => data['data'], "appUserId" => appUserId},'repl-dialogue')
     
-    Message.create!(message: "[repl-AI] #{ resMes["systemText"]["expression"] }", user_id: 1, room_id: @room.id) 
+    Message.create!(message: "#{ resMes["systemText"]["expression"]}", user_id: 1, room_id: @room.id) 
   
   end  
 
