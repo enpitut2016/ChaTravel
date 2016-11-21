@@ -217,8 +217,7 @@ class RoomChannel < ApplicationCable::Channel
         end
 
         gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');
-        Rails.logger.debug("地名 = #{gnavi['error']['code']}");
-        if gnavi['error']['code'] != '600' then
+        if !gnavi.include?('error') then
           Message.create!(message: loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
           return true;
         else   
