@@ -209,7 +209,7 @@ class RoomChannel < ApplicationCable::Channel
         if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
           yado = use_api({"keyword" => loc}, 'yado');
           if true then #検索してみつからなかったときのなにかしらのエラー処理
-            Message.create!(message: loc+'のホテルを検索しました'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"], user_id: 1, room_id: @room.id)
+            Message.create!(message: '-rakuten-'+loc+'のホテルを検索しました'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"], user_id: 1, room_id: @room.id)
           else
             Message.create!(message: loc+'のホテルは見つかりませんでした。', user_id: 1, room_id: @room.id)
           end
@@ -218,7 +218,7 @@ class RoomChannel < ApplicationCable::Channel
 
         gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');
         if !gnavi.include?('error') then
-          Message.create!(message: loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
+          Message.create!(message: '-gnavi-'+loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
           return true;
         else   
           Message.create!(message: loc+'のレストラン（キーワード；'+keywords+'）は見つかりませんでした。', user_id: 1, room_id: @room.id) 
