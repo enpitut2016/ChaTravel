@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20161116171231) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["room_id", "user_id"], name: "index_room_to_users_on_room_id_and_user_id", unique: true, using: :btree
     t.index ["room_id"], name: "index_room_to_users_on_room_id", using: :btree
     t.index ["user_id"], name: "index_room_to_users_on_user_id", using: :btree
   end
