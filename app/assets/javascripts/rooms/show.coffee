@@ -1,5 +1,3 @@
-#= require action_cable
-#= require_self
 #= require ../cable
 
 #ページが読み込まれたとき最新の投稿に移動する
@@ -10,14 +8,14 @@ $(window).load ->
 
 #タブに関する記述
 $ ->
-  $(".tab_content li").css("display","none");
+  $(".tab_content > li").css("display","none");
   $('.tab_content li').eq(0).css('display','block');
 
 
 $ ->
   $(".tab li").on 'click', ->
     index = $(".tab li").index(this);
-    $(".tab_content li").css("display","none");
+    $(".tab_content > li").css("display","none");
     $('.tab_content li').eq(index).css('display','block');
     $('.tab li').removeClass('select');
     $(this).addClass('select')
