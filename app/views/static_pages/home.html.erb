@@ -31,19 +31,59 @@
 
   <% else %>
     <div class="row new_room_setting">
-      <div class ="col-sm-12" id="login_botton">   
-        <%= link_to "まずは無料登録！", signup_path, class: "btn btn-lg btn-warning center-block" %>
+
+      <div class="col-sm-12">
+        <div class="col-sm-1"></div>
+        <%= image_tag('top_page.png', :class => "col-sm-10 top_image") %>
+        <div class="col-sm-1"></div>
+      </div>
+      <div class ="col-sm-12" id="login_botton"> 
+        <div class="col-sm-1"></div>  
+        <%= link_to "まずは無料登録！", signup_path, class: "btn btn-lg btn-warning center-block col-sm-10" %>
+        <div class="col-sm-1"></div>
       </div>
   </div>
 
   <% end %>
+
+  <form class="col-sm-12">
+    <div class="col-sm-2"></div>
+    <textarea class="update_textarea col-sm-8" rows=5>
+    - 更新履歴 -
+
+    2016/11/21 - サービス公開（開発中）
+    </textarea>
+    <div class="col-sm-2"></div>
+  </form>
   
   <span >チャットラベルを使う3つのメリット </span>
   <div class="row">
-    <span class="col-sm-4 merrit lead">Botによる話し合いの進行</span>
-    <span class="col-sm-4 merrit lead">計画作成を助けるお助けツール</span>
-    <span class="col-sm-4 merrit lead">旅のしおりの作成</span>
+    <span class="col-sm-4 merrit lead">
+      <p>Botが話し合いをサポート<p>
+      <p class="small">旅行相談の際に面倒な宿の検索や、意見の取りまとめをBotがサポート。時間管理もしてくれます。</p>
+    </span>
+    <span class="col-sm-4 merrit lead">
+      <p>計画作成を助けるお助けツール<p>
+      <p class="small">旅行計画を助ける便利なツールも搭載。チャットを見ながら地図を確認したり、施設を検索したりできます。</p>
+    </span>
+    <span class="col-sm-4 merrit lead">
+      <p>スマホを使って旅先で予定を確認<p>
+      <p class="small">旅先からチャットルームをひらけば、みんなで決めた旅行計画をいつでも確認できます。</p>
+    </span>
   </div>
+
+  <h1>ChaTravelの使い方 </h1>
+
+  <h1>使用API </h1>
+  <div>
+    地図表示ーいつもNAVI
+
+
+  </div>  
+
+
   
 </div>
+
+
 
