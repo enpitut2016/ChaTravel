@@ -8,7 +8,7 @@
 
 ## 公開しているサイト
 
-demo page http://210.129.50.13:3000/
+demo page http://chatravel.jp/
 
 ## 使っているAPI
 
