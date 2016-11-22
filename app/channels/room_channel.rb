@@ -262,8 +262,10 @@ class RoomChannel < ApplicationCable::Channel
     @user = User.find(data['user_id'])
     url = data['suggest_url']
     result = ApplicationController::scrape(url)
-    id = Suggest.create!(url: url, title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id).id
-    ActionCable.server.broadcast(@room_name, {type: 'suggest', data: result.merge({suggest_id: id, url: url, user_name: @user.name})})
+    suggest = Suggest.create!(url: url, title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id)
+
+    dom = ApplicationController.renderer.render partial: 'rooms/suggest_item', locals: { suggest: suggest}
+    ActionCable.server.broadcast(@room_name, {type: 'suggest', data: {dom: dom} })
   end
 
   def start_vote(data)
@@ -285,7 +287,7 @@ class RoomChannel < ApplicationCable::Channel
     vote_result = VoteResult.find_by(vote_id: data['vote_id'], user_id: @user.id)
     if vote_result.nil?
       VoteResult.create!(vote_id: data['vote_id'], suggest_id: suggest_id, user_id: @user.id)
-      ActionCable.server.broadcast(@room_name, {type: 'vote', data: { suggest_id: suggest_id}})
+      ActionCable.server.broadcast(@room_name, {type: 'vote', data: { suggest_id: suggest_id }})
     end
   end
 
@@ -298,9 +300,12 @@ class RoomChannel < ApplicationCable::Channel
     # TODO dbにいれる
     d = @suggests.find(decided_id)
     @suggests.update_all(enable: false)
-    decided = { id: d.id, title: d.title, url:d.url }
-    Decided.create!(room_id: @room.id, suggest_id: decided_id)
-    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {user: {user_id: @user.id} }})
+    # decided = { id: d.id, title: d.title, url:d.url }
+    decided = Decided.create!(room_id: @room.id, suggest_id: decided_id)
+    dom = ApplicationController.renderer.render partial: 'rooms/decided_item', locals: { decided: decided }
+    # ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: {user: {user_id: @user.id} }})
+    p dom
+    ActionCable.server.broadcast(@room_name, {type: 'finish_vote', data: { dom: dom }})
   end
 
   def define_timer(data)
