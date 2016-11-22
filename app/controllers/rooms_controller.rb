@@ -1,16 +1,21 @@
 class RoomsController < ApplicationController
+  before_action :logged_in_user
   before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :room_in_user, only: [:show]
 
   # GET /rooms
   # GET /rooms.json
   def index
-    @rooms = Room.all
+    @rooms = current_user.rooms
   end
 
   # GET /rooms/1
   # GET /rooms/1.json
   def show
     @room = Room.find_by(url: params[:url])
+    @messages = @room.messages.includes(:user)
+    @suggests = @room.suggests.where(enable: true)
+    @decided = @room.decideds.includes(:suggest)
   end
 
   # GET /rooms/new
@@ -29,10 +34,11 @@ class RoomsController < ApplicationController
 
     respond_to do |format|
       if @room.save
-        format.html { redirect_to @room, notice: 'Room was successfully created.' }
+        format.html { redirect_to controller: 'static_pages',action: 'room_page', name:@room.name}
         format.json { render :show, status: :created, location: @room }
       else
-        format.html { render :new }
+        # format.html { render :new }
+        format.html { redirect_to controller:'static_pages', action: 'home'}
         format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end
@@ -62,7 +68,17 @@ class RoomsController < ApplicationController
     end
   end
 
+
+
   private
+    #ログイン済みかどうか確認
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_room
       # @room = Room.find(params[:id])
@@ -72,5 +88,13 @@ class RoomsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def room_params
       params.require(:room).permit(:name, :enable)
+    end
+
+    def room_in_user
+      unless current_user.entering?(@room)
+        current_user.enter(@room)
+        #flash[:danger] = "Please enter room."
+        #redirect_to rooms_path
+      end
     end
 end

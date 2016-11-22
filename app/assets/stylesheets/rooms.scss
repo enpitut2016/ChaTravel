@@ -1,3 +1,319 @@
 // Place all the styles related to the Rooms controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+html, body {
+  height: 100vh;
+  padding: 0;
+}
+
+
+
+.container-fluid {
+
+  #menubar {
+    /*max-width: 250px;*/
+
+    overflow: scroll;   /* スクロール表示 */ 
+    height: 100vh;
+    background-color: orange;
+    background-size: contain;
+    background-position: 50% 90%;
+    background-image: image-url("chatra_halfbraight.png");
+    background-repeat: no-repeat;
+
+    .menulist {
+      p{
+        color: white;
+      }
+
+      ul{
+        color: white;
+        padding-left: 20px;
+      }
+
+      .logo img{
+        max-width: 180px;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+      }
+      .logo{
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      .roomname {
+        padding: 5%;
+        text-align: center;
+        word-wrap: break-word;
+      }
+
+      .timerP {
+        margin: 0 auto;
+        padding: 0 auto;
+      }
+    }
+  }
+
+  .chat {
+
+    padding-top: 20px;
+
+    ul#message_list {
+      list-style: none;
+    }
+
+    #message_list {
+      height: 90vh;
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-left: 50px;
+      padding-right: 0px;
+
+      .chat_frame_right, .chat_frame_left{
+        /*width:80%;*/
+      	background-color: white;
+        border-style: solid;
+        border-color: gray;
+      	border-radius: 20px;
+      	/*position:relative;*/
+        /*padding: 0px 15px 0px 15px;*/
+      	/*color:brack;*/
+        margin: 5px 0 5px 0;
+
+        p {
+          margin-bottom: 5px;
+        }
+
+      }
+
+      .chat_frame_right:after {
+        border:10px solid transparent;
+      	border-left-color:gray;
+      	border-right-width:0;
+      	width:0;
+      	right:-10px;
+      	content:"";
+      	display:block;
+      	top:20px;
+      	position:absolute;
+      }
+
+      .chat_frame_left:after {
+        border:10px solid transparent;
+      	border-right-color:gray;
+      	border-left-width:0;
+      	width:0;
+      	left:-10px;
+      	content:"";
+      	display:block;
+      	top:20px;
+      	position:absolute;
+      }
+
+      .icon_right {
+        max-width: 80px;
+        max-height: 80px;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+        margin: 0px 10px 10px 10px;
+        border-radius: 20px;
+        padding: 0 !important;
+      }
+
+      .icon_left {
+        max-width: 80px;
+        max-height: 80px;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+        margin: 0px 10px 10px 10px;
+        border-radius: 20px;
+        padding: 0 !important;
+      }
+
+      .icon img {
+        /*
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
+        left: 50%;
+        top: 50%;
+        */
+      }
+
+    }
+
+    #message_textarea {
+      display: inline-flex;
+      width: 100%;
+
+      #post_comment {
+        width: 100%;
+        height: 30px;
+        resize: none;
+        /*padding: 10px 10px 20px 10px;
+        border-style: solid;
+        border-color: black;*/
+      	border-radius:10px;
+        /*border-width: 3px;*/
+      }
+
+      #post {
+        border-radius: 10px;
+      }
+
+    }
+
+    #current_user {
+      display: none;
+    }
+
+  }
+
+  
+  .dashboard {
+
+    border-color: #ddd;
+    border-left-style: groove;
+    padding: 0px;
+    height: 100vh;
+
+    .tab {
+      overflow:hidden;
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px
+    }
+    .tab li{
+      background:#ccc; 
+      padding:5px 25px;
+      margin: 0px; 
+      float:left; 
+      margin-right:1px;
+    }
+    .tab li.select{
+      background:#eee;
+    }
+    .tab_content{
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px
+    }
+    .tab_content li{
+      background:#eee; 
+      padding:20px;
+      height: 95vh;
+    }
+    .hide {
+      display:none;
+    }
+
+
+    #suggest_textare {
+      width:100%;
+      margin-top: 10px;
+    }
+
+    #suggest_name {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      line-height: 1.7;
+
+    }
+
+    #suggest_submit {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+
+    }
+
+    #suggest_area {
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .suggest_list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .suggest_item {
+      margin-top: 10px;
+      padding: 3px;
+      border-style: solid;
+      border-width: 0.5px;
+    }
+
+    .panel-heading {
+      padding: 5px;
+    }
+    .badge {
+      padding: 10px;
+    }
+    .suggest_collapse {
+      display: flex;
+    }
+    .suggest_title {
+      margin: 0;
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .suggest_id {
+      display: none;
+    }
+
+    .vote_badge {
+      display: none;
+    }
+
+    #vote_id {
+      display: none;
+    }
+
+    #start_vote {
+      margin: 5px;
+      border-radius: 10px;
+    }
+
+    #finish_vote {
+      margin: 5px;
+      display: none;
+    }
+
+    #ZMap{
+      border:1px solid #777777; 
+      width: 100%; 
+      height: 50%;
+    }
+
+    #search_area{
+      width: 100px;
+      height: 30%;
+    }
+
+    #decided_list li {
+      background: initial;
+      padding: initial;
+      height: initial;
+    }
+
+    .decided_title {
+      margin: 0;
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+}

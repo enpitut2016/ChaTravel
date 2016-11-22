@@ -14,7 +14,6 @@ pickle-email-*.html
 
 # TODO Comment out these rules if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb
-config/secrets.yml
 
 # dotenv
 # TODO Comment out this rule if environment variables can be committed
@@ -42,9 +41,10 @@ bower.json
 .byebug_history
 
 # Ignore .DS_Store
-.DS_store
+.DS_Store
 
 # Ignore RubyMine confing file
 .idea
 
-
+# Ignore rbenv-vars
+.rbenv-vars
