@@ -1,0 +1,7 @@
+<div id="decided_list_wrapper">
+  <div id="accordion" class="panel-group decided_list">
+    <% decided_list.each do |decided| %>
+    <%= render 'decided_item', decided: decided %>
+    <% end %>
+  </div>
+</div>

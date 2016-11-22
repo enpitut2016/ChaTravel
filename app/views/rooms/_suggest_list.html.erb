@@ -1,29 +1,7 @@
 <div id="suggest_list_wrapper">
   <div id="accordion" class="panel-group suggest_list">
     <% suggest_list.each do |suggest| %>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h5 class="suggest_title_wrapper panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#suggest_<%= suggest.id %>" class="suggest_collapse">
-            <p class="suggest_title" ><%= suggest.title %></p>
-            <span class="badge vote_badge" id="badge_suggest_<%= suggest.id %>">0</span>
-          </a>
-        </h5>
-      </div>
-      <div id="suggest_<%= suggest.id %>" class="panel-collapse collapse">
-        <div class="panel-body">
-          <div id="media">
-            <a href="#" class="media-left">
-              <%= image_tag suggest.image, class: 'suggest_image', size: '180x150' %>
-            </a>
-            <p class="suggest_description media-body">
-              <%= suggest.description %>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="suggest_id" data-suggest_id="<%= suggest.id %>"></div>
-    </div>
+    <%= render 'suggest_item', suggest: suggest %>
     <% end %>
   </div>
 </div>

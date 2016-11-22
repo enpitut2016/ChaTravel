@@ -128,32 +128,12 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         }
       }        
 
-      $('#message_list').append(dom)
+      $('#message_list').append(dom);
       $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
     },
 
     received_suggest: function(data) {
-      var dom = "<div class='panel panel-default'>" +
-        "<div class='panel-heading'>" +
-        "<h5 class='suggest_title_wrapper panel-title'>" +
-        "<a data-toggle='collapse' data-parent='#accordion' href='#suggest_" + data.suggest_id + "' class='suggest_collapse'> " +
-        "<p class='suggest_title' >" + data.title + "</p>" +
-        "<span class='badge vote_badge' id='badge_suggest_"+ data.suggest_id +"'>0</span>" +
-        "</a>" +
-        "</h5>" +
-        "</div>" +
-        "<div id='suggest_" + data.suggest_id +"' class='panel-collapse collapse'>" +
-        "<div class='panel-body'>" +
-        "<div id='media'>" +
-        "<a href='#' class='media-left'>" +
-         "<img src='"+ data.image +"' class='suggest_image' width='180' height='150'>" +
-        "</a>" +
-        "<p class='suggest_description media-body'>" +
-          data.description + "</p></div></div></div>" +
-        "<div class='suggest_id' data-suggest_id='" + data.suggest_id + "'></div>" +
-        "</div>";
-
-      $('.suggest_list').append(dom);
+      $('.suggest_list').append(data.dom);
     },
 
     received_start_vote: function(data) {
@@ -190,8 +170,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       $('#start_vote').css({display: 'block'});
       $('#suggest_name').prop('disabled', false);
       $('#suggest_submit').prop('disabled', false);
-      var dom = "<li><a href='"+ data.decided.url +"'>"+ data.decided.title +"</a></li>"
-      $('#decided_list').append(dom);
+      $('.decided_list').append(data.dom);
     },
 
     received_define_timer: function(data){
