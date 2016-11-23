@@ -83,7 +83,7 @@ class RoomChannel < ApplicationCable::Channel
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
       method = 'GET'
     when 'yado'
-       params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '1', page: '1', elements: 'hotelName,hotelInformationUrl' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
+       params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '1', page: '1', elements: 'hotelName,hotelInformationUrl,hotelImageUrl,address2' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
        uri = URI.parse("https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024?#{params}") 
        method = 'GET'
     #---------ここからPOSTをつかうAPI-------------
@@ -213,7 +213,22 @@ class RoomChannel < ApplicationCable::Channel
         if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
           yado = use_api({"keyword" => loc}, 'yado');
           if true then #検索してみつからなかったときのなにかしらのエラー処理
-            Message.create!(message: '-rakuten-'+loc+'のホテルを検索しました　「'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"]+'」'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelInformationUrl"], user_id: 1, room_id: @room.id)
+            sendMessage = '-rakuten-' \
+                        + loc+'のホテルを検索しました' \
+                        + ' -mainS- ' \
+                        + ' -imgS- ' \
+                        + yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelImageUrl"] \
+                        + ' -E- ' \
+                        + ' -textS- ' \
+                        + '「'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"]+'」' \
+                        + ' -br- ' \
+                        + ' 住所：'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["address2"] \
+                        + ' -br- ' \
+                        + ' -br- ' \
+                        + yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelInformationUrl"] \
+                        + ' -E- ' \
+                        + ' -E- '
+            Message.create!(message: sendMessage, user_id: 1, room_id: @room.id)
           else
             Message.create!(message: loc+'のホテルは見つかりませんでした。', user_id: 1, room_id: @room.id)
           end
