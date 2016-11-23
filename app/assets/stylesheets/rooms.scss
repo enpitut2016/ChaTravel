@@ -88,16 +88,20 @@ html, body {
 
         /*バナー*/
         .api_banner {  
+          padding-top: 20px;
+          padding-bottom: 10px;
+          text-align: center;
+        }
+
+        /*検索結果ビュー*/
+        .search_result {  
           padding-top: 10px;
           padding-bottom: 10px;
           text-align: center;
         }
 
-        /*楽天検索結果*/
-        .rakuten_result {  
-          padding-top: 10px;
-          padding-bottom: 10px;
-          text-align: center;
+        .search_text {  
+          text-align: left;
         }
 
         .thumbnail {

@@ -84,32 +84,46 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       var message = "";
       var gnavi = false;
       var rakuten = false;
+
       if (data.message.match(/-gnavi-/) && parseInt(data.user.id)==1) {
-        message = 
-          "<p>" + data.user.name + "</p>" +
-          "<p>" + data.message.replace(/(http:\/\/[\x21-\x7e]+)/gi, "<a href='$1' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
-        message = message.replace(/-gnavi-/,"");
-        gnavi = true;
-      } else if (data.message.match(/-rakuten-/) && parseInt(data.user.id)==1) {
-        message = ""
         message += "<p>" + data.user.name + "</p>";
         message += "<p>" + data.message + "</p>";
 
-        console.log(data.message);
-
-        message = message.replace(/-rakuten-/,"");
+        message = message.replace(/-gnavi-/,"");
         message = message.replace(/-E-/g,"</div>");
         message = message.replace(/-br-/g,"<br>");
-        message = message.replace(/-mainS-/g,"<div class='rakuten_result'>");
+        message = message.replace(/-mainS-/g,"<div class='search_result'>");
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
-        message = message.replace(/-textS-/g, "<div class='col-md-7'>");
+        message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
 
         var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);
         for(var i=0; i<url.length; i++){
           if( url[i].match(/.jpg/) ){
-            message =  message.replace(url[i], "<img class='thumbnail' src="+url[i]+" alt='ホテル画像' >"); 
+            message =  message.replace(url[i], "<img class='thumbnail' src='"+url[i]+"' alt='レストラン画像' >"); 
           }else{
-            message = "<p>" + message.replace(url[i], "<a href="+url[i]+" target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
+            message = "<p>" + message.replace(url[i], "<a href='"+url[i]+"' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
+          }
+        }
+
+        gnavi = true;
+
+      } else if (data.message.match(/-rakuten-/) && parseInt(data.user.id)==1) {
+        message += "<p>" + data.user.name + "</p>";
+        message += "<p>" + data.message + "</p>";
+
+        message = message.replace(/-rakuten-/,"");
+        message = message.replace(/-E-/g,"</div>");
+        message = message.replace(/-br-/g,"<br>");
+        message = message.replace(/-mainS-/g,"<div class='search_result'>");
+        message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
+        message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
+
+        var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);
+        for(var i=0; i<url.length; i++){
+          if( url[i].match(/.jpg/) ){
+            message =  message.replace(url[i], "<img class='thumbnail' src='"+url[i]+"' alt='ホテル画像' >"); 
+          }else{
+            message = "<p>" + message.replace(url[i], "<a href='"+url[i]+"' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
           }
         }
 
@@ -135,8 +149,8 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
           dom = "<li class=" + data.user.name + "><div class='row'>"
           + "<div class='col-md-3 icon_left'>" + icon + "</div>"
           + "<div class='comment col-md-9 chat_frame_left'>" + message 
-          + "<a href='http://www.gnavi.co.jp/'>"
-          + "<div class='api_banner'><img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'></div>";
+          + "<div class='api_banner col-md-12'><a href='http://www.gnavi.co.jp/'>"
+          + "<img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'></div>";
           + "</a></div></div></li>";
         } else if(rakuten) { //楽天用の表示
           dom = "<li class=" + data.user.name + "><div class='row'>"
