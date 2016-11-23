@@ -86,6 +86,24 @@ html, body {
           margin-bottom: 5px;
         }
 
+        /*バナー*/
+        .api_banner {  
+          padding-top: 10px;
+          padding-bottom: 10px;
+          text-align: center;
+        }
+
+        /*楽天検索結果*/
+        .rakuten_result {  
+          padding-top: 10px;
+          padding-bottom: 10px;
+          text-align: center;
+        }
+
+        .thumbnail {
+          width: 100%;
+        }
+
       }
 
       .chat_frame_right:after {
