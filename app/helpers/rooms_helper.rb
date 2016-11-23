@@ -8,12 +8,18 @@ def meesage_format(text,id)
 	rakuten = false;
 	if text.match('-gnavi-')!=nil && id==1 then #ぐるなびかどうかを判別（ボットがしゃべってるかも判別）
 		text = text.gsub(/-gnavi-/, ""); #-gnavi-を削除
+		text = text.gsub(/-mainS-/, "<div class='rakuten_result'>"); #タブに変換
+		text = text.gsub(/-imgS-/, "<div class='col-md-5'>");
+		text = text.gsub(/-textS-/, "<div class='col-md-7 search_text'>");
+		text = text.gsub(/-rowS-/, "<div class='row'>");
+		text = text.gsub(/-E-/, "</div>");
+		text = text.gsub(/-br-/, "<br>");
 		gnavi = true;       
 	elsif text.match('-rakuten-')!=nil && id==1 then #楽天かどうかを判別（ボットがしゃべってるかも判別）
 		text = text.gsub(/-rakuten-/, ""); #-rakuten-を削除
 		text = text.gsub(/-mainS-/, "<div class='rakuten_result'>"); #タブに変換
 		text = text.gsub(/-imgS-/, "<div class='col-md-5'>");
-		text = text.gsub(/-textS-/, "<div class='col-md-7'>");
+		text = text.gsub(/-textS-/, "<div class='col-md-7 search_text'>");
 		text = text.gsub(/-rowS-/, "<div class='row'>");
 		text = text.gsub(/-E-/, "</div>");
 		text = text.gsub(/-br-/, "<br>");
@@ -23,10 +29,14 @@ def meesage_format(text,id)
 	if gnavi then
 		URI.extract(text, ['http']).uniq.each do |url|
     		sub_text = ""
-    		sub_text << "<a href=" << url << " target=\"_blank\">詳しくはこちら</a>"
+    		if url.include?(".jpg") then
+    			sub_text << "<img class='thumbnail' src='" << url << "' alt='ホテル画像'> "
+    		else
+    			sub_text << "<a href=" << url << " target=\"_blank\">詳しくはこちら</a>"
+    		end
     		text.gsub!(url, sub_text)
   		end
-		text << "<div class='api_banner'><a href='http://www.gnavi.co.jp/'><img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'></a></div>" 
+		text << "<div class='api_banner col-md-12'><a href='http://www.gnavi.co.jp/'><img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'></a></div>" 
 	elsif rakuten then
 		URI.extract(text, ['http']).uniq.each do |url|
     		sub_text = ""

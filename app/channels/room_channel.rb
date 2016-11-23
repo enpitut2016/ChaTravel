@@ -210,6 +210,8 @@ class RoomChannel < ApplicationCable::Channel
           return false;
         end 
 
+
+
         if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
           yado = use_api({"keyword" => loc}, 'yado');
           if true then #検索してみつからなかったときのなにかしらのエラー処理
@@ -237,9 +239,28 @@ class RoomChannel < ApplicationCable::Channel
 
         
 
-        gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');
+        gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');  #グルメを探す
         if !gnavi.include?('error') then
-          Message.create!(message: '-gnavi-'+loc+'のレストランを検索しました（キーワード；'+keywords+'）　「'+gnavi['rest']['name']+'」'+gnavi['rest']['url'], user_id: 1, room_id: @room.id) #グルメを探す
+
+          sendMessage = '-gnavi-' \
+                        + loc+"のレストランを検索しました（キーワード；"+keywords+"）" \
+                        + ' -mainS- ' \
+                        + ' -imgS- ' \
+                        + gnavi['rest']['image_url']['shop_image1'] \
+                        + ' -E- ' \
+                        + ' -textS- ' \
+                        + '「'+gnavi['rest']['name']+'」' \
+                        + ' -br- ' \
+                        + ' 住所：'+gnavi['rest']['address'] \
+                        + ' -br- -br-' \
+                        + gnavi['rest']['pr']['pr_short'] \
+                        + ' -br- ' \
+                        + ' -br- ' \
+                        + gnavi['rest']['url'] \
+                        + ' -E- ' \
+                        + ' -E- '
+
+          Message.create!(message: sendMessage, user_id: 1, room_id: @room.id);
           return true;
         else   
           Message.create!(message: loc+'のレストラン（キーワード；'+keywords+'）は見つかりませんでした。', user_id: 1, room_id: @room.id) 
