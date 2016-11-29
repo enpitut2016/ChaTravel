@@ -83,7 +83,7 @@ class RoomChannel < ApplicationCable::Channel
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
       method = 'GET'
     when 'yado'
-       params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '1', page: '1', elements: 'hotelName,hotelInformationUrl,hotelImageUrl,address2' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
+       params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '3', page: '3', elements: 'hotelName,hotelInformationUrl,hotelImageUrl,address2' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
        uri = URI.parse("https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024?#{params}") 
        method = 'GET'
     #---------ここからPOSTをつかうAPI-------------
@@ -216,21 +216,26 @@ class RoomChannel < ApplicationCable::Channel
           yado = use_api({"keyword" => loc}, 'yado');
           Rails.logger.debug("宿APIレスポンス = #{yado}");
           if true then #検索してみつからなかったときのなにかしらのエラー処理
-            sendMessage = '-rakuten-' \
-                        + loc+'のホテルを検索しました' \
-                        + ' -mainS- ' \
-                        + ' -imgS- ' \
-                        + yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelImageUrl"] \
-                        + ' -E- ' \
-                        + ' -textS- ' \
-                        + '「'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelName"]+'」' \
-                        + ' -br- ' \
-                        + ' 住所：'+yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["address2"] \
-                        + ' -br- ' \
-                        + ' -br- ' \
-                        + yado["hotels"][0]["hotel"][0]["hotelBasicInfo"]["hotelInformationUrl"] \
-                        + ' -E- ' \
-                        + ' -E- '
+
+            sendMessage = '-rakuten-' + loc+'のホテルを検索しました' 
+
+            yado["hotels"].each{|i|
+
+              sendMessage += ' -mainS- ' \
+                           + ' -imgS- ' \
+                           + i["hotel"][0]["hotelBasicInfo"]["hotelImageUrl"] \
+                           + ' -E- ' \
+                           + ' -textS- ' \
+                           + '「'+i["hotel"][0]["hotelBasicInfo"]["hotelName"]+'」' \
+                           + ' -br- ' \
+                           + ' 住所：'+i["hotel"][0]["hotelBasicInfo"]["address2"] \
+                           + ' -br- ' \
+                           + ' -br- ' \
+                           + i["hotel"][0]["hotelBasicInfo"]["hotelInformationUrl"] \
+                           + ' -E- ' \
+                           + ' -E- '
+            }
+
             Message.create!(message: sendMessage, user_id: 1, room_id: @room.id)
           else
             Message.create!(message: loc+'のホテルは見つかりませんでした。', user_id: 1, room_id: @room.id)
@@ -245,9 +250,7 @@ class RoomChannel < ApplicationCable::Channel
         if !gnavi.include?('error') then
 
           sendMessage = '-gnavi-'+loc+"のレストランを検索しました（キーワード；"+keywords+"）" 
-
           gnavi['rest'].each{|i|
-
             sendMessage +=  ' -mainS- ' \
                           + ' -imgS- ' \
                           + i['image_url']['shop_image1'] \
@@ -264,8 +267,7 @@ class RoomChannel < ApplicationCable::Channel
                           + ' -br-　 ' \
                           + ' -br-　 ' \
                           + ' -E- ' \
-                          + ' -E- ' \
-                          
+                          + ' -E- '                    
           }
 
           
