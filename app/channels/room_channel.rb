@@ -79,7 +79,7 @@ class RoomChannel < ApplicationCable::Channel
       ActionCable.server.broadcast(@room_name, {type: 'itsmo_command', data: { user_id: current_user.id, word: j } }) #クライアント側にデータを送信
       return
     when 'gnavi'
-      params = URI.encode_www_form({ keyid: Rails.application.secrets.GNAVI_KEY, format: 'json', address: data['address'], hit_per_page: '1', freeword: data['freeword']})
+      params = URI.encode_www_form({ keyid: Rails.application.secrets.GNAVI_KEY, format: 'json', address: data['address'], hit_per_page: '3', freeword: data['freeword']})
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
       method = 'GET'
     when 'yado'
@@ -214,6 +214,7 @@ class RoomChannel < ApplicationCable::Channel
 
         if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
           yado = use_api({"keyword" => loc}, 'yado');
+          Rails.logger.debug("宿APIレスポンス = #{yado}");
           if true then #検索してみつからなかったときのなにかしらのエラー処理
             sendMessage = '-rakuten-' \
                         + loc+'のホテルを検索しました' \
@@ -240,25 +241,34 @@ class RoomChannel < ApplicationCable::Channel
         
 
         gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');  #グルメを探す
+        #Rails.logger.debug("ぐるなびAPIレスポンス = #{gnavi}");
         if !gnavi.include?('error') then
 
-          sendMessage = '-gnavi-' \
-                        + loc+"のレストランを検索しました（キーワード；"+keywords+"）" \
-                        + ' -mainS- ' \
-                        + ' -imgS- ' \
-                        + gnavi['rest']['image_url']['shop_image1'] \
-                        + ' -E- ' \
-                        + ' -textS- ' \
-                        + '「'+gnavi['rest']['name']+'」' \
-                        + ' -br- ' \
-                        + ' 住所：'+gnavi['rest']['address'] \
-                        + ' -br- -br-' \
-                        + gnavi['rest']['pr']['pr_short'] \
-                        + ' -br- ' \
-                        + ' -br- ' \
-                        + gnavi['rest']['url'] \
-                        + ' -E- ' \
-                        + ' -E- '
+          sendMessage = '-gnavi-'+loc+"のレストランを検索しました（キーワード；"+keywords+"）" 
+
+          gnavi['rest'].each{|i|
+
+            sendMessage +=  ' -mainS- ' \
+                          + ' -imgS- ' \
+                          + i['image_url']['shop_image1'] \
+                          + ' -E- ' \
+                          + ' -textS- ' \
+                          + '「'+i['name']+'」' \
+                          + ' -br- ' \
+                          + ' 住所：'+i['address'] \
+                          + ' -br- -br-' \
+                          + i['pr']['pr_short'] \
+                          + ' -br- ' \
+                          + ' -br- ' \
+                          + i['url'] \
+                          + ' -br-　 ' \
+                          + ' -br-　 ' \
+                          + ' -E- ' \
+                          + ' -E- ' \
+                          
+          }
+
+          
 
           Message.create!(message: sendMessage, user_id: 1, room_id: @room.id);
           return true;
