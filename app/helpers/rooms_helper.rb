@@ -12,6 +12,7 @@ def meesage_format(text,id)
 		text = text.gsub(/-imgS-/, "<div class='col-md-5'>");
 		text = text.gsub(/-textS-/, "<div class='col-md-7 search_text'>");
 		text = text.gsub(/-rowS-/, "<div class='row'>");
+		text = text.gsub(/-resultS-/, "<div class='results'>");
 		text = text.gsub(/-E-/, "</div>");
 		text = text.gsub(/-br-/, "<br>");
 		gnavi = true;       
@@ -21,6 +22,7 @@ def meesage_format(text,id)
 		text = text.gsub(/-imgS-/, "<div class='col-md-5'>");
 		text = text.gsub(/-textS-/, "<div class='col-md-7 search_text'>");
 		text = text.gsub(/-rowS-/, "<div class='row'>");
+		text = text.gsub(/-resultS-/, "<div class='results'>");
 		text = text.gsub(/-E-/, "</div>");
 		text = text.gsub(/-br-/, "<br>");
 		rakuten = true; 

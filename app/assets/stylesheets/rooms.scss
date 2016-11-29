@@ -94,11 +94,19 @@ html, body {
         }
 
         /*検索結果ビュー*/
+        .results {  
+          max-height: 300px;
+          overflow: auto;
+          border-style: ridge;
+          padding-top: 25px;
+          padding-bottom: 25px;
+        }
         .search_result {  
           padding-top: 10px;
           padding-bottom: 10px;
           text-align: center;
         }
+
 
         .search_text {  
           text-align: left;

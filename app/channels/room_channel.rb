@@ -217,10 +217,8 @@ class RoomChannel < ApplicationCable::Channel
           Rails.logger.debug("宿APIレスポンス = #{yado}");
           if true then #検索してみつからなかったときのなにかしらのエラー処理
 
-            sendMessage = '-rakuten-' + loc+'のホテルを検索しました' 
-
+            sendMessage = '-rakuten-' + loc+'のホテルを'+yado["hotels"].length.to_s+'件検索しました。' + ' -resultS- ' 
             yado["hotels"].each{|i|
-
               sendMessage += ' -mainS- ' \
                            + ' -imgS- ' \
                            + i["hotel"][0]["hotelBasicInfo"]["hotelImageUrl"] \
@@ -235,6 +233,7 @@ class RoomChannel < ApplicationCable::Channel
                            + ' -E- ' \
                            + ' -E- '
             }
+            sendMessage += '-E-' 
 
             Message.create!(message: sendMessage, user_id: 1, room_id: @room.id)
           else
@@ -243,13 +242,11 @@ class RoomChannel < ApplicationCable::Channel
           return true;
         end
 
-        
-
         gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');  #グルメを探す
         #Rails.logger.debug("ぐるなびAPIレスポンス = #{gnavi}");
         if !gnavi.include?('error') then
 
-          sendMessage = '-gnavi-'+loc+"のレストランを検索しました（キーワード；"+keywords+"）" 
+          sendMessage = '-gnavi-'+loc+'のレストランを'+gnavi["rest"].length.to_s+'件検索しました（キーワード；'+keywords+'）' + ' -resultS- '
           gnavi['rest'].each{|i|
             sendMessage +=  ' -mainS- ' \
                           + ' -imgS- ' \
@@ -269,9 +266,7 @@ class RoomChannel < ApplicationCable::Channel
                           + ' -E- ' \
                           + ' -E- '                    
           }
-
-          
-
+          sendMessage += '-E-'          
           Message.create!(message: sendMessage, user_id: 1, room_id: @room.id);
           return true;
         else   
