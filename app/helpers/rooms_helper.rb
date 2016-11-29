@@ -8,7 +8,7 @@ def meesage_format(text,id)
 	rakuten = false;
 	if text.match('-gnavi-')!=nil && id==1 then #ぐるなびかどうかを判別（ボットがしゃべってるかも判別）
 		text = text.gsub(/-gnavi-/, ""); #-gnavi-を削除
-		text = text.gsub(/-mainS-/, "<div class='rakuten_result'>"); #タブに変換
+		text = text.gsub(/-mainS-/, "<div class='rakuten_result row'>"); #タブに変換
 		text = text.gsub(/-imgS-/, "<div class='col-md-5'>");
 		text = text.gsub(/-textS-/, "<div class='col-md-7 search_text'>");
 		text = text.gsub(/-rowS-/, "<div class='row'>");
@@ -17,7 +17,7 @@ def meesage_format(text,id)
 		gnavi = true;       
 	elsif text.match('-rakuten-')!=nil && id==1 then #楽天かどうかを判別（ボットがしゃべってるかも判別）
 		text = text.gsub(/-rakuten-/, ""); #-rakuten-を削除
-		text = text.gsub(/-mainS-/, "<div class='rakuten_result'>"); #タブに変換
+		text = text.gsub(/-mainS-/, "<div class='rakuten_result row'>"); #タブに変換
 		text = text.gsub(/-imgS-/, "<div class='col-md-5'>");
 		text = text.gsub(/-textS-/, "<div class='col-md-7 search_text'>");
 		text = text.gsub(/-rowS-/, "<div class='row'>");

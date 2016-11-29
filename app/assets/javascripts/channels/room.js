@@ -92,7 +92,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-gnavi-/,"");
         message = message.replace(/-E-/g,"</div>");
         message = message.replace(/-br-/g,"<br>");
-        message = message.replace(/-mainS-/g,"<div class='search_result'>");
+        message = message.replace(/-mainS-/g,"<div class='search_result row'>");
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
         message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
 
@@ -114,7 +114,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-rakuten-/,"");
         message = message.replace(/-E-/g,"</div>");
         message = message.replace(/-br-/g,"<br>");
-        message = message.replace(/-mainS-/g,"<div class='search_result'>");
+        message = message.replace(/-mainS-/g,"<div class='search_result row'>");
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
         message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
 
