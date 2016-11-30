@@ -6,7 +6,12 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   def self.scrape(uri)
-    html = open(uri).read.encode('UTF-8')
+
+    if uri.include?("gnavi") then
+      html = open(uri).read.encode('ASCII-8BIT') #ぐるなびのURLのときは文字コードを変える
+    else
+      html = open(uri).read.encode('UTF-8')   
+    end
     doc = Nokogiri::HTML(html, uri)
     title =  doc.css('//meta[property="og:site_name"]/@content').empty? ? doc.title.to_s : doc.css('//meta[property="og:site_name"]/@content').to_s
     desc = doc.css('//meta[property="og:description"]/@content')
