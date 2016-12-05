@@ -9,10 +9,10 @@ Rails.application.routes.draw do
 	post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
 	resources :rooms,  :replace_id_with => 'url'
-	get 'newRoom',to:'static_pages#room_page'
+	# get 'newRoom',to:'static_pages#room_page'
 
 	get :replace_id_with  => 'rooms'
-	get ':url', to:'rooms#show'
+	# get ':url', to:'rooms#show'
 
 	resources :users do
     member do
