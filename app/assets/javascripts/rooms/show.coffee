@@ -312,7 +312,7 @@ getEndTime = ->
   if (diff <= 0)
     if (timerCheck == false)
       $('#endTimer').text("タイマー未設定")
-    else
+    else if(timerCheck == true)
       App.room.speak_bot "時間になりました。議論を終えてください"
       timerCheck = false
   else
