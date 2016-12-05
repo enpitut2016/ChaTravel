@@ -12,7 +12,6 @@ Rails.application.routes.draw do
 	get 'newRoom',to:'static_pages#room_page'
 
 	get :replace_id_with  => 'rooms'
-	get ':url', to:'rooms#show'
 
 	resources :users do
     member do
