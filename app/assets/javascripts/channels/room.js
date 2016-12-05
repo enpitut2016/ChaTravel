@@ -103,6 +103,11 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
             message =  message.replace(url[i], "<img class='thumbnail' src='"+url[i]+"' alt='レストラン画像' >"); 
           }else{
             message = "<p>" + message.replace(url[i], "<a href='"+url[i]+"' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
+            App.room.suggest({
+              user_id: Chat.utils.user_id(),
+              room_url: Chat.utils.room_url(),
+              suggest_url: url[i]
+            });
           }
         }
 
