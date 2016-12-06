@@ -9,7 +9,7 @@
   <div id="decided_<%= decided.id %>" class="panel-collapse collapse">
     <div class="panel-body">
       <div id="media">
-        <a href="#" class="media-left">
+        <a href="<%= decided.suggest.url %>" target="_blank"  class="media-left">
           <%= image_tag decided.suggest.image, class: 'decided_image', size: '180x150' %>
         </a>
         <p class="decided_description media-body">

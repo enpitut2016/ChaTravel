@@ -360,4 +360,14 @@ class RoomChannel < ApplicationCable::Channel
       Message.create!(message: "タイマーセットに失敗しました。形式が間違っています", user_id: 1, room_id: @room.id)
     end
   end
+
+  def define_topic(data)
+    data = data['data']
+    time = data['time']
+    topic_name = data['topic_name']
+    ActionCable.server.broadcast(@room_name, {type: 'define_topic', data: {time: time, topic: topic_name}})
+    Topic.create!(name: topic_name, time: time, room_id: @room.id)
+    Message.create!(message: "タイマーをセットします", user_id: 1, room_id: @room.id)
+  end
+
 end

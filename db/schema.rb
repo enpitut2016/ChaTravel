@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116171231) do
+ActiveRecord::Schema.define(version: 20161206132213) do
 
   create_table "decideds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "room_id"
@@ -64,6 +64,15 @@ ActiveRecord::Schema.define(version: 20161116171231) do
     t.index ["user_id"], name: "index_suggests_on_user_id", using: :btree
   end
 
+  create_table "topics", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "time"
+    t.integer  "room_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_topics_on_room_id", using: :btree
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",            null: false
     t.string   "icon"
@@ -106,6 +115,7 @@ ActiveRecord::Schema.define(version: 20161116171231) do
   add_foreign_key "messages", "users"
   add_foreign_key "suggests", "rooms"
   add_foreign_key "suggests", "users"
+  add_foreign_key "topics", "rooms"
   add_foreign_key "vote_results", "suggests"
   add_foreign_key "vote_results", "users"
   add_foreign_key "vote_results", "votes"

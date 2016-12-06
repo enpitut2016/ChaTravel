@@ -5,6 +5,7 @@ class Room < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :suggests, dependent: :destroy
   has_many :decideds, dependent: :destroy
+  has_many :topics, dependent: :destroy
 
   validates_uniqueness_of :url
   validates_presence_of :url

@@ -13,6 +13,12 @@ class RoomsController < ApplicationController
   # GET /rooms/1.json
   def show
     @room = Room.find_by(url: params[:url])
+    @topic = @room.topics.last
+    if @topic.nil?
+      @topic = Topic.new
+      @topic.name = "なし"
+      @topic.time = "2016-12-06 00:00:00.000"
+    end
     @messages = @room.messages.includes(:user)
     @suggests = @room.suggests.where(enable: true)
     @decided = @room.decideds.includes(:suggest)

@@ -37,8 +37,8 @@ $ ->
     if (text.substring(0, 13) == '@bot -kankou ')
       console.log('kankou_recommend:' + text.substring(12)) 
       execKankouSearch(text.substring(12))
-    else if (text.substring(0, 12) == '@bot -timer ')
-      App.room.define_timer text.substring(11)
+    #else if (text.substring(0, 12) == '@bot -timer ')
+     # App.room.define_timer text.substring(11)
     else if (text.substring(0,11) == '@bot -yado ')
       App.room.request_recommend_yado text.substring(10)
       console.log('yado: ' + text.substring(10))
@@ -294,12 +294,24 @@ execKankouSearch = (word) ->
 $ ->
   $('#topic_submit').on 'click', ->
     topic_word =$("#topic_name").val()
+    minutes = $("#topic_time").val()
     if (topic_word == '')
       alert 'トピックを入力してください'
       return
+    if (minutes == '')
+      alert '時間を入力してください'
+      return
     sentence = "トピックが決まりました。それでは" + topic_word + "について話し合いましょう！"
+    now = new Date
+    topic_time = now.getTime() + 60 * 1000 * minutes
+    target = new Date(topic_time)
     App.room.speak_bot sentence
+    App.room.define_topic ({
+      time: target,
+      topic_name: topic_word
+      })
     $("#topic_name").val('')
+    $("#topic_time").val('')
 
 timerCheck = false
 
@@ -315,7 +327,7 @@ getEndTime = ->
     else if(timerCheck == true)
       App.room.speak_bot "時間になりました。議論を終えてください"
       timerCheck = false
-  else
+  else if(diff > 0)
     timerCheck = true
     # ミリ秒を日、時、分に分解する
     # 経過日数

@@ -31,6 +31,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       case 'itsmo_command':
         Chat.received_func.received_itsmo_command(data['data']);
         break;
+      case 'define_topic':
+        Chat.received_func.received_define_topic(data['data']);
+        break;
     }
   },
 
@@ -73,6 +76,10 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
   define_timer: function(data){
     this.perform('define_timer', {data: data});
+  },
+
+  define_topic: function(data){
+    this.perform('define_topic', {data: data});
   }
 });
 
@@ -133,6 +140,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
             message = "<p>" + message.replace(url[i], "<a href='"+url[i]+"' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
           }
         }
+        //message += "<input type='submit' id='kuma' value='オススメする'>";
 
 
         rakuten = true;
@@ -222,6 +230,12 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
     received_define_timer: function(data){
       $('#targetDate').text(data['target']);
+    },
+
+
+    received_define_topic: function(data){
+      $('#targetTopic').text("議題："+data.topic);
+      $('#targetDate').text(data.time);
     },
 
 
