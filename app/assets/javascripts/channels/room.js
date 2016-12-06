@@ -127,7 +127,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
         var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);
         for(var i=0; i<url.length; i++){
-          if( url[i].match(/.jpg/) ){
+          if(url[i].match(/.jpg/) || url[i].match(/.jpeg/) || url[i].match(/.gif/) || url[i].match(/.png/) || url[i].match(/.bmp/)){
             message =  message.replace(url[i], "<img class='thumbnail' src='"+url[i]+"' alt='ホテル画像' >"); 
           }else{
             message = "<p>" + message.replace(url[i], "<a href='"+url[i]+"' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
