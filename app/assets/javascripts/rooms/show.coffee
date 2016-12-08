@@ -318,6 +318,219 @@ $ ->
     return
 
 
+### ルート探索ボタン ###
+
+guyde_type = undefined
+line_property = undefined
+line_property_drive = undefined
+pl = []
+mk = []
+start = undefined
+end = undefined
+msg_info = undefined
+$ ->
+  imgdir ='/assets/';
+  guyde_type = 
+    'start':
+      custom:
+        base:
+          src: imgdir + 'start.png'
+          imgSize: new (ZDC.WH)(35, 35)
+          imgTL: new (ZDC.TL)(0, 0)
+      offset: ZDC.Pixel(0, -36)
+    'end':
+      custom:
+        base:
+          src: imgdir + 'goal.png'
+          imgSize: new (ZDC.WH)(35, 35)
+          imgTL: new (ZDC.TL)(38, 0)
+      offset: ZDC.Pixel(0, -36)
+
+$ ->
+  line_property = 
+    '通常通路':
+      strokeColor: '#3000ff'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '横断歩道':
+      strokeColor: '#008E00'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '横断通路':
+      strokeColor: '#007777'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '歩道橋':
+      strokeColor: '#880000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '踏切内通路':
+      strokeColor: '#008800'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '連絡通路':
+      strokeColor: '#000088'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '建物内通路':
+      strokeColor: '#550000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '敷地内通路':
+      strokeColor: '#005500'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '乗換リンク':
+      strokeColor: '#000055'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '道路外':
+      strokeColor: '#110000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '引き込みリンク':
+      strokeColor: '#FF0000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '通路外':
+      strokeColor: '#00FF00'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+
+$ ->
+  line_property_drive =  
+    '高速道路':             
+      strokeColor: '#3000ff'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '都市高速道路':
+      strokeColor: '#008E00'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '国道':
+      strokeColor: '#007777'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '主要都市道':
+      strokeColor: '#880000'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '一般道路(幹線)':
+      strokeColor: '#008800'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '一般道路(その他)':
+      strokeColor: '#000088'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '導入路':
+      strokeColor: '#550000'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '細街路(主要)':
+      strokeColor: '#005500'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '細街路(詳細)':
+      strokeColor: '#000055'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    'フェリー航路':
+      strokeColor: '#110000'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+  
+
+mode = undefined
+from = undefined
+to = undefined
+$ ->
+  $('#route-btn').on 'click', ->
+    from = route_from_latlon
+    to = route_to_latlon
+
+    ### 歩行者ルート探索を実行 ###
+    ZDC.Search.getRouteByDrive {
+      from: from
+      to: to
+    }, (status, res) ->
+      if status.code == '000'
+
+        ### 取得成功 ###     
+        markerDelete()
+        writeRoute status, res
+        alert "走行時間：#{res.route.time}分\n走行距離：#{res.route.distance}m\n通行料金：#{res.route.toll}円"
+      else
+        ### 取得失敗 ###
+        alert status.text
+      return
+    return
+
+  ### ルートを描画します ###
+  writeRoute = (status, res) ->
+    `var opt`
+
+    ### スタートとゴールのアイコンを地図に重畳します ###
+    setStartEndWidget()
+    link = res.route.link
+
+    ### 現在描画しているロードタイプを保存する ###
+    now_road_type = undefined
+    i = 0
+    j = link.length
+    while i < j
+      if i == 0
+        now_road_type = link[i].roadType
+        opt = line_property_drive[link[i].roadType]
+      else
+        if now_road_type != link[i].roadType
+          opt = line_property_drive[link[i].roadType]
+      latlons = []
+      k = 0
+      l = link[i].line.length
+      while k < l
+        latlons.push link[i].line[k]
+        k++
+      pl[i] = new (ZDC.Polyline)(latlons, opt)
+      map.addWidget pl[i]
+      if link[i].roadType != '通常通路'
+        guide = link[i].roadType
+        #marker = new (ZDC.Marker)(link[i].line[0])
+        #map.addWidget marker
+      i++
+    return
+
+  ### スタートとゴールのアイコンを地図に重畳します ###
+  setStartEndWidget = ->
+    mrks = new (ZDC.Marker)(from)
+    mrkg = new (ZDC.Marker)(to)
+    map.addWidget mrks
+    map.addWidget mrkg
+    return
+
+
 
 ### ぼっとおすすめ用 ###
 execKankouSearch = (word) ->
