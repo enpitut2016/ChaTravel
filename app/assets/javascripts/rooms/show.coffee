@@ -139,7 +139,7 @@ $(window).resize ->
 $ ->
   $('#eki-search-btn').on 'click', ->
     word = document.getElementById('word').value
-    markerDelete
+    markerDelete()
     if word == ''
       return
     else
@@ -149,7 +149,7 @@ $ ->
 $ ->
   $('#poi-search-btn').on 'click', ->
     word = document.getElementById('word').value
-    markerDelete
+    markerDelete()
     if word == ''
       return
     else
@@ -275,8 +275,6 @@ markerClick = ->
 markerDelete = ->
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
-
-  msg.close() # 吹き出しを閉じる
   return
 
 
