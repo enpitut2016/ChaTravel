@@ -180,7 +180,7 @@ execPoiSearch = (word) ->
 
 ### 駅検索結果テーブル作成 ###
 initTable = ->
-  element = document.getElementById('search-result')
+  element = document.getElementById('search-poi-list')
   while element.firstChild
     element.removeChild element.firstChild
   return
@@ -198,7 +198,7 @@ writeEkiTable = (res) ->
     tbody.appendChild tr
     table.appendChild tbody
     i++
-  document.getElementById('search-result').appendChild table
+  document.getElementById('search-poi-list').appendChild table
   return
 
 ### ポイ検索結果テーブル作成 ###
@@ -214,10 +214,10 @@ writePoiTable = (res) ->
     tbody.appendChild tr
     table.appendChild tbody
     i++
-  document.getElementById('search-result').appendChild table
+  document.getElementById('search-poi-list').appendChild table
   return  
 
-### 駅検索結果テーブル作成 ###
+### 検索結果テーブル作成 ###
 createTr = (text, latlon) ->
   `var text`
   tr = document.createElement('tr')
@@ -230,15 +230,27 @@ createTr = (text, latlon) ->
   text = document.createTextNode(text)
   div.appendChild text
 
-  ### 駅名クリック時の処理 ###
+  ### クリック時の処理 ###
   ZDC.addDomListener div, 'click', ->
     map.moveLatLon latlon
-    select_eki_latlon = latlon　# クリックされた駅の緯度経度を保存
+    select_poi text, latlon
     return
 
   td.appendChild div
   tr.appendChild td
   tr
+
+#選択ポイを保持する
+select_poi_name = ""
+select_poi_latlon = ""
+select_poi = (text, latlon) ->
+  select_poi_name = text.nodeValue
+  select_poi_latlon = latlon　# クリックされた駅の緯度経度を保存
+  console.log(select_poi_name);
+  console.log(select_poi_latlon);
+  $('#select-poi-1').html("選択：#{select_poi_name}")
+  return
+
 
 
 ### マーカを作成 ###
@@ -261,21 +273,49 @@ markerDisp = (status, res) ->
     i++
   return
 
+#マーカがクリックされた時の処理
 markerClick = ->
-  labelhtml = undefined
-  labelhtml = '<div><font size = "-1"><div><b>' + @text + '</b></div>'
-  labelhtml += '<table><tr><td>〒' + @zipcode + ' ' + @addressText + '</td></tr>'
-  labelhtml += '<tr><td>電話番号：' + @phoneNumber + '</td></tr></table></font></div>'
-  msg.setHtml labelhtml
-  msg.moveLatLon new (ZDC.LatLon)(@latlon.lat, @latlon.lon)
-  msg.open()
+  text = document.createTextNode(@text)
+  select_poi text, @latlon
+
+  #labelhtml = undefined
+  #labelhtml = '<div><font size = "-1"><div><b>' + @text + '</b></div>'
+  #labelhtml += '<table><tr><td>〒' + @zipcode + ' ' + @addressText + '</td></tr>'
+  #labelhtml += '<tr><td>電話番号：' + @phoneNumber + '</td></tr></table></font></div>'
+  #msg.setHtml labelhtml
+  #msg.moveLatLon new (ZDC.LatLon)(@latlon.lat, @latlon.lon)
+  #msg.open()
   return
+
 
 ### マーカを削除 ###
 markerDelete = ->
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
   return
+
+
+route_to_name = ""
+route_to_latlon = ""
+route_from_name = ""
+route_from_latlon = ""
+$ ->
+  $('#route-from-btn').on 'click', ->
+    route_from_name = select_poi_name
+    route_from_latlon = select_poi_latlon
+    console.log(route_from_name);
+    console.log(route_from_latlon);
+    $('#route-from').html("出発地：#{route_from_name}")
+    return
+
+$ ->
+  $('#route-to-btn').on 'click', ->
+    route_to_name = select_poi_name
+    route_to_latlon = select_poi_latlon
+    console.log(route_to_name);
+    console.log(route_to_latlon);
+    $('#route-to').html("目的地：#{route_to_name}")
+    return
 
 
 
