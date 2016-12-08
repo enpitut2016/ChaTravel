@@ -116,6 +116,21 @@ html, body {
           width: 100%;
         }
 
+        .suggest_button {  
+          text-align: center;
+          background-color: #ddd;
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+
+        .suggest_button:hover {  
+          background-color: #aaa;
+        }
+
+        .suggest_button:active {  
+          background-color: #888;
+        }
+
       }
 
       .chat_frame_right:after {

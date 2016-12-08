@@ -45,6 +45,17 @@ $ ->
     else if (text.substring(0, 5) == '@bot ')
       App.room.request_bot_response text.substring(4)
 
+#botのレコメンドをおすすめリストに追加
+$ ->
+  $(document).on 'click', '.suggest_button', ->
+    bot_suggest_url = $(this.parentNode.parentNode).find('.search_text').children('a').attr("href"); 
+    console.log(bot_suggest_url);
+    App.room.suggest ({
+        user_id: Chat.utils.user_id(),
+        room_url: Chat.utils.room_url(),
+        suggest_url: bot_suggest_url
+      })
+
 # エンターキーを押してコメント送信
 
 keypressing = false
