@@ -103,6 +103,8 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-mainS-/g,"<div class='search_result row'>");
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
         message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
+        message = message.replace(/-suggest-/g,"<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 suggest_button'>おすすめリストに追加する</div><div class='col-md-1'></div></div>");
+        
 
         var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);
         for(var i=0; i<url.length; i++){
@@ -110,11 +112,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
             message =  message.replace(url[i], "<img class='thumbnail' src='"+url[i]+"' alt='レストラン画像' >"); 
           }else{
             message = "<p>" + message.replace(url[i], "<a href='"+url[i]+"' target='_blank'>詳しくはこちら</a>") + "</p>"; //urlなら<a>タグ挿入
-            App.room.suggest({
-              user_id: Chat.utils.user_id(),
-              room_url: Chat.utils.room_url(),
-              suggest_url: url[i]
-            });
+            
           }
         }
 
@@ -131,6 +129,8 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-mainS-/g,"<div class='search_result row'>");
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
         message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
+        message = message.replace(/-suggest-/g,"<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 suggest_button'>おすすめリストに追加する</div><div class='col-md-1'></div></div>");
+
 
         var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);
         for(var i=0; i<url.length; i++){

@@ -231,7 +231,11 @@ class RoomChannel < ApplicationCable::Channel
                            + ' -br- ' \
                            + i["hotel"][0]["hotelBasicInfo"]["hotelInformationUrl"] \
                            + ' -E- ' \
-                           + ' -E- '
+                           + ' -suggest- ' \
+                           + ' -br-　 ' \
+                           + ' -br-　 ' \
+                           + ' -E- ' \
+                           + ' -br-　 ' 
             }
             sendMessage += '-E-' 
 
@@ -264,6 +268,9 @@ class RoomChannel < ApplicationCable::Channel
                           + ' -br-　 ' \
                           + ' -br-　 ' \
                           + ' -E- ' \
+                          + ' -suggest- ' \
+                          + ' -br-　 ' \
+                          + ' -br-　 ' \
                           + ' -E- '                    
           }
           sendMessage += '-E-'          
