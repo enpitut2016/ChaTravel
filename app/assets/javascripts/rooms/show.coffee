@@ -191,7 +191,7 @@ execPoiSearch = (word) ->
 
 ### 駅検索結果テーブル作成 ###
 initTable = ->
-  element = document.getElementById('search-result')
+  element = document.getElementById('search-poi-list')
   while element.firstChild
     element.removeChild element.firstChild
   return
@@ -209,7 +209,7 @@ writeEkiTable = (res) ->
     tbody.appendChild tr
     table.appendChild tbody
     i++
-  document.getElementById('search-result').appendChild table
+  document.getElementById('search-poi-list').appendChild table
   return
 
 ### ポイ検索結果テーブル作成 ###
@@ -225,10 +225,10 @@ writePoiTable = (res) ->
     tbody.appendChild tr
     table.appendChild tbody
     i++
-  document.getElementById('search-result').appendChild table
+  document.getElementById('search-poi-list').appendChild table
   return  
 
-### 駅検索結果テーブル作成 ###
+### 検索結果テーブル作成 ###
 createTr = (text, latlon) ->
   `var text`
   tr = document.createElement('tr')
@@ -241,15 +241,27 @@ createTr = (text, latlon) ->
   text = document.createTextNode(text)
   div.appendChild text
 
-  ### 駅名クリック時の処理 ###
+  ### クリック時の処理 ###
   ZDC.addDomListener div, 'click', ->
     map.moveLatLon latlon
-    select_eki_latlon = latlon　# クリックされた駅の緯度経度を保存
+    select_poi text, latlon
     return
 
   td.appendChild div
   tr.appendChild td
   tr
+
+#選択ポイを保持する
+select_poi_name = ""
+select_poi_latlon = ""
+select_poi = (text, latlon) ->
+  select_poi_name = text.nodeValue
+  select_poi_latlon = latlon　# クリックされた駅の緯度経度を保存
+  console.log(select_poi_name);
+  console.log(select_poi_latlon);
+  $('#select-poi-1').html("選択：#{select_poi_name}")
+  return
+
 
 
 ### マーカを作成 ###
@@ -272,21 +284,262 @@ markerDisp = (status, res) ->
     i++
   return
 
+#マーカがクリックされた時の処理
 markerClick = ->
-  labelhtml = undefined
-  labelhtml = '<div><font size = "-1"><div><b>' + @text + '</b></div>'
-  labelhtml += '<table><tr><td>〒' + @zipcode + ' ' + @addressText + '</td></tr>'
-  labelhtml += '<tr><td>電話番号：' + @phoneNumber + '</td></tr></table></font></div>'
-  msg.setHtml labelhtml
-  msg.moveLatLon new (ZDC.LatLon)(@latlon.lat, @latlon.lon)
-  msg.open()
+  text = document.createTextNode(@text)
+  select_poi text, @latlon
+
+  #labelhtml = undefined
+  #labelhtml = '<div><font size = "-1"><div><b>' + @text + '</b></div>'
+  #labelhtml += '<table><tr><td>〒' + @zipcode + ' ' + @addressText + '</td></tr>'
+  #labelhtml += '<tr><td>電話番号：' + @phoneNumber + '</td></tr></table></font></div>'
+  #msg.setHtml labelhtml
+  #msg.moveLatLon new (ZDC.LatLon)(@latlon.lat, @latlon.lon)
+  #msg.open()
   return
+
 
 ### マーカを削除 ###
 markerDelete = ->
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
   return
+
+
+route_to_name = ""
+route_to_latlon = ""
+route_from_name = ""
+route_from_latlon = ""
+$ ->
+  $('#route-from-btn').on 'click', ->
+    route_from_name = select_poi_name
+    route_from_latlon = select_poi_latlon
+    console.log(route_from_name);
+    console.log(route_from_latlon);
+    $('#route-from').html("出発地：#{route_from_name}")
+    return
+
+$ ->
+  $('#route-to-btn').on 'click', ->
+    route_to_name = select_poi_name
+    route_to_latlon = select_poi_latlon
+    console.log(route_to_name);
+    console.log(route_to_latlon);
+    $('#route-to').html("目的地：#{route_to_name}")
+    return
+
+
+### ルート探索ボタン ###
+
+guyde_type = undefined
+line_property = undefined
+line_property_drive = undefined
+pl = []
+mk = []
+start = undefined
+end = undefined
+msg_info = undefined
+$ ->
+  imgdir ='/assets/';
+  guyde_type = 
+    'start':
+      custom:
+        base:
+          src: imgdir + 'start.png'
+          imgSize: new (ZDC.WH)(35, 35)
+          imgTL: new (ZDC.TL)(0, 0)
+      offset: ZDC.Pixel(0, -36)
+    'end':
+      custom:
+        base:
+          src: imgdir + 'goal.png'
+          imgSize: new (ZDC.WH)(35, 35)
+          imgTL: new (ZDC.TL)(38, 0)
+      offset: ZDC.Pixel(0, -36)
+
+$ ->
+  line_property = 
+    '通常通路':
+      strokeColor: '#3000ff'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '横断歩道':
+      strokeColor: '#008E00'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '横断通路':
+      strokeColor: '#007777'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '歩道橋':
+      strokeColor: '#880000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '踏切内通路':
+      strokeColor: '#008800'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '連絡通路':
+      strokeColor: '#000088'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '建物内通路':
+      strokeColor: '#550000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '敷地内通路':
+      strokeColor: '#005500'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '乗換リンク':
+      strokeColor: '#000055'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '道路外':
+      strokeColor: '#110000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '引き込みリンク':
+      strokeColor: '#FF0000'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+    '通路外':
+      strokeColor: '#00FF00'
+      strokeWeight: 5
+      lineOpacity: 0.5
+      lineStyle: 'solid'
+
+$ ->
+  line_property_drive =  
+    '高速道路':             
+      strokeColor: '#3000ff'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '都市高速道路':
+      strokeColor: '#008E00'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '国道':
+      strokeColor: '#007777'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '主要都市道':
+      strokeColor: '#880000'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '一般道路(幹線)':
+      strokeColor: '#008800'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '一般道路(その他)':
+      strokeColor: '#000088'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '導入路':
+      strokeColor: '#550000'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '細街路(主要)':
+      strokeColor: '#005500'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    '細街路(詳細)':
+      strokeColor: '#000055'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+    'フェリー航路':
+      strokeColor: '#110000'
+      strokeWeight: 5
+      lineOpacity: 1.0
+      lineStyle: 'solid'
+  
+
+mode = undefined
+from = undefined
+to = undefined
+$ ->
+  $('#route-btn').on 'click', ->
+    from = route_from_latlon
+    to = route_to_latlon
+
+    ### 歩行者ルート探索を実行 ###
+    ZDC.Search.getRouteByDrive {
+      from: from
+      to: to
+    }, (status, res) ->
+      if status.code == '000'
+
+        ### 取得成功 ###     
+        markerDelete()
+        writeRoute status, res
+        alert "走行時間：#{res.route.time}分\n走行距離：#{res.route.distance}m\n通行料金：#{res.route.toll}円"
+      else
+        ### 取得失敗 ###
+        alert status.text
+      return
+    return
+
+  ### ルートを描画します ###
+  writeRoute = (status, res) ->
+    `var opt`
+
+    ### スタートとゴールのアイコンを地図に重畳します ###
+    setStartEndWidget()
+    link = res.route.link
+
+    ### 現在描画しているロードタイプを保存する ###
+    now_road_type = undefined
+    i = 0
+    j = link.length
+    while i < j
+      if i == 0
+        now_road_type = link[i].roadType
+        opt = line_property_drive[link[i].roadType]
+      else
+        if now_road_type != link[i].roadType
+          opt = line_property_drive[link[i].roadType]
+      latlons = []
+      k = 0
+      l = link[i].line.length
+      while k < l
+        latlons.push link[i].line[k]
+        k++
+      pl[i] = new (ZDC.Polyline)(latlons, opt)
+      map.addWidget pl[i]
+      if link[i].roadType != '通常通路'
+        guide = link[i].roadType
+        #marker = new (ZDC.Marker)(link[i].line[0])
+        #map.addWidget marker
+      i++
+    return
+
+  ### スタートとゴールのアイコンを地図に重畳します ###
+  setStartEndWidget = ->
+    mrks = new (ZDC.Marker)(from)
+    mrkg = new (ZDC.Marker)(to)
+    map.addWidget mrks
+    map.addWidget mrkg
+    return
 
 
 

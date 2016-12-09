@@ -108,6 +108,7 @@ html, body {
         }
 
 
+
         .search_text {  
           text-align: left;
         }
@@ -343,6 +344,21 @@ html, body {
     #search_area{
       width: 100px;
       height: 30%;
+    }
+
+    #search-poi-list{
+      border:1px solid #777777; 
+      height: 150px;
+      overflow: scroll;
+    }
+
+    #search-poi-list table tbody:hover{
+      background-color: #ddf;
+    }
+
+    #select-poi-1{
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
     #decided_list li {
