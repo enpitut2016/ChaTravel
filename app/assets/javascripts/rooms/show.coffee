@@ -12,6 +12,7 @@ $(window).load ->
 $ ->
   $(".tab_content > li").css("display","none");
   $('.tab_content li').eq(0).css('display','block');
+  $("#route-function").css("display","none");
 
 
 $ ->
@@ -22,6 +23,16 @@ $ ->
     $('.tab li').removeClass('select');
     $(this).addClass('select')
     loadMap()
+
+$ ->
+  $('#list-function-btn').on 'click', ->
+    console.log("test");
+    $("#route-function").css("display","none");
+    $("#list-function").css("display","block");
+
+  $('#route-function-btn').on 'click', ->
+    $("#route-function").css("display","block");
+    $("#list-function").css("display","none");
     
 #botのレコメンドについて   
 
@@ -536,7 +547,9 @@ $ ->
         ### 取得成功 ###     
         widgitDelete()
         writeRoute status, res
-        alert "走行時間：#{res.route.time}分\n走行距離：#{res.route.distance}m\n通行料金：#{res.route.toll}円"
+        $("#route-time").html("走行時間：#{res.route.time}分")
+        $("#route-meter").html("走行距離：#{res.route.distance}m")
+        $("#route-price").html("通行料金：#{res.route.toll}円")
       else
         ### 取得失敗 ###
         alert status.text
