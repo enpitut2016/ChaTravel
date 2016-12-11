@@ -119,12 +119,23 @@ map = undefined
 arrmrk = []
 mrks = undefined
 mrkg = undefined
+userMrk = undefined
+
+guyde_type = undefined
+line_property = undefined
+line_property_drive = undefined
+pl = []
+mk = []
+start = undefined
+end = undefined
+msg_info = undefined
 
 loadMap = () ->
   lat = 35.6778614
   lon = 139.7703167
   $('#ZMap').empty();
   map = new ZDC.Map(document.getElementById('ZMap'),{ latlon: new ZDC.LatLon(lat, lon), zoom: 6});   
+  ZDC.addListener(map, ZDC.MAP_CLICK, makeMarker); #地図をクリックしたときの処理
   
 
   ### 通常のコントロールを作成 ###
@@ -148,6 +159,17 @@ $(window).resize ->
   ), 1000)
   return
 
+
+### クリックした地点にマーカを作成 ###
+makeMarker = ->
+  if userMrk!=undefined 
+    map.removeWidget userMrk
+    userMrk = undefined
+  userMrk = new (ZDC.Marker)(map.getClickLatLon(),{color: ZDC.MARKER_COLOR_ID_GREEN_S,})
+  map.addWidget userMrk 
+  text = document.createTextNode("緯度；"+userMrk.getLatLon().lat+"、緯度"+userMrk.getLatLon().lon);
+  select_poi text, userMrk.getLatLon()
+  return
 
 $ ->
   $('#eki-search-btn').on 'click', ->
@@ -305,7 +327,6 @@ markerClick = ->
 
 ### ウィジットを削除 ###
 widgitDelete = ->
-  console.log(mrks);
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
   while pl.length > 0
@@ -344,15 +365,6 @@ $ ->
 
 
 ### ルート探索ボタン ###
-
-guyde_type = undefined
-line_property = undefined
-line_property_drive = undefined
-pl = []
-mk = []
-start = undefined
-end = undefined
-msg_info = undefined
 $ ->
   imgdir ='/assets/';
   guyde_type = 
@@ -496,7 +508,7 @@ $ ->
     from = route_from_latlon
     to = route_to_latlon
 
-    ### 歩行者ルート探索を実行 ###
+    ### ドライブルート探索を実行 ###
     ZDC.Search.getRouteByDrive {
       from: from
       to: to
