@@ -119,7 +119,9 @@ map = undefined
 arrmrk = []
 mrks = undefined
 mrkg = undefined
-userMrk = undefined
+userMrk1 = undefined
+userMrk2 = undefined
+nowUserMrk = userMrk2
 
 guyde_type = undefined
 line_property = undefined
@@ -162,13 +164,28 @@ $(window).resize ->
 
 ### クリックした地点にマーカを作成 ###
 makeMarker = ->
-  if userMrk!=undefined 
-    map.removeWidget userMrk
-    userMrk = undefined
-  userMrk = new (ZDC.Marker)(map.getClickLatLon(),{color: ZDC.MARKER_COLOR_ID_GREEN_S,})
-  map.addWidget userMrk 
-  text = document.createTextNode("緯度；"+userMrk.getLatLon().lat+"、緯度"+userMrk.getLatLon().lon);
-  select_poi text, userMrk.getLatLon()
+  if nowUserMrk == userMrk2
+    if userMrk1!=undefined 
+      map.removeWidget userMrk1
+      userMrk1 = undefined
+    userMrk1 = new (ZDC.Marker)(map.getClickLatLon(),{color: ZDC.MARKER_COLOR_ID_GREEN_S,number: ZDC.MARKER_NUMBER_ID_1_S})
+    map.addWidget userMrk1
+    nowUserMrk=userMrk1 
+    text = "１　緯度；"+userMrk1.getLatLon().lat+"、緯度"+userMrk1.getLatLon().lon
+    textNode = document.createTextNode(text);
+    select_poi textNode, userMrk1.getLatLon()
+    ZDC.bind userMrk1, ZDC.MARKER_CLICK, {text: text, latlon: {lat: userMrk1.getLatLon().lat, lon: userMrk1.getLatLon().lon}}, markerClick  #マーカをクリックしたときの動作
+  else
+    if userMrk2!=undefined 
+      map.removeWidget userMrk2
+      userMrk2 = undefined
+    userMrk2 = new (ZDC.Marker)(map.getClickLatLon(),{color: ZDC.MARKER_COLOR_ID_GREEN_S,number: ZDC.MARKER_NUMBER_ID_2_S})
+    map.addWidget userMrk2
+    nowUserMrk=userMrk2
+    text = "２　緯度；"+userMrk1.getLatLon().lat+"、緯度"+userMrk2.getLatLon().lon
+    textNode = document.createTextNode(text);
+    select_poi textNode, userMrk2.getLatLon()
+    ZDC.bind userMrk2, ZDC.MARKER_CLICK, {text: text, latlon: {lat: userMrk2.getLatLon().lat, lon: userMrk2.getLatLon().lon}}, markerClick  #マーカをクリックしたときの動作 
   return
 
 $ ->
@@ -313,6 +330,7 @@ markerDisp = (status, res) ->
 
 #マーカがクリックされた時の処理
 markerClick = ->
+  console.log(@latlon);
   text = document.createTextNode(@text)
   select_poi text, @latlon
 
