@@ -14,6 +14,9 @@ def meesage_format(text,id)
 		text = text.gsub(/-rowS-/, "<div class='row'>");
 		text = text.gsub(/-resultS-/, "<div class='results'>");
 		text = text.gsub(/-suggest-/, "<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 suggest_button'>おすすめリストに追加する</div><div class='col-md-1'></div></div>");
+		text = text.gsub(/-map-/, "<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 show_map_button'>地図に表示する</div><div class='col-md-1'></div></div>");
+		text = text.gsub(/-lat-/, "<div class='lat' style='display:none;'>");
+		text = text.gsub(/-lon-/, "<div class='lon' style='display:none;'>");
 		text = text.gsub(/-E-/, "</div>");
 		text = text.gsub(/-br-/, "<br>");
 		gnavi = true;       
@@ -25,6 +28,9 @@ def meesage_format(text,id)
 		text = text.gsub(/-rowS-/, "<div class='row'>");
 		text = text.gsub(/-resultS-/, "<div class='results'>");
 		text = text.gsub(/-suggest-/, "<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 suggest_button'>おすすめリストに追加する</div><div class='col-md-1'></div></div>");
+		text = text.gsub(/-map-/, "<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 show_map_button'>地図に表示する</div><div class='col-md-1'></div></div>");
+		text = text.gsub(/-lat-/, "<div class='lat' style='display:none;'>");
+		text = text.gsub(/-lon-/, "<div class='lon' style='display:none;'>");
 		text = text.gsub(/-E-/, "</div>");
 		text = text.gsub(/-br-/, "<br>");
 		rakuten = true; 

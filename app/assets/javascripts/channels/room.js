@@ -104,6 +104,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
         message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
         message = message.replace(/-suggest-/g,"<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 suggest_button'>おすすめリストに追加する</div><div class='col-md-1'></div></div>");
+        message = message.replace(/-map-/g,"<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 show_map_button'>地図に表示する</div><div class='col-md-1'></div></div>");
+        message = message.replace(/-lat-/g,"<div class='lat' style='display:none;'>");
+        message = message.replace(/-lon-/g,"<div class='lot' style='display:none;'>");
         
 
         var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);
@@ -130,6 +133,9 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-imgS-/g, "<div class='col-md-5'>");
         message = message.replace(/-textS-/g, "<div class='col-md-7 search_text'>");
         message = message.replace(/-suggest-/g,"<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 suggest_button'>おすすめリストに追加する</div><div class='col-md-1'></div></div>");
+        message = message.replace(/-map-/g,"<div class='col-md-12'><div class='col-md-1'></div><div class='col-md-10 show_map_button'>地図に表示する</div><div class='col-md-1'></div></div>");
+        message = message.replace(/-lat-/g,"<div class='lat' style='display:none;'>");
+        message = message.replace(/-lon-/g,"<div class='lot' style='display:none;'>");
 
 
         var url = message.match(/(http:\/\/[\x21-\x7e]+)/gi);

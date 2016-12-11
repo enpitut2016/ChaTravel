@@ -67,6 +67,20 @@ $ ->
         suggest_url: bot_suggest_url
       })
 
+#おすすめの店を地図に表示
+$ ->
+  $(document).on 'click', '.show_map_button', ->
+    lat = $(this.parentNode.parentNode).find('.lat').html(); 
+    lon = $(this.parentNode.parentNode).find('.lon').html(); 
+    text = $(this.parentNode.parentNode).find('.search_text').html(); 
+    name = text.match(/\「.+?\」/)
+    lat = parseFloat(lat)
+    lon = parseFloat(lon)
+    console.log(lon);
+    console.log(lat);
+    makeSuggestMarker name, new ZDC.LatLon(lat, lon)
+    
+
 # エンターキーを押してコメント送信
 
 keypressing = false
@@ -128,6 +142,7 @@ create_vote_result = () ->
 
 map = undefined
 arrmrk = []
+suggestmrk = undefined
 mrks = undefined
 mrkg = undefined
 userMrk1 = undefined
@@ -197,6 +212,25 @@ makeMarker = ->
     textNode = document.createTextNode(text);
     select_poi textNode, userMrk2.getLatLon()
     ZDC.bind userMrk2, ZDC.MARKER_CLICK, {text: text, latlon: {lat: userMrk2.getLatLon().lat, lon: userMrk2.getLatLon().lon}}, markerClick  #マーカをクリックしたときの動作 
+  return
+
+###　サジェスとされた店の場所にマーカー表示 ###
+makeSuggestMarker = (text,latlon) ->
+  $(".tab_content > li").css("display","none");
+  $('.tab_content li').eq(2).css('display','block');
+  $('.tab li').removeClass('select');
+  $('.tab li').eq(2).addClass('select')
+  loadMap()
+
+  map.moveLatLon(latlon);
+  if suggestmrk!=undefined 
+      map.removeWidget suggestmrk
+      suggestmrk = undefined
+  suggestmrk = new (ZDC.Marker)(latlon,{color: ZDC.MARKER_COLOR_ID_YELLOW_S,number: ZDC.MARKER_NUMBER_ID_STAR_S})
+  map.addWidget suggestmrk
+  textNode = document.createTextNode(text);
+  select_poi textNode, latlon
+  ZDC.bind suggestmrk, ZDC.MARKER_CLICK, {text: text, latlon: latlon}, markerClick  #マーカをクリックしたときの動作
   return
 
 $ ->
@@ -547,7 +581,7 @@ $ ->
         ### 取得成功 ###     
         widgitDelete()
         writeRoute status, res
-        $("#route-time").html("歩行時間：#{res.route.time}分")
+        $("#route-time").html("走行時間：#{res.route.time}分")
         $("#route-meter").html("走行距離：#{res.route.distance}m")
         $("#route-price").html("通行料金：#{res.route.toll}円")
       else
