@@ -547,7 +547,7 @@ $ ->
         ### 取得成功 ###     
         widgitDelete()
         writeRoute status, res
-        $("#route-time").html("走行時間：#{res.route.time}分")
+        $("#route-time").html("歩行時間：#{res.route.time}分")
         $("#route-meter").html("走行距離：#{res.route.distance}m")
         $("#route-price").html("通行料金：#{res.route.toll}円")
       else
@@ -555,6 +555,29 @@ $ ->
         alert status.text
       return
     return
+
+  $('#route-btn-walk').on 'click', ->
+    from = route_from_latlon
+    to = route_to_latlon
+
+    ### 徒歩ルート探索を実行 ###
+    ZDC.Search.getRouteByWalk {
+      from: from
+      to: to
+    }, (status, res) ->
+      if status.code == '000'
+
+        ### 取得成功 ###     
+        widgitDelete()
+        writeRoute status, res
+        $("#route-time").html("")
+        $("#route-meter").html("歩行距離：#{res.route.distance}m")
+        $("#route-price").html("")
+      else
+        ### 取得失敗 ###
+        alert status.text
+      return
+    return  
 
   ### ルートを描画します ###
   writeRoute = (status, res) ->
