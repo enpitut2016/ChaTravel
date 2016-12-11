@@ -117,6 +117,8 @@ create_vote_result = () ->
 
 map = undefined
 arrmrk = []
+mrks = undefined
+mrkg = undefined
 
 loadMap = () ->
   lat = 35.6778614
@@ -150,7 +152,7 @@ $(window).resize ->
 $ ->
   $('#eki-search-btn').on 'click', ->
     word = document.getElementById('word').value
-    markerDelete()
+    widgitDelete()
     if word == ''
       return
     else
@@ -160,7 +162,7 @@ $ ->
 $ ->
   $('#poi-search-btn').on 'click', ->
     word = document.getElementById('word').value
-    markerDelete()
+    widgitDelete()
     if word == ''
       return
     else
@@ -301,11 +303,20 @@ markerClick = ->
   #msg.open()
   return
 
-
-### マーカを削除 ###
-markerDelete = ->
+### ウィジットを削除 ###
+widgitDelete = ->
+  console.log(mrks);
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
+  while pl.length > 0
+    map.removeWidget pl.shift()
+  if mrks!=undefined 
+    map.removeWidget mrks
+    mrks = undefined
+  if mrkg!=undefined 
+    map.removeWidget mrkg
+    mrkg = undefined
+
   return
 
 
@@ -493,7 +504,7 @@ $ ->
       if status.code == '000'
 
         ### 取得成功 ###     
-        markerDelete()
+        widgitDelete()
         writeRoute status, res
         alert "走行時間：#{res.route.time}分\n走行距離：#{res.route.distance}m\n通行料金：#{res.route.toll}円"
       else
@@ -504,8 +515,7 @@ $ ->
 
   ### ルートを描画します ###
   writeRoute = (status, res) ->
-    `var opt`
-
+ 
     ### スタートとゴールのアイコンを地図に重畳します ###
     setStartEndWidget()
     link = res.route.link
@@ -538,8 +548,8 @@ $ ->
 
   ### スタートとゴールのアイコンを地図に重畳します ###
   setStartEndWidget = ->
-    mrks = new (ZDC.Marker)(from)
-    mrkg = new (ZDC.Marker)(to)
+    mrks = new (ZDC.Marker)(from,{color: ZDC.MARKER_COLOR_ID_BLUE_S,})
+    mrkg = new (ZDC.Marker)(to,{color: ZDC.MARKER_COLOR_ID_RED_S,number: ZDC.MARKER_NUMBER_ID_STAR_S})
     map.addWidget mrks
     map.addWidget mrkg
     return
