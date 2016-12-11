@@ -189,7 +189,7 @@ execPoiSearch = (word) ->
     return
   return  
 
-### 駅検索結果テーブル作成 ###
+### 駅検索結果テーブル初期化 ###
 initTable = ->
   element = document.getElementById('search-poi-list')
   while element.firstChild
@@ -279,8 +279,11 @@ markerDisp = (status, res) ->
     mrk = new (ZDC.Marker)(itemlatlon)
     map.addWidget mrk
     arrmrk.push mrk
-
-    ZDC.bind mrk, ZDC.MARKER_CLICK, items[i].poi, markerClick  # マーカをクリックしたときの動作
+    if items[i].poi != undefined
+      ZDC.bind mrk, ZDC.MARKER_CLICK, items[i].poi, markerClick  # 駅マーカをクリックしたときの動作
+    else
+      ZDC.bind mrk, ZDC.MARKER_CLICK, items[i], markerClick  # その他のマーカをクリックしたときの動作  
+    
     i++
   return
 
