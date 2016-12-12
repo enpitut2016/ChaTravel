@@ -12,6 +12,7 @@ $(window).load ->
 $ ->
   $(".tab_content > li").css("display","none");
   $('.tab_content li').eq(0).css('display','block');
+  $("#route-function").css("display","none");
 
 
 $ ->
@@ -22,6 +23,16 @@ $ ->
     $('.tab li').removeClass('select');
     $(this).addClass('select')
     loadMap()
+
+$ ->
+  $('#list-function-btn').on 'click', ->
+    console.log("test");
+    $("#route-function").css("display","none");
+    $("#list-function").css("display","block");
+
+  $('#route-function-btn').on 'click', ->
+    $("#route-function").css("display","block");
+    $("#list-function").css("display","none");
     
 #botのレコメンドについて   
 
@@ -117,12 +128,27 @@ create_vote_result = () ->
 
 map = undefined
 arrmrk = []
+mrks = undefined
+mrkg = undefined
+userMrk1 = undefined
+userMrk2 = undefined
+nowUserMrk = userMrk2
+
+guyde_type = undefined
+line_property = undefined
+line_property_drive = undefined
+pl = []
+mk = []
+start = undefined
+end = undefined
+msg_info = undefined
 
 loadMap = () ->
   lat = 35.6778614
   lon = 139.7703167
   $('#ZMap').empty();
   map = new ZDC.Map(document.getElementById('ZMap'),{ latlon: new ZDC.LatLon(lat, lon), zoom: 6});   
+  ZDC.addListener(map, ZDC.MAP_CLICK, makeMarker); #地図をクリックしたときの処理
   
 
   ### 通常のコントロールを作成 ###
@@ -147,10 +173,36 @@ $(window).resize ->
   return
 
 
+### クリックした地点にマーカを作成 ###
+makeMarker = ->
+  if nowUserMrk == userMrk2
+    if userMrk1!=undefined 
+      map.removeWidget userMrk1
+      userMrk1 = undefined
+    userMrk1 = new (ZDC.Marker)(map.getClickLatLon(),{color: ZDC.MARKER_COLOR_ID_GREEN_S,number: ZDC.MARKER_NUMBER_ID_1_S})
+    map.addWidget userMrk1
+    nowUserMrk=userMrk1 
+    text = "１　緯度；"+userMrk1.getLatLon().lat+"、緯度"+userMrk1.getLatLon().lon
+    textNode = document.createTextNode(text);
+    select_poi textNode, userMrk1.getLatLon()
+    ZDC.bind userMrk1, ZDC.MARKER_CLICK, {text: text, latlon: {lat: userMrk1.getLatLon().lat, lon: userMrk1.getLatLon().lon}}, markerClick  #マーカをクリックしたときの動作
+  else
+    if userMrk2!=undefined 
+      map.removeWidget userMrk2
+      userMrk2 = undefined
+    userMrk2 = new (ZDC.Marker)(map.getClickLatLon(),{color: ZDC.MARKER_COLOR_ID_GREEN_S,number: ZDC.MARKER_NUMBER_ID_2_S})
+    map.addWidget userMrk2
+    nowUserMrk=userMrk2
+    text = "２　緯度；"+userMrk1.getLatLon().lat+"、緯度"+userMrk2.getLatLon().lon
+    textNode = document.createTextNode(text);
+    select_poi textNode, userMrk2.getLatLon()
+    ZDC.bind userMrk2, ZDC.MARKER_CLICK, {text: text, latlon: {lat: userMrk2.getLatLon().lat, lon: userMrk2.getLatLon().lon}}, markerClick  #マーカをクリックしたときの動作 
+  return
+
 $ ->
   $('#eki-search-btn').on 'click', ->
     word = document.getElementById('word').value
-    markerDelete()
+    widgitDelete()
     if word == ''
       return
     else
@@ -160,7 +212,7 @@ $ ->
 $ ->
   $('#poi-search-btn').on 'click', ->
     word = document.getElementById('word').value
-    markerDelete()
+    widgitDelete()
     if word == ''
       return
     else
@@ -189,7 +241,7 @@ execPoiSearch = (word) ->
     return
   return  
 
-### 駅検索結果テーブル作成 ###
+### 駅検索結果テーブル初期化 ###
 initTable = ->
   element = document.getElementById('search-poi-list')
   while element.firstChild
@@ -279,13 +331,17 @@ markerDisp = (status, res) ->
     mrk = new (ZDC.Marker)(itemlatlon)
     map.addWidget mrk
     arrmrk.push mrk
-
-    ZDC.bind mrk, ZDC.MARKER_CLICK, items[i].poi, markerClick  # マーカをクリックしたときの動作
+    if items[i].poi != undefined
+      ZDC.bind mrk, ZDC.MARKER_CLICK, items[i].poi, markerClick  # 駅マーカをクリックしたときの動作
+    else
+      ZDC.bind mrk, ZDC.MARKER_CLICK, items[i], markerClick  # その他のマーカをクリックしたときの動作  
+    
     i++
   return
 
 #マーカがクリックされた時の処理
 markerClick = ->
+  console.log(@latlon);
   text = document.createTextNode(@text)
   select_poi text, @latlon
 
@@ -298,11 +354,19 @@ markerClick = ->
   #msg.open()
   return
 
-
-### マーカを削除 ###
-markerDelete = ->
+### ウィジットを削除 ###
+widgitDelete = ->
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
+  while pl.length > 0
+    map.removeWidget pl.shift()
+  if mrks!=undefined 
+    map.removeWidget mrks
+    mrks = undefined
+  if mrkg!=undefined 
+    map.removeWidget mrkg
+    mrkg = undefined
+
   return
 
 
@@ -330,15 +394,6 @@ $ ->
 
 
 ### ルート探索ボタン ###
-
-guyde_type = undefined
-line_property = undefined
-line_property_drive = undefined
-pl = []
-mk = []
-start = undefined
-end = undefined
-msg_info = undefined
 $ ->
   imgdir ='/assets/';
   guyde_type = 
@@ -482,7 +537,7 @@ $ ->
     from = route_from_latlon
     to = route_to_latlon
 
-    ### 歩行者ルート探索を実行 ###
+    ### ドライブルート探索を実行 ###
     ZDC.Search.getRouteByDrive {
       from: from
       to: to
@@ -490,19 +545,43 @@ $ ->
       if status.code == '000'
 
         ### 取得成功 ###     
-        markerDelete()
+        widgitDelete()
         writeRoute status, res
-        alert "走行時間：#{res.route.time}分\n走行距離：#{res.route.distance}m\n通行料金：#{res.route.toll}円"
+        $("#route-time").html("歩行時間：#{res.route.time}分")
+        $("#route-meter").html("走行距離：#{res.route.distance}m")
+        $("#route-price").html("通行料金：#{res.route.toll}円")
       else
         ### 取得失敗 ###
         alert status.text
       return
     return
 
+  $('#route-btn-walk').on 'click', ->
+    from = route_from_latlon
+    to = route_to_latlon
+
+    ### 徒歩ルート探索を実行 ###
+    ZDC.Search.getRouteByWalk {
+      from: from
+      to: to
+    }, (status, res) ->
+      if status.code == '000'
+
+        ### 取得成功 ###     
+        widgitDelete()
+        writeRoute status, res
+        $("#route-time").html("")
+        $("#route-meter").html("歩行距離：#{res.route.distance}m")
+        $("#route-price").html("")
+      else
+        ### 取得失敗 ###
+        alert status.text
+      return
+    return  
+
   ### ルートを描画します ###
   writeRoute = (status, res) ->
-    `var opt`
-
+ 
     ### スタートとゴールのアイコンを地図に重畳します ###
     setStartEndWidget()
     link = res.route.link
@@ -535,8 +614,8 @@ $ ->
 
   ### スタートとゴールのアイコンを地図に重畳します ###
   setStartEndWidget = ->
-    mrks = new (ZDC.Marker)(from)
-    mrkg = new (ZDC.Marker)(to)
+    mrks = new (ZDC.Marker)(from,{color: ZDC.MARKER_COLOR_ID_BLUE_S,})
+    mrkg = new (ZDC.Marker)(to,{color: ZDC.MARKER_COLOR_ID_RED_S,number: ZDC.MARKER_NUMBER_ID_STAR_S})
     map.addWidget mrks
     map.addWidget mrkg
     return
