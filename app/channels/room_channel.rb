@@ -83,7 +83,7 @@ class RoomChannel < ApplicationCable::Channel
       uri = URI.parse("http://api.gnavi.co.jp/RestSearchAPI/20150630/?#{params}")
       method = 'GET'
     when 'yado'
-       params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '3', page: '3', elements: 'hotelName,hotelInformationUrl,hotelImageUrl,address2' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
+       params = URI.encode_www_form({ keyword: data['keyword'], format: 'json',responseType: 'small', hits: '3', page: '3',datumType: '1', elements: 'hotelName,hotelInformationUrl,hotelImageUrl,address2,latitude,longitude' , applicationId: Rails.application.secrets.RAKUTEN_KEY})
        uri = URI.parse("https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20131024?#{params}") 
        method = 'GET'
     #---------ここからPOSTをつかうAPI-------------
@@ -232,6 +232,9 @@ class RoomChannel < ApplicationCable::Channel
                            + i["hotel"][0]["hotelBasicInfo"]["hotelInformationUrl"] \
                            + ' -E- ' \
                            + ' -suggest- ' \
+                           + ' -lat- ' + i["hotel"][0]["hotelBasicInfo"]["latitude"].to_s + ' -E- '\
+                           + ' -lon- ' + i["hotel"][0]["hotelBasicInfo"]["longitude"].to_s + ' -E- '\
+                           + ' -map- ' \
                            + ' -br-　 ' \
                            + ' -br-　 ' \
                            + ' -E- ' \
@@ -269,6 +272,9 @@ class RoomChannel < ApplicationCable::Channel
                           + ' -br-　 ' \
                           + ' -E- ' \
                           + ' -suggest- ' \
+                          + ' -lat- ' + i['latitude'].to_s + ' -E- '\
+                          + ' -lon- ' + i['longitude'].to_s + ' -E- '\
+                          + ' -map- ' \
                           + ' -br-　 ' \
                           + ' -br-　 ' \
                           + ' -E- '                    

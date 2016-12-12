@@ -132,6 +132,22 @@ html, body {
           background-color: #888;
         }
 
+        .show_map_button {  
+          text-align: center;
+          background-color: #ddd;
+          margin-top: 10px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+
+        .show_map_button:hover {  
+          background-color: #aaa;
+        }
+
+        .show_map_button:active {  
+          background-color: #888;
+        }
+
       }
 
       .chat_frame_right:after {
