@@ -11,7 +11,7 @@ $(window).load ->
 #タブに関する記述
 $ ->
   $(".tab_content > li").css("display","none");
-  $('.tab_content li').eq(0).css('display','block');
+  $('.tab_content > li').eq(0).css('display','block');
   $("#route-function").css("display","none");
 
 
@@ -19,7 +19,7 @@ $ ->
   $(".tab li").on 'click', ->
     index = $(".tab li").index(this);
     $(".tab_content > li").css("display","none");
-    $('.tab_content li').eq(index).css('display','block');
+    $('.tab_content > li').eq(index).css('display','block');
     $('.tab li').removeClass('select');
     $(this).addClass('select')
     loadMap()
@@ -217,7 +217,7 @@ makeMarker = ->
 ###　サジェスとされた店の場所にマーカー表示 ###
 makeSuggestMarker = (text,latlon) ->
   $(".tab_content > li").css("display","none");
-  $('.tab_content li').eq(2).css('display','block');
+  $('.tab_content > li').eq(2).css('display','block');
   $('.tab li').removeClass('select');
   $('.tab li').eq(2).addClass('select')
   loadMap()
