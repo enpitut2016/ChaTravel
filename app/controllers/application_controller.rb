@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
       html = open(uri).read.encode('UTF-8')   
     end
     doc = Nokogiri::HTML(html, uri)
-    title =  doc.css('//meta[property="og:site_name"]/@content').empty? ? doc.title.to_s : doc.css('//meta[property="og:site_name"]/@content').to_s
+    title =  doc.css('//meta[property="og:title"]/@content').empty? ? doc.title.to_s : doc.css('//meta[property="og:title"]/@content').to_s
     desc = doc.css('//meta[property="og:description"]/@content')
     description = desc.empty? ? doc.css('//meta[name$="escription"]/@content').to_s : desc.to_s
     image = doc.css('//meta[property="og:image"]/@content').to_s
