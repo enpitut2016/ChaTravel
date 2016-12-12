@@ -115,6 +115,7 @@ $ ->
       room_url: Chat.utils.room_url,
       suggest_list: create_suggest()
     })
+    App.room.speak_bot "多数決を開始します！"
 
 
 $ ->
@@ -122,6 +123,7 @@ $ ->
     App.room.finish_vote ({
       vote_result: create_vote_result()
     })
+    App.room.speak_bot "多数決を終了しました！"
 
 create_suggest = () ->
   array = []
