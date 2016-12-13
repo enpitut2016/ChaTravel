@@ -6,6 +6,7 @@
 $(window).load ->
   $('#message_list').animate({scrollTop: $('#message_list')[0].scrollHeight}, 'slow');
   getEndTime();
+  loadMap();
 
 
 #タブに関する記述
@@ -76,8 +77,8 @@ $ ->
     name = text.match(/\「.+?\」/)
     lat = parseFloat(lat)
     lon = parseFloat(lon)
-    console.log(lon);
-    console.log(lat);
+    console.log("lon"+lon);
+    console.log("lat"+lat);
     makeSuggestMarker name, new ZDC.LatLon(lat, lon)
     
 
@@ -164,6 +165,8 @@ loadMap = () ->
   $('#ZMap').empty();
   map = new ZDC.Map(document.getElementById('ZMap'),{ latlon: new ZDC.LatLon(lat, lon), zoom: 6});   
   ZDC.addListener(map, ZDC.MAP_CLICK, makeMarker); #地図をクリックしたときの処理
+  msg_info = new ZDC.MsgInfo(new ZDC.LatLon(lat, lon), {offset: ZDC.Pixel(0, -18)});
+  map.addWidget(msg_info);
   
 
   ### 通常のコントロールを作成 ###
@@ -190,6 +193,7 @@ $(window).resize ->
 
 ### クリックした地点にマーカを作成 ###
 makeMarker = ->
+  msg_info.close()
   if nowUserMrk == userMrk2
     if userMrk1!=undefined 
       map.removeWidget userMrk1
@@ -220,7 +224,7 @@ makeSuggestMarker = (text,latlon) ->
   $('.tab_content > li').eq(2).css('display','block');
   $('.tab li').removeClass('select');
   $('.tab li').eq(2).addClass('select')
-  loadMap()
+  
 
   map.moveLatLon(latlon);
   if suggestmrk!=undefined 
@@ -379,17 +383,16 @@ markerClick = ->
   text = document.createTextNode(@text)
   select_poi text, @latlon
 
-  #labelhtml = undefined
-  #labelhtml = '<div><font size = "-1"><div><b>' + @text + '</b></div>'
-  #labelhtml += '<table><tr><td>〒' + @zipcode + ' ' + @addressText + '</td></tr>'
-  #labelhtml += '<tr><td>電話番号：' + @phoneNumber + '</td></tr></table></font></div>'
-  #msg.setHtml labelhtml
-  #msg.moveLatLon new (ZDC.LatLon)(@latlon.lat, @latlon.lon)
-  #msg.open()
+  labelhtml = undefined
+  labelhtml = "<b>　"+@text+"　</b>"
+  msg_info.setHtml labelhtml
+  msg_info.moveLatLon new (ZDC.LatLon)(@latlon.lat, @latlon.lon)
+  msg_info.open()
   return
 
 ### ウィジットを削除 ###
 widgitDelete = ->
+  msg_info.close()
   while arrmrk.length > 0
     map.removeWidget arrmrk.shift()
   while pl.length > 0
