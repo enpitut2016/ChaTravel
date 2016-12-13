@@ -224,6 +224,7 @@ makeSuggestMarker = (text,latlon) ->
   $('.tab_content > li').eq(2).css('display','block');
   $('.tab li').removeClass('select');
   $('.tab li').eq(2).addClass('select')
+  loadMap();
   
 
   map.moveLatLon(latlon);
