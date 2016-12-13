@@ -5,7 +5,6 @@
 
 ## 使い方
 
-
 ## 公開しているサイト
 
 demo page http://chatravel.jp/
@@ -27,4 +26,6 @@ Rails 5.0.0.1
 ```
 mysql  Ver 14.14 Distrib 5.6.31, for debian-linux-gnu (x86_64) using  EditLine wrapper
 ```
+
+## デプロイの仕方
 
