@@ -318,6 +318,11 @@ class RoomChannel < ApplicationCable::Channel
     @user = User.find(data['user_id'])
     url = data['suggest_url']
     result = ApplicationController::scrape(url)
+    @suggests = Suggest.find_by(url: url, room_id: @room.id)  #サジェストがリストに登録されていれば、再登録させない
+    if @suggests != nil then
+      Rails.logger.debug("すでにおすすめリストに存在")
+      return
+    end
     suggest = Suggest.create!(url: url, title: result[:title], description: result[:description], image: result[:image], room_id: @room.id, user_id: @user.id)
 
     dom = ApplicationController.renderer.render partial: 'rooms/suggest_item', locals: { suggest: suggest}
