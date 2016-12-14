@@ -269,16 +269,6 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     },
     user_id: function() {
       return $('#current_user').data('current_user_id')
-    },
-    html_escape: function(str) {
-      return str.replace(/[&"<>]/g, function(c) {
-        return {
-          "&": "&amp;",
-          '"': "&quot;",
-          "<": "&lt;",
-          ">": "&gt;"
-        }[c];
-      });
     }
   }
 })();
