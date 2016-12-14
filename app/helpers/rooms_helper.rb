@@ -39,7 +39,7 @@ def meesage_format(text,id)
 	if gnavi then
 		URI.extract(text, ['http']).uniq.each do |url|
     		sub_text = ""
-    		if url.include?(".jpg") then
+    		if url.match(/\.(jpg|jpeg|gif|png)$/) then
     			sub_text << "<img class='thumbnail' src='" << url << "' alt='ホテル画像'> "
     		else
     			sub_text << "<a href=" << url << " target=\"_blank\">詳しくはこちら</a>"
@@ -50,7 +50,7 @@ def meesage_format(text,id)
 	elsif rakuten then
 		URI.extract(text, ['http']).uniq.each do |url|
     		sub_text = ""
-    		if url.include?(".jpg") then
+    		if url.match(/\.(jpg|jpeg|gif|png)$/) then
     			sub_text << "<img class='thumbnail' src='" << url << "' alt='ホテル画像'> "
     		else
     			sub_text << "<a href=" << url << " target=\"_blank\">詳しくはこちら</a>"
