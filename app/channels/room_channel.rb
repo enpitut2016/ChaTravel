@@ -345,7 +345,7 @@ class RoomChannel < ApplicationCable::Channel
     @user = User.find(data['user_id'])
     url = data['suggest_url']
     result = ApplicationController::scrape(url)
-    @suggests = Suggest.find_by(url: url, room_id: @room.id)  #サジェストがリストに登録されていれば、再登録させない
+    @suggests = Suggest.find_by(url: url, room_id: @room.id, enable: true)  #サジェストがリストに登録されていれば、再登録させない
     if @suggests != nil then
       Rails.logger.debug("すでにおすすめリストに存在")
       return
