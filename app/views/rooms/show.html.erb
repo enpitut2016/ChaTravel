@@ -32,18 +32,18 @@
     </div>
 
 
-    <div class="chat col-md-6">
+    <div class="chat col-md-6 col-sm-12 col-xs-12">
       <%= render 'message_list', message_list: @messages, current_user: current_user %>
         <div id="chat_area">
           <div id="message_textarea">
-            <textarea id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
-            <input id="post" type="submit" value="投稿">
+            <textarea class="chat col-md-10 col-xs-7" id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
+            <input class="chat col-md-2 col-xs-3" id="post" type="submit" value="投稿">
           </div>
           <div id="current_user"  data-current_user_id="<%= current_user.id %>"></div>
         </div>
     </div>
 
-    <div class="dashboard col-md-4" >
+    <div class="dashboard col-md-4 hidden-sm hidden-xs" >
 
         <ul class="tab">
           <li class="select">オススメ</li>
