@@ -133,6 +133,25 @@ class RoomChannel < ApplicationCable::Channel
         "sentence" => data['data']
       }.to_json
       method = 'POST'
+    when 'sentenceUnderstanding'
+      params = URI.encode_www_form({ APIKEY: Rails.application.secrets.DOCOMO_KEY })
+      uri = URI.parse("https://api.apigw.smt.docomo.ne.jp/sentenceUnderstanding/v1/task?#{params}")
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true #httpsに
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req["Content-Type"] = "application/json" # httpリクエストヘッダの追加
+      payload = {
+        "projectKey" => 'OSU',
+        "appInfo" => {"appName" => "hoge_app", "appKey" => "hoge_app01"},
+        "clientVer" => "1.0.0",
+        "dialogMode" => "off",
+        "language" => "ja",
+        "userId" => "12 123456 123456 0",
+        "location" => {"lat" => 139.766084, "lon"=> 35.681382},
+        "userUtterance" => {"utteranceText" => data['data']}
+      }.to_json
+      method = 'POST'
+      Rails.logger.debug(payload)
     else
       Rails.logger.debug("API Type Error")
       return
@@ -178,6 +197,11 @@ class RoomChannel < ApplicationCable::Channel
   #形態素解析の処理
   def decomposeSentences(data)
 
+    resHatsuwaType = use_api(data,'sentenceUnderstanding');
+    Rails.logger.debug("発話理解 = #{resHatsuwaType}");
+    hatuwaType = resHatsuwaType["dialogStatus"]["command"]["commandName"]#[command][commandName]
+    Rails.logger.debug("発話タイプ = #{hatuwaType}");
+
     resEnt = use_api(data,'langAnaEnt');
     location = [];
     resEnt["ne_list"].each{|i| 
@@ -212,7 +236,7 @@ class RoomChannel < ApplicationCable::Channel
 
 
 
-        if keyword.include?("ホテル") || keyword.include?("宿") then #キーワードに宿があれば宿を探す
+        if keyword.include?("ホテル") || keyword.include?("宿") || keyword.include?("旅館") then #キーワードに宿があれば宿を探す
           yado = use_api({"keyword" => loc}, 'yado');
           Rails.logger.debug("宿APIレスポンス = #{yado}");
           if true then #検索してみつからなかったときのなにかしらのエラー処理
@@ -249,47 +273,50 @@ class RoomChannel < ApplicationCable::Channel
           return true;
         end
 
-        gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');  #グルメを探す
-        #Rails.logger.debug("ぐるなびAPIレスポンス = #{gnavi}");
-        if !gnavi.include?('error') then
+        if hatuwaType=="グルメ検索" then
+          gnavi = use_api({"address" => loc, "freeword" => keywords},'gnavi');  #グルメを探す
+          #Rails.logger.debug("ぐるなびAPIレスポンス = #{gnavi}");
+          if !gnavi.include?('error') then
 
-          sendMessage = '-gnavi-'+loc+'のレストランを'+gnavi["rest"].length.to_s+'件検索しました（キーワード；'+keywords+'）' + ' -resultS- '
-          gnavi['rest'].each{|i|
-            sendMessage +=  ' -mainS- ' \
-                          + ' -imgS- ' \
-                          + i['image_url']['shop_image1'] \
-                          + ' -E- ' \
-                          + ' -textS- ' \
-                          + '「'+i['name']+'」' \
-                          + ' -br- ' \
-                          + ' 住所：'+i['address'] \
-                          + ' -br- -br-' \
-                          + i['pr']['pr_short'] \
-                          + ' -br- ' \
-                          + ' -br- ' \
-                          + i['url'] \
-                          + ' -br-　 ' \
-                          + ' -br-　 ' \
-                          + ' -E- ' \
-                          + ' -suggest- ' \
-                          + ' -lat- ' + i['latitude'].to_s + ' -E- '\
-                          + ' -lon- ' + i['longitude'].to_s + ' -E- '\
-                          + ' -map- ' \
-                          + ' -br-　 ' \
-                          + ' -br-　 ' \
-                          + ' -E- '                    
-          }
-          sendMessage += '-E-'          
-          Message.create!(message: sendMessage, user_id: 1, room_id: @room.id);
-          return true;
-        else   
-          Message.create!(message: loc+'のレストラン（キーワード；'+keywords+'）は見つかりませんでした。', user_id: 1, room_id: @room.id) 
-          return true;
-        end  
+            sendMessage = '-gnavi-'+loc+'のレストランを'+gnavi["rest"].length.to_s+'件検索しました（キーワード；'+keywords+'）' + ' -resultS- '
+            gnavi['rest'].each{|i|
+              sendMessage +=  ' -mainS- ' \
+                            + ' -imgS- ' \
+                            + i['image_url']['shop_image1'] \
+                            + ' -E- ' \
+                            + ' -textS- ' \
+                            + '「'+i['name']+'」' \
+                            + ' -br- ' \
+                            + ' 住所：'+i['address'] \
+                            + ' -br- -br-' \
+                            + i['pr']['pr_short'] \
+                            + ' -br- ' \
+                            + ' -br- ' \
+                            + i['url'] \
+                            + ' -br-　 ' \
+                            + ' -br-　 ' \
+                            + ' -E- ' \
+                            + ' -suggest- ' \
+                            + ' -lat- ' + i['latitude'].to_s + ' -E- '\
+                            + ' -lon- ' + i['longitude'].to_s + ' -E- '\
+                            + ' -map- ' \
+                            + ' -br-　 ' \
+                            + ' -br-　 ' \
+                            + ' -E- '                    
+            }
+            sendMessage += '-E-'          
+            Message.create!(message: sendMessage, user_id: 1, room_id: @room.id);
+            return true;
+          else   
+            Message.create!(message: loc+'のレストラン（キーワード；'+keywords+'）は見つかりませんでした。', user_id: 1, room_id: @room.id) 
+            return true;
+          end 
+
+        end   
 
       }      
 
-      Message.create!(message: 'すみません、わかりませんでした', user_id: 1, room_id: @room.id) 
+      return false;
     end
 
 
