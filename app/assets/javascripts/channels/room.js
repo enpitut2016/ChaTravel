@@ -91,7 +91,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
       var message = "";
       var gnavi = false;
       var rakuten = false;
-
+      data.message = Chat.utils.escape_html(data.message);
       if (data.message.match(/-gnavi-/) && parseInt(data.user.id)==1) {
         message += "<p>" + data.user.name + "</p>";
         message += "<p>" + data.message + "</p>";
@@ -269,6 +269,22 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
     },
     user_id: function() {
       return $('#current_user').data('current_user_id')
+    },
+    escape_html: function(string) {
+    if(typeof string !== 'string') {
+      return string;
     }
+    return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;'
+      }[match]
+    });
   }
+
+}
 })();
