@@ -38,7 +38,8 @@ $ ->
 #botのレコメンドについて   
 
 $ ->
-  $("#post").on 'click', ->
+  $("#post, #post-sp").on 'click', ->
+
     comment = $("#post_comment")
     text = comment.val().trim()
     if (text == '')
@@ -729,3 +730,60 @@ getEndTime = ->
   , 500
 
   return
+
+direction = undefined
+position = undefined
+$ ->
+  
+
+  #スマホスワイプ用
+  
+  #スワイプ開始時の横方向の座標を格納
+
+  onTouchStart = (event) ->
+    position = getPosition(event)
+    direction = ''
+    #一度リセットする
+    return
+
+  #スワイプの方向（left／right）を取得
+
+  onTouchMove = (event) ->
+    if position - getPosition(event) > 70
+      # 70px以上移動しなければスワイプと判断しない
+      direction = 'left'
+      #左と検知
+    else if position - getPosition(event) < -70
+      # 70px以上移動しなければスワイプと判断しない
+      direction = 'right'
+      #右と検知
+    return
+
+  $('.dashboard-sp').hide();
+  $(".tab_content > li").css("display","none");
+  $('.tab_content > li').eq(0).css('display','block');
+  $("#route-function").css("display","none");
+  onTouchEnd = (event) ->
+    if direction == 'right'
+      $('.chat').show();
+      $('.dashboard-sp').hide();
+    else if direction == 'left'
+     $('.chat').hide();
+     $('.dashboard-sp').show();
+    return
+
+  #横方向の座標を取得
+
+  getPosition = (event) ->
+    event.originalEvent.touches[0].pageX
+
+  $(window).on 'touchstart', onTouchStart
+  #指が触れたか検知
+  $(window).on 'touchmove', onTouchMove
+  #指が動いたか検知
+  $(window).on 'touchend', onTouchEnd
+  #指が離れたか検知
+  return
+
+
+

@@ -162,21 +162,21 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
 
       if (parseInt(data.user.id) == $('#current_user').data('current_user_id')) {
         dom = "<li class=" + data.user.name + "><div class='row'>"
-        + "<div class='comment col-md-9 chat_frame_right'>" + message + "</div>"
-        + "<div class='col-md-3 icon_right'>" + icon + "</div></div></li>";
+        + "<div class='comment col-md-9  col-sm-10 col-xs-8 chat_frame_right'>" + message + "</div>"
+        + "<div class='col-md-3 col-sm-2 col-xs-2 icon_right'>" + icon + "</div></div></li>";
       } else {
 
         if(gnavi){ //ぐるなび用の表示
           dom = "<li class=" + data.user.name + "><div class='row'>"
-          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
-          + "<div class='comment col-md-9 chat_frame_left'>" + message 
+          + "<div class='col-md-3 col-sm-2 col-xs-2 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9  col-sm-10 col-xs-8 chat_frame_left'>" + message 
           + "<div class='api_banner col-md-12'><a href='http://www.gnavi.co.jp/'>"
           + "<img class='gnavi-icon' src='http://apicache.gnavi.co.jp/image/rest/b/api_155_20.gif' alt='グルメ情報検索サイト　ぐるなび'></div>";
           + "</a></div></div></li>";
         } else if(rakuten) { //楽天用の表示
           dom = "<li class=" + data.user.name + "><div class='row'>"
-          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
-          + "<div class='comment col-md-9 chat_frame_left'>" + message 
+          + "<div class='col-md-3 col-sm-2 col-xs-2 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9  col-sm-10 col-xs-8 chat_frame_left'>" + message 
           + "<div class='api_banner col-md-12'>"
           +"<!-- Rakuten Web Services Attribution Snippet FROM HERE -->"
           +'<a href="http://webservice.rakuten.co.jp/" target="_blank"><img src="https://webservice.rakuten.co.jp/img/credit/200709/credit_22121.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="221" height="21"/></a>'
@@ -184,8 +184,8 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
           + "</div></div></div></li>";
         } else {  
           dom = "<li class=" + data.user.name + "><div class='row'>"
-          + "<div class='col-md-3 icon_left'>" + icon + "</div>"
-          + "<div class='comment col-md-9 chat_frame_left'>" + message + "</div></div></li>";
+          + "<div class='col-md-3 col-sm-2 col-xs-2 icon_left'>" + icon + "</div>"
+          + "<div class='comment col-md-9  col-sm-10 col-xs-8 chat_frame_left'>" + message + "</div></div></li>";
         }
       }        
 

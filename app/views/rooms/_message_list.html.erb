@@ -5,7 +5,7 @@
         <li class=<%= message_user.name %>>
           <div class="row">
             <% if message_user.id == current_user.id %>
-                <div class="comment col-md-9  col-sm-10 col-xs-10 chat_frame_right">
+                <div class="comment col-md-9  col-sm-10 col-xs-8 chat_frame_right">
                   <p><%= message_user.name %></p>
                   <p>
                   <%= text_url_to_link(h(message.message)).html_safe %>　<!-- text_url_to_link()はrooms_helper.rbに記述  -->
@@ -18,7 +18,7 @@
                 <div class="col-md-3 col-sm-2 col-xs-2 icon_left">
                   <%= gravatar_for message_user %>
                 </div>
-                <div class="col-md-9 col-sm-10 col-xs-10 chat_frame_left">
+                <div class="col-md-9 col-sm-10 col-xs-8 chat_frame_left">
                   <p><%= message_user.name %></p>
                   <p><%= meesage_format(h(message.message),message_user.id).html_safe %></p>
                 </div>

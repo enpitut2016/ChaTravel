@@ -32,12 +32,14 @@
     </div>
 
 
+    <div class="chat-sp-bg hidden-md hidden-lg"></div>
     <div class="chat col-md-6 col-sm-12 col-xs-12">
       <%= render 'message_list', message_list: @messages, current_user: current_user %>
         <div id="chat_area">
           <div id="message_textarea">
-            <textarea class="chat col-md-10 col-xs-7" id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
-            <input class="chat col-md-2 col-xs-3" id="post" type="submit" value="投稿">
+            <textarea class="chat col-md-10 col-xs-7 col-xs-7" id="post_comment"  name="comment" rows="1" cols="10">てきすと</textarea>
+            <input class="chat col-md-2 hidden-sm hidden-xs" id="post" type="submit" value="投稿">
+            <input class="chat-sp hidden-md hidden-lg col-xs-3" id="post-sp" type="submit" value="投稿">
           </div>
           <div id="current_user"  data-current_user_id="<%= current_user.id %>"></div>
         </div>
@@ -118,6 +120,12 @@
         </ul>
 
       </div>
+
+      <div class="dashboard-sp col-md-4 hidden-md hidden-lg" >
+        <h>決めたこと</h>
+        <%= render 'decided_list', decided_list: @decided %>
+      </div>
+
     </div>
 </div>
 
