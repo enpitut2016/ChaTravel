@@ -109,7 +109,7 @@ App.room = App.cable.subscriptions.create({ channel: 'RoomChannel', room: window
         message = message.replace(/-lon-/g,"<div class='lot' style='display:none;'>");
         
 
-        var url = message.match(/(https:\/\/[\x21-\x7e]+)/gi);
+        var url = message.match(/(https?:\/\/[\x21-\x7e]+)/gi);
         for(var i=0; i<url.length; i++){
           if( url[i].match(/.jpg/) || url[i].match(/.jpeg/) || url[i].match(/.gif/) || url[i].match(/.png/) || url[i].match(/.bmp/)){
             message =  message.replace(url[i], "<img class='thumbnail' src='"+url[i]+"' alt='レストラン画像' >"); 
