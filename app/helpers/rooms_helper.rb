@@ -37,7 +37,7 @@ def meesage_format(text,id)
 	end
 
 	if gnavi then
-		URI.extract(text, ['http']).uniq.each do |url|
+		URI.extract(text, ['https']).uniq.each do |url|
     		sub_text = ""
     		if url.match(/\.(jpg|jpeg|gif|png)$/) then
     			sub_text << "<img class='thumbnail' src='" << url << "' alt='ホテル画像'> "
