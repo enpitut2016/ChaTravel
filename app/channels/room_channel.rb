@@ -344,6 +344,7 @@ class RoomChannel < ApplicationCable::Channel
     @room = Room.find_by(url: data['room_url'])
     @user = User.find(data['user_id'])
     url = data['suggest_url']
+    url = url.gsub(/http:(.*)/, 'https:\1')
     result = ApplicationController::scrape(url)
     @suggests = Suggest.find_by(url: url, room_id: @room.id, enable: true)  #サジェストがリストに登録されていれば、再登録させない
     if @suggests != nil then
